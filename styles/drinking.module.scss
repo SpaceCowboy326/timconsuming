@@ -1,0 +1,23 @@
+.drinking {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.sectionTitle {
+    flex: 0 1 100%;
+}
+
+.sectionContainer {
+    margin: 5em 0 0 0;
+
+    &:hover .sectionTitle {
+        font-weight: 405;
+    }
+}
+
+.sectionContent {
+    width: 90vw;
+    flex: 0 1 90%;
+}

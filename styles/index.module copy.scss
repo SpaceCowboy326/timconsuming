@@ -1,0 +1,104 @@
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.pageTitle {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+
+
+.pageTitleActionText {
+    animation: delayedFadeIn ease 3s;
+    display: inline-block;
+    white-space: nowrap;
+    // transition: transform 1s ease;
+    min-width: 100px; //TODO: make responsive
+}
+
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.navItem {
+    display: flex;
+    justify-content: center;
+    margin-left: 50px;
+    white-space: nowrap;
+    width: 200px; //TODO: responsive
+
+    &:first-child:not(.selectedItem) {
+        margin-left: 0;
+    }
+}
+
+.pageTitleActionTextContainer {
+    display: inline-block;
+}
+
+.previousPageTitleActionText {
+    animation: fadeOut ease 1.5s;
+    max-width: 0;
+    opacity: 0;
+    // display: none;
+}
+
+.selectedItem {
+    animation: fadeOut ease 1.5s;
+    opacity: 0;
+    max-width: 0;
+}
+
+.previousSelectedItem {
+    animation: delayedFadeIn ease 3s;
+}
+
+.selectedItem {
+    // animation: fadeOut;
+    // border: 2px solid red;
+    // background-color: red;
+    // animation-name: example;
+    // animation-duration: 4s;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+
+@keyframes delayedFadeIn {
+    0% {opacity:0;max-width:0;}
+    50% {opacity: 0;max-width:0;}
+    100% {opacity:1;max-width:500px}
+}
+
+@keyframes fadeOut {
+    0% {opacity:1;max-width: 500px}
+    100% {opacity:0;max-width:0;}
+}
+
+
+
+@keyframes example {
+    0%   {background-color: red;}
+    25%  {background-color: yellow;}
+    50%  {background-color: blue;}
+    100% {background-color: green;}
+  }

@@ -1,0 +1,22 @@
+.item {
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+}
+
+.container {
+    border-top: 1px solid rgb(199, 195, 195);
+    border-bottom: 1px solid rgb(199, 195, 195);
+    box-sizing: border-box;
+    cursor: grab;
+    overflow: hidden;
+    padding: 20px 15px;
+    // scroll-behavior: smooth;;
+    width: 100%;
+
+
+    &:hover {
+        border-top: 1px solid rgb(177, 173, 173);
+        border-bottom: 1px solid rgb(177, 173, 173);
+    }
+}
