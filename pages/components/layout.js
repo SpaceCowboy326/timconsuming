@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // import styles from '../styles/Home.module.css'
 import { Button, Typography, Fade } from '@material-ui/core';
 
@@ -9,12 +9,12 @@ import styles from '../../styles/index.module.scss';
 const selected_class = `${styles.navItem} ${styles.selectedItem}`;
 const previously_selected_class = `${styles.navItem} ${styles.previousSelectedItem}`;
 
-const PAGE_NAMES = ['drinking', 'eating', 'listening', 'playing'];
+const PAGE_NAMES = ['drinking', 'watching', 'listening', 'playing'];
 const PAGE_TO_TEXT = {
     drinking: 'Drinking',
-    eating: 'Eating',
     listening: 'Listening To',
     playing: 'Playing',
+    watching: 'Watching',
 };
 
 const getNavItemClasses = ({pageName, selectedPage, previous}) => {
@@ -29,6 +29,7 @@ const getNavItemClasses = ({pageName, selectedPage, previous}) => {
     return navItemClasses.join(" ");
 }
 
+const LayoutContext = React.createContext(themes.light);
 
 
 export default function Layout({children, selectedPage}) {
@@ -42,8 +43,7 @@ export default function Layout({children, selectedPage}) {
         console.log("action anim ended!");
         setActionAnimationEnded(true);
     }
-    console.log("Previously selected?", previous);
-    
+
     // Create navItem list
     const nav = (<div className={styles.nav}>
         {
@@ -84,21 +84,22 @@ export default function Layout({children, selectedPage}) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         </Head>
         <div className={styles.main}>
-            <div className={styles.pageTitle}>
-                    <div className={styles.pageTitlePrefixContainer}>
-                        <Typography className={styles.pageTitlePrefix} variant="h3">
-                            What is Tim
-                        </Typography>
-                    </div>
-                    <div className={styles.pageTitleSuffixContainer}>
-                        <Typography className={styles.pageTitleSuffix} variant="h3">
-                            {page_title_action_text}
-                        </Typography>
-                    </div>
-            </div>
-            {nav}
-            <Fade in={selectedPage} timeout={2000}>{children}</Fade>
-            {/* <div className={styles.layoutContentContainer}>{children}</div> */}
+            <Backdrop className={styles.backdrop} open={expanded} onClick={handleClose}>
+                <div className={styles.pageTitle}>
+                        <div className={styles.pageTitlePrefixContainer}>
+                            <Typography className={styles.pageTitlePrefix} variant="h3">
+                                What is Tim
+                            </Typography>
+                        </div>
+                        <div className={styles.pageTitleSuffixContainer}>
+                            <Typography className={styles.pageTitleSuffix} variant="h3">
+                                {page_title_action_text}
+                            </Typography>
+                        </div>
+                </div>
+                {nav}
+                {children}
+            </Backdrop>
         </div>
         <footer >
             {/* <Link href="/drinking">who the hell is Tim?</Link> */}

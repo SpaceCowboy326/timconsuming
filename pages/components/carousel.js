@@ -55,26 +55,13 @@ export default function Carousel({items}) {
         if (scrolling) {
             const difference = (e.pageX - dragStartPageX) * 2;
             const currentScrollX = dragStartScrollX + difference;
-            // console.log("diff is", difference);
             setScrollX(currentScrollX);
         }
     };
 
-    // const gridItems = (items.map(item => (
-    //     <Grid key={item.id} item s={12}>
-    //         <div className={styles.item}>Item: {item.name}
-    //             <Item data={item} />
-    //         </div>
-    //     </Grid>
-    // )) );
-
-
-
     if (containerRef && scrollX) {
         containerRef.current.scrollLeft = scrollX * -1;
     }
-
-    // const containerStyles = {scrollLeft: scrollX};
 
     return (<div className={styles.container} ref={containerRef}>
         <Grid container spacing={3} wrap="nowrap" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} >

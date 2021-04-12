@@ -1,12 +1,18 @@
 
-.root {
-    min-width: 200px;
+.item {
+    height: 12rem;
+    transition: all 2s ease;
+    width: 10rem;
 }
 
-.bullet {
-    display: 'inline-block';
-    margin: '0 2px';
-    transform: 'scale(0.8)';
+.item__expanded {
+    height: 30rem;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 25rem;
+    z-index: 500;
 }
 
 .title {
@@ -15,4 +21,9 @@
 
 .pos {
     margin-bottom: 12,
+}
+
+.backdrop {
+    // z-index: 500;
+    color: '#fff';
 }

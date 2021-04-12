@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useState, useEffect, useRef } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Backdrop, Grid, Button, Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,13 +14,29 @@ export default function Item({data}) {
     const [dragStartScrollX, setDragStartScrollX] = useState(0);
     const [scrollX, setScrollX] = useState(0);
     const [addRemoveMouseUpListener, setAddRemoveMouseUpListener] = useState(false);
+    const [expanded, setExpanded] = useState(false);
+
     const containerRef = useRef(null)
 
     console.log(`I, ${data.name}, am rendering `);
 
+    const itemClasses = [styles.item];
+    if (expanded) {
+        itemClasses.push(styles.item__expanded);
+    }
+    const itemClassName = itemClasses.join(" ");
+    const toggleExpanded = e => {
+        console.log(`Setting expanded to ${!expanded}`);
+        setExpanded(!expanded);
+    };
+
+    const handleClose = () => {
+        setExpanded(false);
+    };
     
-    return (<Card className={styles.root} variant="outlined">
+    return (<Card className={itemClassName} variant="outlined">
         <CardContent>
+        {/* <Backdrop className={styles.backdrop} open={expanded} onClick={handleClose}> */}
             <Typography className={styles.title} color="textSecondary" gutterBottom>
                 {data.name}
             </Typography>
@@ -33,9 +49,10 @@ export default function Item({data}) {
                 <br />
                 {'"a benevolent smile"'}
             </Typography>
+        {/* </Backdrop> */}
         </CardContent>
         <CardActions>
-            <Button size="small">Learn More</Button>
+            <Button onClick={toggleExpanded} size="small">Learn More</Button>
         </CardActions>
     </Card>);
 };
