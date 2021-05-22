@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect, useContext } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Button, Typography, Fade } from '@material-ui/core';
+import { Button, Backdrop, Typography, Fade } from '@material-ui/core';
 
 import styles from '../../styles/index.module.scss';
 const selected_class = `${styles.navItem} ${styles.selectedItem}`;
@@ -29,15 +29,12 @@ const getNavItemClasses = ({pageName, selectedPage, previous}) => {
     return navItemClasses.join(" ");
 }
 
-const LayoutContext = React.createContext(themes.light);
-
-
-export default function Layout({children, selectedPage}) {
+export default function Layout({children, selectedPage, displayBackdrop = false}) {
     const router = useRouter();
     const {previous} = router.query;
     const [previousAction, setPreviousAction] = useState(previous);
     const [actionAnimationEnded, setActionAnimationEnded] = useState(!previous);
-
+console.log("display backdrop?", displayBackdrop)
 
     const handlePreviousPageTitleAnimation = e => {
         console.log("action anim ended!");
@@ -84,7 +81,6 @@ export default function Layout({children, selectedPage}) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         </Head>
         <div className={styles.main}>
-            <Backdrop className={styles.backdrop} open={expanded} onClick={handleClose}>
                 <div className={styles.pageTitle}>
                         <div className={styles.pageTitlePrefixContainer}>
                             <Typography className={styles.pageTitlePrefix} variant="h3">
@@ -98,12 +94,16 @@ export default function Layout({children, selectedPage}) {
                         </div>
                 </div>
                 {nav}
+                <Fade in={true} timeout={3000}>
                 {children}
-            </Backdrop>
+                </Fade>
         </div>
         <footer >
             {/* <Link href="/drinking">who the hell is Tim?</Link> */}
         </footer>
+        {/* <Backdrop className={styles.backdrop} open={displayBackdrop}>
+
+</Backdrop> */}
     </div>
     );
 }

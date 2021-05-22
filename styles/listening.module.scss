@@ -1,0 +1,26 @@
+.listening {
+    // background: url('/solomon.jpg') no-repeat center center fixed;
+    // box-shadow: 0 0 8px 8px white inset;
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.sectionTitle {
+    flex: 0 1 100%;
+}
+
+.sectionContainer {
+    margin: 2em 0 0 0;
+    padding: 25px;
+
+    &:hover .sectionTitle {
+        color: white;
+    }
+}
+
+.sectionContent {
+    flex: 0 1 90%;
+    width: 93vw;
+}

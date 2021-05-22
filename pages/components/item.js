@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 
 import styles from '../../styles/item.module.scss';
 
-export default function Item({data}) {
+export default function Item({data, displayBackdrop, backdropShown}) {
     const [count, setCount] = useState(0);
     const [dragStartPageX, setDragStartPageX] = useState(0);
     const [dragStartScrollX, setDragStartScrollX] = useState(0);
@@ -18,7 +18,14 @@ export default function Item({data}) {
 
     const containerRef = useRef(null)
 
-    console.log(`I, ${data.name}, am rendering `);
+    // If the Backdrop is no longer shown (likely from clicking on the Backdrop itself), close any expanded items
+    useEffect(() => {
+        if (!backdropShown && expanded) {
+            setExpanded(false);
+        }
+    }, [backdropShown]);
+
+    // console.log(`I, ${data.name}, am rendering `);
 
     const itemClasses = [styles.item];
     if (expanded) {
@@ -27,7 +34,9 @@ export default function Item({data}) {
     const itemClassName = itemClasses.join(" ");
     const toggleExpanded = e => {
         console.log(`Setting expanded to ${!expanded}`);
-        setExpanded(!expanded);
+        const new_state = !expanded;
+        displayBackdrop({val: new_state, clickCallback: (e) => setExpanded(false)});
+        setExpanded(new_state);
     };
 
     const handleClose = () => {

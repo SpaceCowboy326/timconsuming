@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Grid, Button, Typography } from '@material-ui/core';
+import { Grid, Button, Typography, Backdrop } from '@material-ui/core';
 import Item from './item';
 import styles from '../../styles/carousel.module.scss';
 
@@ -11,18 +11,29 @@ export default function Carousel({items}) {
     const [dragStartPageX, setDragStartPageX] = useState(0);
     const [dragStartScrollX, setDragStartScrollX] = useState(0);
     const [scrollX, setScrollX] = useState(0);
+    const [showBackdrop, setShowBackdrop] = useState(false);
+    const [backdropClickCallback, setBackdropClickCallback] = useState(null);
     // const [gridItems, setGridItems] = useState(null);
 
     const [addRemoveMouseUpListener, setAddRemoveMouseUpListener] = useState(false);
     const containerRef = useRef(null)
+    const backdropStyles = {
+        opacity: 0.5,
+        zIndex: 1000,
+    };
 
+    //TODO - not sure if it's necessary to wrap or if you should pass state setters directly?
+    const setBackdropDisplay = ({val, clickCallback}) => {
+        setShowBackdrop(val);
+        // setBackdropClickCallback(clickCallback);
+    };
 
     const itemList = useMemo(() => 
         items.map(item => (
             <Grid key={item.id} item s={12}>
-                <Item data={item} />
+                <Item data={item} backdropShown={showBackdrop} displayBackdrop={setBackdropDisplay} />
             </Grid>
-        )), [items]
+        )), [items, showBackdrop]
     );
 
     useEffect(() => {
@@ -49,13 +60,26 @@ export default function Carousel({items}) {
         console.log("What is this", this)
     };
 
+    const handleBackdropClick = e => {
+        setShowBackdrop(false);
+        if (typeof backdropClickCallback === 'function') {
+            backdropClickCallback();
+        }
+    };
+
     // TODO - maybe attach this to window? not sure it's necessary
     const handleMouseMove = e => {
         // console.log(`X: ${e.pageX} Y: ${e.pageY}`);
         if (scrolling) {
             const difference = (e.pageX - dragStartPageX) * 2;
             const currentScrollX = dragStartScrollX + difference;
-            setScrollX(currentScrollX);
+            if (
+                currentScrollX < 0 &&
+                (currentScrollX > (containerRef.current.scrollWidth * -1))
+            ) {
+                console.log("setting pos...", currentScrollX);
+                setScrollX(currentScrollX);
+            }
         }
     };
 
@@ -63,10 +87,12 @@ export default function Carousel({items}) {
         containerRef.current.scrollLeft = scrollX * -1;
     }
 
+
     return (<div className={styles.container} ref={containerRef}>
         <Grid container spacing={3} wrap="nowrap" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} >
             {itemList}
         </Grid>
+        <Backdrop style={backdropStyles} onClick={handleBackdropClick} open={showBackdrop}/>
     </div>);
 };
 

@@ -1,19 +1,4 @@
 
-.item {
-    height: 12rem;
-    transition: all 2s ease;
-    width: 10rem;
-}
-
-.item__expanded {
-    height: 30rem;
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 25rem;
-    z-index: 500;
-}
 
 .title {
     font-size: 14,
@@ -23,7 +8,24 @@
     margin-bottom: 12,
 }
 
-.backdrop {
-    // z-index: 500;
-    color: '#fff';
+
+.item {
+    height: 12rem;
+    width: 10rem;
+    
+
+    &:hover {
+        transform: translate(5px, -5px);
+        transition: transform 0.1s linear;
+    }
+
+    &.item__expanded {
+        height: 30em;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 25em;
+        z-index: 1001;
+    }
 }
