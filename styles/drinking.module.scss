@@ -1,3 +1,5 @@
+@import './colors.module.scss';
+
 .drinking {
     // background: url('/solomon.jpg') no-repeat center center fixed;
     // box-shadow: 0 0 8px 8px white inset;
@@ -9,17 +11,22 @@
 
 .sectionTitle {
     flex: 0 1 100%;
+    transition: color 0.5s linear;
 }
 
 .sectionContainer {
-    margin: 5em 0 0 0;
+    background-color: $primary-color !important;
+    color: $secondary-text;
+    margin: 0 0 2em 0;
+    padding: 25px;
 
     &:hover .sectionTitle {
-        font-weight: 405;
+        color: $primary-text;
     }
 }
 
 .sectionContent {
-    width: 90vw;
     flex: 0 1 90%;
+    margin-top: 10px;
+    width: 93vw;
 }

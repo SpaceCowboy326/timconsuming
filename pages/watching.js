@@ -1,11 +1,41 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from './components/layout'
+import Carousel from './components/carousel'
+import { Button, Typography, Paper } from '@material-ui/core';
+import {items} from './data/drinking.json';
+import styles from '../styles/drinking.module.scss';
+import React, { useState, useEffect, useContext } from 'react';
+
 
 export default function Watching() {
+    const [displayBackdrop, setDisplayBackdrop] = useState(false);
+    const showBackdrop = (show) => {
+        console.log("I am going to show a backdrop?", show);
+        setDisplayBackdrop(show);
+    }
 
-
-    return (<Layout selectedPage={'watching'}>
-            <div>This is what I watches.</div>
-    </Layout>);
+    return (
+            <div className={styles.drinking}>
+                <Paper elevation={3} classes={{root: styles.sectionContainer}}>
+                {/* <Paper elevation={3} className={styles.sectionContainer}> */}
+                    <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Animation:</Typography>
+                    <div className={styles.sectionContent}>
+                        <Carousel items={items} showBackdrop={showBackdrop} />
+                    </div>
+                </Paper>
+                <Paper elevation={3} className={styles.sectionContainer}>
+                    <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Comedy:</Typography>
+                    <div className={styles.sectionContent}>
+                        <Carousel items={items} showBackdrop={showBackdrop} />
+                    </div>
+                </Paper>
+                <Paper elevation={3} className={styles.sectionContainer}>
+                    <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Movies:</Typography>
+                    <div className={styles.sectionContent}>
+                        <Carousel items={items} showBackdrop={showBackdrop} />
+                    </div>
+                </Paper>
+            </div>
+    );
 }

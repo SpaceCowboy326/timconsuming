@@ -1,21 +1,39 @@
-
+@import './colors.module.scss';
 
 .title {
-    font-size: 14,
+    color: $secondary-text;
+    font-size: 14;
+    transition: color 0.5s linear;
 };
 
-.pos {
-    margin-bottom: 12,
-}
+$item-height: 22rem;
+$item-width: 18rem;
+$item-padding: 0.5rem;
 
+$item-columns: 6;
+$item-rows: 9;
+
+$item-column-size: ($item-width - ($item-padding * 2)) / $item-columns;
+$item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 
 .item {
-    height: 12rem;
-    width: 10rem;
+    // scroll-snap-align: center;
+    // &.MuiCard-root {
+    //     background-color: $background-color;
+    // }
+
+    // border-color: $secondary-color-dark;
+    height: $item-height;
+    padding: $item-padding;
+    width: $item-width;
     
 
     &:hover {
-        transform: translate(5px, -5px);
+        .title {
+            color: $primary-text;
+        }
+
+        transform: scale(1.05);
         transition: transform 0.1s linear;
     }
 
@@ -28,4 +46,69 @@
         width: 25em;
         z-index: 1001;
     }
+}
+
+.itemContent {
+    display: grid;
+    grid-template-columns: repeat($item-columns, $item-column-size);
+    grid-template-rows: repeat($item-rows, $item-row-size);
+    height: 100%;
+    width: 100%;
+}
+
+.itemImage {
+    grid-column-start: 1;
+    grid-column-end: 7;
+    grid-row-start: 1;
+    grid-row-end: 7;
+    position: relative;
+
+}
+
+.itemTitle {
+    align-items: center;
+    display: flex;
+    grid-column: 1 / span $item-columns;
+}
+
+
+.source {
+    align-items: center;
+    display: flex;
+    grid-column: 1 / span $item-columns;
+}
+
+
+.media {
+    height: 0;
+    padding-top: 56.25%; // 16:9
+}
+
+.buttonRow {
+    // align-items: flex-end;
+    align-items: center;
+    display: flex;
+    grid-column: 1 / span $item-columns;
+    
+}
+
+.actionButtonContainer {
+    display: flex;
+    height: 1.75rem;
+    // justify-content: center;
+    width: 100%;
+}
+
+.actionButton {
+    background-color: $secondary-color !important;
+    color: white !important;
+    // padding: 0 0px !important;
+}
+
+.actionButtonLabel {
+    // align-items: baseline;
+}
+
+.expandIcon {
+    color: black;
 }

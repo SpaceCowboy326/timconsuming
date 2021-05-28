@@ -1,13 +1,25 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import React, { useState, useEffect, useContext } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Button, Backdrop, Typography, Fade } from '@material-ui/core';
+import { Button, Backdrop, Typography, Fade, Paper, Box, Slide } from '@material-ui/core';
+
 
 import styles from '../../styles/index.module.scss';
 const selected_class = `${styles.navItem} ${styles.selectedItem}`;
 const previously_selected_class = `${styles.navItem} ${styles.previousSelectedItem}`;
+// const fadeAnimationDuration = 1250;
+const fadeAnimationDuration = 750;
+
+const navImages = {
+    drinking: '/images/002-alcohol.svg',
+    listening: '/images/headphone.svg',
+    playing: '/images/gamepad.svg',
+    watching: '/images/laptop.svg',
+};
 
 const PAGE_NAMES = ['drinking', 'watching', 'listening', 'playing'];
 const PAGE_TO_TEXT = {
@@ -17,46 +29,108 @@ const PAGE_TO_TEXT = {
     watching: 'Watching',
 };
 
-const getNavItemClasses = ({pageName, selectedPage, previous}) => {
+const getNavItemClasses = ({pageName, selectedPage, previous, transition}) => {
     // start with default classes
     const navItemClasses = [styles.navItem];
     if (selectedPage === pageName) {
         navItemClasses.push(styles.selectedItem);
+
+        if (!transition) {
+            navItemClasses.push(styles.selectedItem__out);
+        }
+        else {
+            navItemClasses.push(styles.selectedItem__in);
+        }
     }
     if (previous === pageName) {
         navItemClasses.push(styles.previousSelectedItem);
     }
+
+    if (pageName === 'listening') {
+        navItemClasses.push(styles.navItemListening)
+    }
     return navItemClasses.join(" ");
 }
+
+const theme = createMuiTheme({
+    typography: {
+        // fontFamily: "'Rubik', sans-serif;", 
+        // fontFamily: "'Amatic SC', cursive;", 
+        // fontFamily: "'Zen Dots', cursive",
+        // fontFamily: "'EB Garamond', serif",
+        // fontFamily: "'Prata', serif",
+        // fontFamily: "'Bungee Shade', cursive",
+        // fontWeight: 700,
+        fontFamily: "'Noto Sans SC', sans-serif;",
+    },
+    palette: {
+        // type: "dark",
+        // primary: {
+        // main: '#b6c4f4',
+        // },
+        // secondary: {
+        // main: '#f3d885',
+        // },
+    },
+});
+
+// const slideDirection = 'left';
 
 export default function Layout({children, selectedPage, displayBackdrop = false}) {
     const router = useRouter();
     const {previous} = router.query;
-    const [previousAction, setPreviousAction] = useState(previous);
-    const [actionAnimationEnded, setActionAnimationEnded] = useState(!previous);
-console.log("display backdrop?", displayBackdrop)
+    const [transition, setTransition] = useState(true);
+    const [slideDirection, setSlideDirection] = useState('up');
+    useEffect(() => {
+        setSlideDirection('up');
+        setTransition(true);
+    }, [selectedPage]);
+    // const slideDirection = transition ? 'up' : 'left';
+ console.log("Slide direction?", slideDirection);
 
-    const handlePreviousPageTitleAnimation = e => {
-        console.log("action anim ended!");
-        setActionAnimationEnded(true);
-    }
+    console.log("transition?", transition);
+    // const [transition, setTransition] = useState('right');
+
+    const handleActionClick = (nextPage, currentPage) => {
+        setTransition(false);
+
+        console.log("nextPage is ", nextPage);
+        // const route_info = {
+        //     pathname: '/[nextPage]',
+        //     query: {nextPage},
+        // };
+        // console.log("route info is", route_info);
+        // const route_info = `/${nextPage}?previous=${currentPage}`;
+        // router.push(route_info);//, null, {shallow:true});
+        const navTimer = setTimeout(() => {
+            //`/${nextPage}?previous=${currentPage}`
+            // router.push({
+            //     pathname: `/[nextPage]`,
+            //     query: {nextPage},
+            // }, `/${nextPage}`, {shallow:true});
+            router.push(`/${nextPage}?previous=${currentPage}`);
+        }, fadeAnimationDuration);
+
+
+        return () => clearTimeout(navTimer);
+        
+    };
+
+
 
     // Create navItem list
     const nav = (<div className={styles.nav}>
         {
             PAGE_NAMES.reduce((list, pageName) => {
-                // filter out the current action if the animation has ended
-                // filter out the previous action if the animation is ongoing
-                if (
-                    (pageName === previous && !actionAnimationEnded) ||
-                    (pageName === selectedPage && actionAnimationEnded)
-                ) {
-                    return list;
-                }
+                const navItemElem = (<div key={pageName} className={getNavItemClasses({pageName, selectedPage, previous, transition})}>
+                        <Image
+                            onClick={e => handleActionClick(pageName, selectedPage)}
+                            height={200}
+                            width={200}
+                            src={navImages[pageName]}
+                        />
+                    </div>);
 
-                const navItemElem = (<div key={pageName} className={getNavItemClasses({pageName, selectedPage, previous})}>
-                    <Typography variant="h6"><Link href={`/${pageName}?previous=${selectedPage}`}>{`${PAGE_TO_TEXT[pageName]}?`}</Link></Typography>
-                </div>);
                 list.push(navItemElem);
                 return list;
             }, [])
@@ -64,46 +138,49 @@ console.log("display backdrop?", displayBackdrop)
     </div>);
 
     const page_title_action_text = <div className={styles.pageTitleActionTextContainer}>
-            { !actionAnimationEnded &&
-                (<span onAnimationEnd={handlePreviousPageTitleAnimation} className={styles.previousPageTitleActionText}>
-                    {(PAGE_TO_TEXT[previousAction])}?
-                </span>) }
-            { actionAnimationEnded &&
                 <span className={styles.pageTitleActionText}>{(PAGE_TO_TEXT[selectedPage] || '...') + '?'}</span>
-            }
         </div>;
 
     return (
-    <div className={styles.container}>
-        <Head>
-        <title>TimConsuming</title>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-        </Head>
-        <div className={styles.main}>
-                <div className={styles.pageTitle}>
-                        <div className={styles.pageTitlePrefixContainer}>
-                            <Typography className={styles.pageTitlePrefix} variant="h3">
-                                What is Tim
-                            </Typography>
-                        </div>
-                        <div className={styles.pageTitleSuffixContainer}>
-                            <Typography className={styles.pageTitleSuffix} variant="h3">
-                                {page_title_action_text}
-                            </Typography>
-                        </div>
-                </div>
-                {nav}
-                <Fade in={true} timeout={3000}>
-                {children}
-                </Fade>
-        </div>
-        <footer >
-            {/* <Link href="/drinking">who the hell is Tim?</Link> */}
-        </footer>
-        {/* <Backdrop className={styles.backdrop} open={displayBackdrop}>
+        <ThemeProvider theme={theme}>
+            <div className={styles.container}>
+                <Head>
+                <title>TimConsuming</title>
+                <link rel="icon" href="/favicon.ico" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+                <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Noto+Sans+SC:wght@400;500&family=Zen+Dots&display=swap" rel="stylesheet" />
 
-</Backdrop> */}
-    </div>
+                <link rel="preconnect" href="https://fonts.gstatic.com"/>
+                <link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda&family=Bungee+Shade&family=EB+Garamond&family=Prata&display=swap" rel="stylesheet"/>
+                </Head>
+                <div className={styles.main}>
+                        {/* <Paper className={styles.headerPaper} elevation={2}> */}
+                            <div color="primary" className={styles.pageTitle}>
+                                    <div className={styles.pageTitlePrefixContainer}>
+                                        <Typography className={styles.pageTitlePrefix} variant="h3">
+                                            What is Tim
+                                        </Typography>
+                                    </div>
+                                    <div className={styles.pageTitleSuffixContainer}>
+                                        <Fade in={transition} timeout={fadeAnimationDuration}>
+                                            <Typography className={styles.pageTitleSuffix} variant="h3">
+                                                {page_title_action_text}
+                                            </Typography>
+                                        </Fade>
+                                    </div>
+                            </div>
+                            {nav}
+                        {/* </Paper> */}
+                        <Slide direction={slideDirection} in={transition} timeout={fadeAnimationDuration}>
+                            <div className={styles.contentContainer}>
+                                {children}
+                            </div>
+                        </Slide>
+                </div>
+                <footer >
+                    {/* <Link href="/drinking">who the hell is Tim?</Link> */}
+                </footer>
+            </div>
+        </ThemeProvider>
     );
 }

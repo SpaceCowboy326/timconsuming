@@ -1,25 +1,41 @@
 {
     "items": [
         {
-            "name": "Drink 1",
+            "name": "Visions and Prisons",
             "source": "DSSOLVR",
             "id": "1",
-            "location": "",
-            "description": ""
+            "location": "Asheville, NC",
+            "description": "",
+            "style": "Hazy IPA",
+            "imageUrl": "/images/visions_and_prisons.jpg"
         },
         {
-            "name": "Drink 2",
-            "id": "2",
-            "source": "",
-            "location": "",
-            "description": ""
+            "name": "Pineapple Shake IPA",
+            "source": "Westbrook",
+            "id": "26",
+            "location": "Asheville, NC",
+            "description": "",
+            "style": "Milkshake IPA",
+            "imageScale": "0.5",
+            "imageUrl": "/images/pineapple_shake_westbrook.jpeg"
         },
         {
-            "name": "Drink 3",
-            "source": "",
+            "name": "Margarita",
+            "source": "Salt Point",
             "id": "3",
             "location": "",
-            "description": ""
+            "description": "",
+            "imageUrl": "/images/drink_img_compress.jpg"
+        },
+        {
+            "name": "Philosophical Ideologies of Moralistic Indignation",
+            "id": "2",
+            "style": "Double IPA",
+            "source": "Burial",
+            "location": "Asheville, NC",
+            "description": "",
+            "imageUrl": "/images/philosophical_burial_cropped.jpg"
+
         },
         {
             "name": "Drink 4",

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Grid, Button, Typography, Backdrop } from '@material-ui/core';
 import Item from './item';
 import styles from '../../styles/carousel.module.scss';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 
 export default function Carousel({items}) {
@@ -77,7 +78,6 @@ export default function Carousel({items}) {
                 currentScrollX < 0 &&
                 (currentScrollX > (containerRef.current.scrollWidth * -1))
             ) {
-                console.log("setting pos...", currentScrollX);
                 setScrollX(currentScrollX);
             }
         }
@@ -88,33 +88,26 @@ export default function Carousel({items}) {
     }
 
 
-    return (<div className={styles.container} ref={containerRef}>
-        <Grid container spacing={3} wrap="nowrap" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} >
-            {itemList}
-        </Grid>
-        <Backdrop style={backdropStyles} onClick={handleBackdropClick} open={showBackdrop}/>
+    return (<div className={styles.outerContainer}>
+        <div className={`${styles.scrollContainer} ${styles.leftScrollContainer}`}>
+            {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
+            <div className={styles.icon}>
+                <div className={styles.arrow}></div>
+                <div className={styles.arrow2}></div>
+            </div>
+        </div>
+        <div className={styles.container} ref={containerRef}>
+            <Grid classes={{root: styles.gridContainer}} container spacing={3} wrap="nowrap" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} >
+                {itemList}
+            </Grid>
+            <Backdrop style={backdropStyles} onClick={handleBackdropClick} open={showBackdrop}/>
+        </div>
+        <div className={`${styles.scrollContainer} ${styles.rightScrollContainer}`}>
+            {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
+            <div className={styles.icon}>
+                <div className={styles.arrow}></div>
+                <div className={styles.arrow2}></div>
+            </div>
+        </div>
     </div>);
 };
-
-
-{/* <Card className={classes.root} variant="outlined">
-    <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-            Word of the Day
-        </Typography>
-        <Typography variant="h5" component="h2">
-            be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-            adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-        </Typography>
-    </CardContent>
-    <CardActions>
-        <Button size="small">Learn More</Button>
-    </CardActions>
-</Card> */}
