@@ -177,7 +177,15 @@ export default function Layout({children, selectedPage, displayBackdrop = false}
                             </div>
                         </Slide>
                 </div>
-                <footer >
+                <footer className={styles.footer}>
+                    <Paper elevation={3} classes={{root: styles.footerPaper}}>
+                        <div>
+                            <Typography>
+                                Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
+                                &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                            </Typography>
+                        </div>
+                    </Paper>
                     {/* <Link href="/drinking">who the hell is Tim?</Link> */}
                 </footer>
             </div>

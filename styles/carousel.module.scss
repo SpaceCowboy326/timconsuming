@@ -10,6 +10,7 @@
     border-top: 2px solid rgb(177, 173, 173, 0);
     border-bottom: 2px solid rgb(177, 173, 173, 0);
     display: flex;
+    position: relative;
     transition: border-color 0.5s linear;
 
     &:hover {
@@ -43,13 +44,67 @@
 
 }
 
-.container {
+
+
+// .transparentEdgeViewportOverlay {
+//     border: 100px solid;
+//     border-image: linear-gradient(90deg, red, transparent) 1;
+    
+//     // border-width: 100px;
+//     // border-top:none; border-bottom:none;
+//     // border-style:solid;
+//     // border-image:linear-gradient(red, transparent) 1;
+//     // height: 100%;
+//     right: 0;
+//     position: absolute;
+//     top: 0;
+//     height: 100%;
+//     width: 100%;
+// }
+
+.viewport {
+    // border-style:solid;
+    // border-image:linear-gradient(90deg, red, transparent) 1;
+    // border-bottom:0;
+    // border-top:0;
     // background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(255, 0, 0, 1), rgba(0, 0, 0, 0));
     box-sizing: border-box;
     cursor: grab;
     flex: 1 1;
     overflow: hidden;
     padding: 20px 15px;
+    position: relative;
+
+    // &:before, &:after {
+    //     content: " ";
+    //     position: absolute;
+    //     z-index: 9999999999;
+    // }
+
+    // &:before,
+    // &:after {
+    //   content: "";
+    //   position: absolute;
+    // //   display: block;
+    // //   left: -10px;
+    //   height: 50%;
+    // }
+
+    // &:before {
+    //     content: " ";
+    //     left: 0;
+    //     height: 100%;
+    //     width: 200px;
+    //     background: linear-gradient(to right, #333 0%, transparent 100%);
+    // }
+
+    // &:after {
+    //     top: 0;
+    //     right: 0;
+    //     width: 200px;
+    //     background: linear-gradient(270deg, red, transparent);
+    // }
+
     // scroll-snap-type: x proximity;
     // width: 100%;
 

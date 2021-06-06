@@ -17,10 +17,32 @@
 //     width: 100%;
 // }
 
-.headerPaper {
-    background-color: $primary-color !important;
+
+.footer {
+    // background-color: $primary-color !important;
     // margin-bottom: 5px;
-    width: 80vw;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.footerPaper {
+    background-color: $primary-color !important;
+    display: flex;
+    height: 3em;
+    justify-content: center;
+    align-items: center;
+    // margin-bottom: 5px;
+    width: 99.5%;
+
+    a {
+        color: white;
+        text-decoration: underline;
+
+        &:visited {
+            color: $secondary-text;
+        }
+    }
 }
 
 .pageTitle {

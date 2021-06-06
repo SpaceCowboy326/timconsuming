@@ -8,7 +8,7 @@ import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
 
 
-export default function DrinkiEatingng() {
+export default function Eating() {
     const [displayBackdrop, setDisplayBackdrop] = useState(false);
     const showBackdrop = (show) => {
         console.log("I am going to show a backdrop?", show);

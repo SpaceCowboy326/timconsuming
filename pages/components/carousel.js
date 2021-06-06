@@ -6,6 +6,7 @@ import Item from './item';
 import styles from '../../styles/carousel.module.scss';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
+const MIN_SCROLL_INCREMENT = 288;
 
 export default function Carousel({items}) {
     const [scrolling, setScrolling] = useState(false);
@@ -68,6 +69,18 @@ export default function Carousel({items}) {
         }
     };
 
+    // Set 'left' to true to scroll left, falsy to scroll right.
+    // TODO - set scroll increment relative to carousel/page width.
+    const scroll = (left) => {
+        console.log("offsetWidth", containerRef.current.offsetWidth);
+        const scroll_increment = Math.max(containerRef.current.offsetWidth * 0.75, MIN_SCROLL_INCREMENT);
+        console.log("scrollIncrement is", scroll_increment);
+        const currentScroll = containerRef.current.scrollLeft;
+        console.log("currentScroll is", currentScroll);
+        const newScroll = left ? currentScroll - scroll_increment : currentScroll + scroll_increment;
+        containerRef.current.scroll({top: 0, left: newScroll, behavior: 'smooth'})
+    };
+
     // TODO - maybe attach this to window? not sure it's necessary
     const handleMouseMove = e => {
         // console.log(`X: ${e.pageX} Y: ${e.pageY}`);
@@ -91,12 +104,13 @@ export default function Carousel({items}) {
     return (<div className={styles.outerContainer}>
         <div className={`${styles.scrollContainer} ${styles.leftScrollContainer}`}>
             {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
-            <div className={styles.icon}>
+            <div onClick={() => scroll(true)} className={styles.icon}>
                 <div className={styles.arrow}></div>
                 <div className={styles.arrow2}></div>
             </div>
         </div>
-        <div className={styles.container} ref={containerRef}>
+        <div className={styles.transparentEdgeViewportOverlay}></div>
+        <div className={styles.viewport} ref={containerRef}>
             <Grid classes={{root: styles.gridContainer}} container spacing={3} wrap="nowrap" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} >
                 {itemList}
             </Grid>
@@ -104,7 +118,7 @@ export default function Carousel({items}) {
         </div>
         <div className={`${styles.scrollContainer} ${styles.rightScrollContainer}`}>
             {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
-            <div className={styles.icon}>
+            <div onClick={() => scroll(false)} className={styles.icon}>
                 <div className={styles.arrow}></div>
                 <div className={styles.arrow2}></div>
             </div>
