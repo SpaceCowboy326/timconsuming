@@ -4,7 +4,12 @@
     color: $secondary-text;
     font-size: 14;
     transition: color 0.5s linear;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 };
+
+
 
 $item-height: 22rem;
 $item-width: 18rem;
@@ -69,6 +74,8 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     align-items: center;
     display: flex;
     grid-column: 1 / span $item-columns;
+    // overflow: hidden;
+
 }
 
 

@@ -13,7 +13,7 @@ const SPOTIFY_SECRET = auth.SPOTIFY_SECRET;
 const SPOTIFY_CLIENT_ID = auth.SPOTIFY_CLIENT_ID;
 
 const PORT = '3000';
-const REDIRECT_URI = `http://localhost:3000/dashboard`;
+const REDIRECT_URI = `http://localhost:3000/listening`;
 
 const COOKIE_STATE_KEY = 'spotify_auth_state';
 const COOKIE_ACCESS_KEY = 'spotify_auth_access';

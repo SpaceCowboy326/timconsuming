@@ -2,6 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+// import auth from './lib/spotify/auth';
+import auth from '../lib/spotify/auth'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import React, { useState, useEffect, useContext } from 'react';
 // import styles from '../styles/Home.module.css'
@@ -56,12 +58,13 @@ const theme = createMuiTheme({
     typography: {
         // fontFamily: "'Rubik', sans-serif;", 
         // fontFamily: "'Amatic SC', cursive;", 
-        // fontFamily: "'Zen Dots', cursive",
         // fontFamily: "'EB Garamond', serif",
         // fontFamily: "'Prata', serif",
         // fontFamily: "'Bungee Shade', cursive",
         // fontWeight: 700,
-        fontFamily: "'Noto Sans SC', sans-serif;",
+        // fontFamily: "'Noto Sans SC', sans-serif;",
+        // fontFamily: "'Monoton', cursive",
+        fontFamily: "'Bungee', cursive",
     },
     palette: {
         // type: "dark",
@@ -76,7 +79,7 @@ const theme = createMuiTheme({
 
 // const slideDirection = 'left';
 
-export default function Layout({children, selectedPage, displayBackdrop = false}) {
+const Layout = ({children, selectedPage, displayBackdrop = false}) => {
     const router = useRouter();
     const {previous} = router.query;
     const [transition, setTransition] = useState(true);
@@ -152,6 +155,7 @@ export default function Layout({children, selectedPage, displayBackdrop = false}
 
                 <link rel="preconnect" href="https://fonts.gstatic.com"/>
                 <link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda&family=Bungee+Shade&family=EB+Garamond&family=Prata&display=swap" rel="stylesheet"/>
+                <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Monoton&display=swap" rel="stylesheet"></link>
                 </Head>
                 <div className={styles.main}>
                         {/* <Paper className={styles.headerPaper} elevation={2}> */}
@@ -180,7 +184,7 @@ export default function Layout({children, selectedPage, displayBackdrop = false}
                 <footer className={styles.footer}>
                     <Paper elevation={3} classes={{root: styles.footerPaper}}>
                         <div>
-                            <Typography>
+                            <Typography variant="body2">
                                 Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
                                 &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
                             </Typography>
@@ -192,3 +196,33 @@ export default function Layout({children, selectedPage, displayBackdrop = false}
         </ThemeProvider>
     );
 }
+
+export async function getServerSideProps({req, res, query}) {
+    const code = query.code;
+    
+    // const token_response = await fetch('http://localhost:3000/api/token');
+    const token_response = await auth.getNewAccessToken(code);
+
+    console.log("What's the token response?", token_response);
+    // const json_token = await token_response.text();
+    // console.log("What's the token json?", json_token);
+
+    const {access_token, refresh_token, expires_in} = token_response;
+
+    const props = {code};
+    if (access_token) {
+      props.access_token = access_token;
+    }
+    if (refresh_token) {
+      props.refresh_token = refresh_token;
+    }
+    if (expires_in) {
+      props.expires_in = expires_in;
+    }
+  
+    return {
+      props
+    };
+};
+
+export default Layout;
