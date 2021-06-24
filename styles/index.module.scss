@@ -161,6 +161,9 @@
     width: 100%;
 }
 
+.body {
+    background-color: $background-color;
+}
 
 @keyframes fadeIn {
     0% {opacity:0;}

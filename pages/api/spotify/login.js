@@ -23,7 +23,7 @@ const COOKIE_REFRESH_KEY = 'spotify_auth_refresh';
 const generateRandomString = length => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  
+
     for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
@@ -35,6 +35,8 @@ export default (req, res) => {
     // res.cookie(COOKIE_STATE_KEY, state);
     // your application requests authorization
 
+    // sessionStorage.setItem('state', state)
+    
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
@@ -43,4 +45,6 @@ export default (req, res) => {
             redirect_uri: REDIRECT_URI,
             state: state
         }));
+
+
 };

@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from './components/layout'
+import Layout, {SpotifyAuthContext} from './components/layout'
 import Carousel from './components/carousel'
 import { Button, Typography, Paper } from '@material-ui/core';
-import {items} from './data/drinking.json';
+import data from './data/drinking.json';
 import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
 
-
+const items = data.items;
 export default function Playing() {
     const [displayBackdrop, setDisplayBackdrop] = useState(false);
     const showBackdrop = (show) => {
