@@ -2,8 +2,6 @@
 // const express = require("express");
 // const fs = require("fs");
 // const app = express();
-const querystring = require('querystring');
-import auth from '../../lib/spotify/auth';
 // const cookieParser = require('cookie-parser');
 // const request = require('request'); // "Request" library
 // var cors = require('cors');
@@ -40,7 +38,7 @@ export default (req, res) => {
     res.redirect('https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
-            client_id: SPOTIFY_CLIENT_ID,
+            client_id: process.env.SPOTIFY_CLIENT_ID,
             scope: auth.getScope(),
             redirect_uri: REDIRECT_URI,
             state: state
