@@ -12,7 +12,9 @@ $primary-text: #000000;
 
 $secondary-color: #f3d885;
 $secondary-color: #fdd835;
-$secondary-color: #f9bf2d;
+// $secondary-color: #f9bf2d;
+$secondary-color: #F5AE0A;
+// $secondary-color: #E79E00;
 $secondary-color-light: lighten($secondary-color, $tonal-offset);
 $secondary-color-dark: darken($secondary-color, $tonal-offset);
 $secondary-text: rgba(0, 0, 0, 0.7);

@@ -15,16 +15,13 @@ const getSelectedPage = (path) => {
 
 function MyApp(props) {
   const { Component, pageProps, router, access_token, refresh_token } = props;
-  console.log("props be like", props);
-  console.log("selercterd route", router.route);
   const selected_page = getSelectedPage(router.route);
-console.log("selercterd perge", selected_page);
 
-return <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
-    <Layout selectedPage={selected_page}>
-      <Component {...pageProps} />
-    </Layout>
-  </SpotifyAuthContext.Provider>;
+  return <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
+      <Layout selectedPage={selected_page}>
+        <Component {...pageProps} />
+      </Layout>
+    </SpotifyAuthContext.Provider>;
 }
 
 MyApp.getInitialProps = async (appContext) => {

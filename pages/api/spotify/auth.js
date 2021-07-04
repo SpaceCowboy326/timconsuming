@@ -5,10 +5,11 @@
 // const cookieParser = require('cookie-parser');
 // const request = require('request'); // "Request" library
 // var cors = require('cors');
+import querystring from 'querystring';
 
 
-const SPOTIFY_SECRET = auth.SPOTIFY_SECRET;
-const SPOTIFY_CLIENT_ID = auth.SPOTIFY_CLIENT_ID;
+const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 
 const PORT = '3000';
 const REDIRECT_URI = `http://localhost:3000/listening`;
@@ -42,8 +43,13 @@ const scope_collection = [
   const ENDPOINTS = {
     TOKEN: `https://accounts.spotify.com/api/token`
   };
-  
   const basic = new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_SECRET).toString('base64');
+  // const basic = 'dW5kZWZpbmVkOnVuZGVmaW5lZA==';
+  // const basic = 'OWRhOGFiMDJhNmM3NDQ1MGE3MWZlOGE5Y2M0ZTNhYWM6MWY5MGU3MTA1NDU4NDEwNGFkOTdlNjBkYjUzZTRkMTc=';
+  // const basic = new Buffer(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_SECRET).toString('base64');
+
+  // const auth_str = bytes('{}:{}'.format(process.env.SPOTIFY_CLIENT_ID, process.env.SPOTIFY_SECRET), 'utf-8')
+	// const b64_auth_str = base64.b64encode(auth_str).decode('utf-8')
   // const basic = Buffer.from(`${client_id}:${client_secret}`).toString('base64');
   
   
@@ -69,8 +75,9 @@ const scope_collection = [
   // };
   
   const getNewAccessToken = async (req, res) => {
-      const code = null; //TODO -get code from URL
-      const auth_opts = {
+      const {query} = req;
+      const code = query.code;
+      const tokenOpts = {
           method: 'POST',
           headers: {
             Authorization: `Basic ${basic}`,
@@ -79,12 +86,31 @@ const scope_collection = [
           body: querystring.stringify({
             grant_type: 'authorization_code',
             code: code,
-            redirect_uri: 'http://localhost:3000/listening',
+            client_id: process.env.SPOTIFY_CLIENT_ID,
+            client_secret: process.env.SPOTIFY_SECRET,
+            redirect_uri: REDIRECT_URI,
           })
       };
-  
-      const response = await fetch(ENDPOINTS.TOKEN, auth_opts);
-      return response.json();
+
+      console.log("tokenOpts", tokenOpts);
+      const tokenResponse = await fetch('https://accounts.spotify.com/api/token', tokenOpts);
+    // const tm_text = await tm_response.text();
+    // console.log(tm_text);
+    console.log("Full res", tokenResponse);
+    
+    const resHeaders = tokenResponse.headers;
+    // console.log("RES headers", resHeaders);
+    // const tokenJson = await tokenResponse.text();
+    const tokenJson = await tokenResponse.json();
+    console.log("TokenJSON", tokenJson);
+    // return res.send(tokenJson);
+    return res.json(tokenJson);
+
+      // res.setHeader('Authorization', `Basic ${basic}`);
+      // res.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+      // res.redirect('https://accounts.spotify.com/api/token');
+
+      // const response = await fetch(ENDPOINTS.TOKEN, auth_opts);
   }
   
 

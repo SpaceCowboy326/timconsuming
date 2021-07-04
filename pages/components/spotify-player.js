@@ -7,9 +7,8 @@ import WebPlayer from '../lib/spotify/web-player';
 // import PlaylistLib from '../lib/playlist';
 import search from '../lib/spotify/search';
 
-import { IconButton, Button, Typography, Paper } from '@material-ui/core';
+import { IconButton, Button, Typography, Paper, Grid } from '@material-ui/core';
 
-const Playlist = PlaylistLib.Playlist;
 
 // import { PlayCircleOutlined, PauseCircleOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons';
 
@@ -20,18 +19,6 @@ import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious } from '@mat
 
 function SpotifyPlayer({player, playlist, token}) {
     const [playing, setPlaying] = useState(false);
-    // const [currentSong, setCurrentSong] = useState(playlist.getNextSong());
-    // should be an ArtistData object.
-    const [currentArtistData, setCurrentArtistData] = useState(playlist.getNextArtist());
-    // const { artist_search_data, is_loading, is_error } = search.useArtistSearch(currentArtistData.requiresFetch() ? currentArtistData : null, token);
-    // if ( !is_loading && artist_search_data ) {
-    //     console.log("Artist Search Data is", artist_search_data);
-    //     track.artist_info
-    // }
-console.log("My artistData looks like this", currentArtistData);
-    if (artist_search_data && !currentArtistData.spotifyData) {
-        currentArtistData.spotifyData = artist_search_data;
-    }
     const current_track = null;
     const togglePlaying = () => {
         setPlaying(!playing);
@@ -52,20 +39,23 @@ console.log("My artistData looks like this", currentArtistData);
     };
 
     return <div>
-        {/* <Row justify="space-around" align="middle">
-            <TrackDisplay track={current_track}></TrackDisplay>
-        </Row> */}
-        <Row justify="space-around" align="middle">
-            <Col>
-                <Button type="primary" shape="circle" onClick={handlePreviousClick} icon={<SkipPrevious />} />
-            </Col>
-            <Col>
-                <Button type="primary" onClick={togglePlaying} shape="circle" icon={ playing ? <PlayCircleFilled /> : <PauseCircleFilled /> } />
-            </Col>
-            <Col>
-                <Button type="primary" shape="circle" onClick={handleNextClick} icon={<SkipNext />} />
-            </Col>
-        </Row>
+        <Grid container spacing={3}>
+            <Grid item xs>
+                <IconButton onClick={handlePreviousClick}>
+                    <SkipPrevious/>
+                </IconButton>
+            </Grid>
+            <Grid item xs>
+                <IconButton onClick={togglePlaying}>
+                    {playing ? <PlayCircleFilled/> : <PauseCircleFilled/>}
+                </IconButton>
+            </Grid>
+            <Grid item xs>
+                <IconButton onClick={handleNextClick}>
+                    <SkipNext/>
+                </IconButton>
+            </Grid>
+        </Grid>
     </div>
 
 }

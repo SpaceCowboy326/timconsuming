@@ -5,10 +5,20 @@
 // const cookieParser = require('cookie-parser');
 // const request = require('request'); // "Request" library
 // var cors = require('cors');
+const querystring = require('querystring');
 
-
-const SPOTIFY_SECRET = auth.SPOTIFY_SECRET;
-const SPOTIFY_CLIENT_ID = auth.SPOTIFY_CLIENT_ID;
+const scope_collection = [
+    'user-read-private',
+    'user-read-email',
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'user-read-currently-playing',
+    'user-top-read',
+    'streaming',
+];
+  
+const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 
 const PORT = '3000';
 const REDIRECT_URI = `http://localhost:3000/listening`;
@@ -29,6 +39,8 @@ const generateRandomString = length => {
 };
 
 export default (req, res) => {
+    // console.log("Process.env?", process.env);
+    // console.log("Process.env client id", process.env.SPOTIFY_CLIENT_ID);
     const state = generateRandomString(16);
     // res.cookie(COOKIE_STATE_KEY, state);
     // your application requests authorization
@@ -39,7 +51,7 @@ export default (req, res) => {
         querystring.stringify({
             response_type: 'code',
             client_id: process.env.SPOTIFY_CLIENT_ID,
-            scope: auth.getScope(),
+            scope: scope_collection.join(' '),
             redirect_uri: REDIRECT_URI,
             state: state
         }));

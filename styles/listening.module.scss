@@ -1,26 +1,84 @@
-.listening {
+@import './colors.module.scss';
+
+.drinking {
     // background: url('/solomon.jpg') no-repeat center center fixed;
     // box-shadow: 0 0 8px 8px white inset;
     display: flex;
-    justify-content: center;
     flex-flow: row wrap;
+    justify-content: center;
+    min-height: 50vh;
     width: 100%;
 }
 
 .sectionTitle {
-    flex: 0 1 100%;
+    background-color: rgb(32, 82, 107) !important;
+    border-radius: 4px;
+    color: $background-color !important;
+    // flex: 0 1 100%;
+    padding: 5px 12px;
+    transition: color 0.5s linear;
 }
 
+.requiresLoginPaperContainer {
+    align-items: center;
+    background-color: $primary-color !important;
+    display: flex;
+    height: 28em;
+    justify-content: center;
+    margin-bottom: 3em;
+    width: 98vw;
+    padding: 20px;
+}
+
+.requiresLoginPaper {
+    align-items: center;
+    display: flex;
+    flex-flow: column;
+    height: 16em;
+    justify-content: center;
+    margin-top: 50px;
+    width: 40em;
+}
+
+
 .sectionContainer {
-    margin: 2em 0 0 0;
+    // background-color: $primary-color !important;
+    background-color: rgb(78, 118, 147) !important;
+    background-color: rgb(32, 82, 107) !important;
+
+    color: $background-color !important;
+    margin: 0 0 2em 0;
     padding: 25px;
+    // -webkit-text-stroke-width: 0.5px;
+    // -webkit-text-stroke-color: black;//darken($secondary-color, 7%);
 
     &:hover .sectionTitle {
-        color: white;
+        color: $primary-text;
     }
 }
 
 .sectionContent {
     flex: 0 1 90%;
+    margin-top: 10px;
     width: 93vw;
 }
+
+.spotifyLoginButton {
+    margin-top: 30px !important;
+    color: $background-color !important;
+    border: 1px solid white !important;
+    background-color: rgb(32, 82, 107) !important;
+    // background-color: lighten($secondary-color, 25%) !important;
+}
+
+.spotifyLoginButtonLabel:not(.MuiButton-startIcon) {
+    text-decoration: underline 0.15em rgba(255, 255, 255, 0);
+    // text-underline-offset: 0.2em;
+    transition: text-decoration-color 750ms;
+      
+      &:hover {
+        text-decoration-color: rgba(255, 255, 255, 1);
+        // text-underline-offset: 0.4em;
+      }
+}
+

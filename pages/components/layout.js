@@ -79,15 +79,6 @@ const theme = createMuiTheme({
 
 const SpotifyAuthContext = React.createContext({access_token: null, refresh_token: null});
 export {SpotifyAuthContext};
-// const SpotifyAuthProvider = ({children}) => {
-
-//     return (
-//         <SpotifyAuthContext.Provider value={{}}
-//     )
-// };
-
-
-// const slideDirection = 'left';
 
 const Layout = ({
     access_token,
@@ -118,7 +109,6 @@ console.log("transition?", transition);
 
 
         return () => clearTimeout(navTimer);
-        
     };
 
     // Create navItem list
@@ -188,17 +178,17 @@ console.log("transition?", transition);
                             </Slide>
                     </div>
                     <Fade in={transition} timeout={footerFadeDuration}>
-                    <footer className={styles.footer}>
-                        <Paper elevation={3} classes={{root: styles.footerPaper}}>
-                            <div>
-                                <Typography variant="body2">
-                                    Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
-                                    &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-                                </Typography>
-                            </div>
-                        </Paper>
-                        {/* <Link href="/drinking">who the hell is Tim?</Link> */}
-                    </footer>
+                        <footer className={styles.footer}>
+                            <Paper elevation={3} classes={{root: styles.footerPaper}}>
+                                <div>
+                                    <Typography variant="body2">
+                                        Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
+                                        &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                                    </Typography>
+                                </div>
+                            </Paper>
+                            {/* <Link href="/drinking">who the hell is Tim?</Link> */}
+                        </footer>
                     </Fade>
                 </div>
             {/* </SpotifyAuthContext.Provider> */}
