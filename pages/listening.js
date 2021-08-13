@@ -68,9 +68,11 @@ export default function Listening() {
 
 
     useEffect(() => {
+        console.log("gonna set up this web player listener thing");
         // The spotify web player SDK will call this function once the SDK has been initialized
         window.onSpotifyWebPlaybackSDKReady = () => {
-          spotify_player = initializeSpotifyPlayer({accessToken});
+        console.log("Initializing player!");
+          spotify_player = initializeSpotifyPlayer({accessToken: access_token});
         }
     }, []);
 

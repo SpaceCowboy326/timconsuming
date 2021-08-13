@@ -6,6 +6,7 @@ import { Button, Typography, Paper } from '@material-ui/core';
 import {items} from './data/drinking.json';
 import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
+import { connectToDatabase } from '../lib/mongodb'
 
 
 
@@ -41,3 +42,19 @@ export default function Drinking() {
             
     );
 }
+
+
+export async function getServerSideProps(context) {
+    // const { client } = await connectToDatabase()
+    const {client, db} = await connectToDatabase();
+    const collection = db.collection('items');
+    const items = await collection.find({}).toArray();
+    console.log("Collection is", collection);
+    console.log("But items is items", items);
+    const isConnected = false;// await client.isConnected()
+
+    return {
+      props: { isConnected },
+    }
+  }
+  

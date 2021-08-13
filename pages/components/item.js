@@ -93,25 +93,3 @@ export default function Item({data, displayBackdrop, backdropShown}) {
 
     </Card>);
 };
-
-
-/*
-<CardContent>
-            <Typography className={styles.title} color="textSecondary" gutterBottom>
-                {data.name}
-                <OpenInNewRoundedIcon className={styles.expandIcon} />
-            </Typography>
-
-            <Typography className={styles.pos} color="textSecondary">
-                {data.source}
-            </Typography>
-            <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-            </Typography>
-        </CardContent>
-        <CardActions>
-            <Button onClick={toggleExpanded} color="secondary" variant="contained" size="small">Learn More</Button>
-        </CardActions>
-*/

@@ -144,14 +144,15 @@ console.log("transition?", transition);
             {/* <SpotifyAuthContext.Provider value={{access_token, refresh_token}}> */}
                 <div className={styles.container}>
                     <Head>
-                    <title>TimConsuming</title>
-                    <link rel="icon" href="/favicon.ico" />
-                    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-                    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Noto+Sans+SC:wght@400;500&family=Zen+Dots&display=swap" rel="stylesheet" />
+                        <title>TimConsuming</title>
+                        <link rel="icon" href="/favicon.ico" />
+                        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+                        <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Noto+Sans+SC:wght@400;500&family=Zen+Dots&display=swap" rel="stylesheet" />
 
-                    <link rel="preconnect" href="https://fonts.gstatic.com"/>
-                    <link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda&family=Bungee+Shade&family=EB+Garamond&family=Prata&display=swap" rel="stylesheet"/>
-                    <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Monoton&display=swap" rel="stylesheet"></link>
+                        <link rel="preconnect" href="https://fonts.gstatic.com"/>
+                        <link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda&family=Bungee+Shade&family=EB+Garamond&family=Prata&display=swap" rel="stylesheet"/>
+                        <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Monoton&display=swap" rel="stylesheet"></link>
+                        <script src="https://sdk.scdn.co/spotify-player.js"></script>
                     </Head>
                     <div className={styles.main}>
                             {/* <Paper className={styles.headerPaper} elevation={2}> */}
