@@ -157,6 +157,7 @@ console.log("transition?", transition);
                     <div className={styles.main}>
                             {/* <Paper className={styles.headerPaper} elevation={2}> */}
                                 <div color="primary" className={styles.pageTitle}>
+                                    <div className={styles.pageTitleContainer}>
                                         <div className={styles.pageTitlePrefixContainer}>
                                             <Typography className={styles.pageTitlePrefix} variant="h3">
                                                 What is Tim
@@ -169,6 +170,7 @@ console.log("transition?", transition);
                                                 </Typography>
                                             </Fade>
                                         </div>
+                                    </div>
                                 </div>
                                 {nav}
                             {/* </Paper> */}

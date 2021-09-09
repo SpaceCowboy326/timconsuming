@@ -43,12 +43,12 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     }
 
     &.item__expanded {
-        height: 30em;
+        height: 75vh;
         position: fixed;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 25em;
+        width: 65vw;
         z-index: 1001;
     }
 }
