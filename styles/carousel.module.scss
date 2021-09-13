@@ -1,15 +1,19 @@
 @import './colors.module.scss';
 
+$item-height: 200px;
+// $item-width: 200px;
+$item-width: 18rem;
 .item {
     border: 1px solid black;
-    height: 200px;
-    width: 200px;
+    height: $item-height;
+    width: $item-width;
 }
 
 .outerContainer {
     border-top: 2px solid rgb(177, 173, 173, 0);
     border-bottom: 2px solid rgb(177, 173, 173, 0);
     display: flex;
+    min-width: $item-width;
     position: relative;
     transition: border-color 0.5s linear;
 
@@ -71,6 +75,7 @@
     box-sizing: border-box;
     cursor: grab;
     flex: 1 1;
+    min-width: $item-width;
     overflow: hidden;
     padding: 20px 15px;
     position: relative;

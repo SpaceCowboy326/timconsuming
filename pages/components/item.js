@@ -72,15 +72,25 @@ export default function Item({data, displayBackdrop, backdropShown}) {
             }
         </div>
 
-        <div className={styles.itemTitle}>
-            <Typography variant="body2" className={styles.title} gutterBottom>
-                {data.name}
-            </Typography>
+        <div className={styles.itemTitleContainer}>
+                <Typography variant="h5" className={styles.itemTitleLabel} gutterBottom>
+                    Name: 
+                </Typography>
+            <div className={styles.itemTitle}>
+                <Typography variant="body2" className={styles.itemTitle} gutterBottom>
+                    {data.name}
+                </Typography>
+            </div>
         </div>
 
-        <Typography className={styles.source} color="textSecondary">
-            {data.source}
-        </Typography>
+        <div className={styles.sourceContainer}>
+            <Typography variant="h5" className={styles.sourceLabel} gutterBottom color="textSecondary">
+                Source: 
+            </Typography>
+            <Typography className={styles.source} color="textSecondary">
+                {data.source}
+            </Typography>
+        </div>
         <div className={styles.buttonRow}>
             <div className={styles.actionButtonContainer}>
                 <Button
@@ -110,7 +120,7 @@ export default function Item({data, displayBackdrop, backdropShown}) {
 
     
     return (<Card className={itemClassName} variant="outlined">
-        {itemContent}
+        {defaultItemContent}
         {/* <div className={styles.itemContent}>
             <div className={styles.itemImage}>
                 {

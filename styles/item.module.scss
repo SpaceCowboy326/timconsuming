@@ -15,8 +15,8 @@ $item-height: 22rem;
 $item-width: 18rem;
 $item-padding: 0.5rem;
 
-$item-columns: 6;
-$item-rows: 9;
+$item-columns: 12;
+$item-rows: 16;
 
 $item-column-size: ($item-width - ($item-padding * 2)) / $item-columns;
 $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
@@ -44,47 +44,101 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 
     &.item__expanded {
         height: 75vh;
+		padding: 1rem;
         position: fixed;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 65vw;
+        width: 45vw;
         z-index: 1001;
     }
 }
 
 .itemContent {
     display: grid;
-    grid-template-columns: repeat($item-columns, $item-column-size);
-    grid-template-rows: repeat($item-rows, $item-row-size);
+    grid-template-columns: repeat($item-columns, 1fr);
+    grid-template-rows: repeat($item-rows, 1fr);
+
     height: 100%;
     width: 100%;
 }
 
 .itemImage {
-    grid-column-start: 1;
-    grid-column-end: 7;
+    grid-column: 1 / span $item-columns;
     grid-row-start: 1;
-    grid-row-end: 7;
+    grid-row-end: 9;
     position: relative;
+}
 
+
+.itemTitleContainer {
+    display: flex;
+    grid-column: 1 / span $item-columns;
 }
 
 .itemTitle {
     align-items: center;
     display: flex;
-    grid-column: 1 / span $item-columns;
-    // overflow: hidden;
+    transition: font-size 1s;
+}
+
+.itemTitleLabel {
+    display: flex;
+    font-size: 22px;
+    max-width: 0;
+    opacity: 0;
+}
+
+.item__expanded {
+    .itemTitle {
+        font-size: 22px;
+    }
+
+    .itemTitleLabel {
+        animation: grow-fade ease 2s;
+        margin-right: 15px;
+        max-width: 200px;
+        opacity: 1;
+    }
+
+    .source {
+        font-size: 22px;
+    }
+
+    .sourceLabel {
+        animation: grow-fade ease 2s;
+        margin-right: 15px;
+        max-width: 200px;
+        opacity: 1;
+    }
 
 }
 
-
-.source {
-    align-items: center;
+.sourceContainer {
     display: flex;
     grid-column: 1 / span $item-columns;
 }
 
+.sourceLabel {
+    display: flex;
+    font-size: 22px;
+    max-width: 0;
+    opacity: 0;
+}
+
+.source {
+    align-items: center;
+    display: flex;
+    // grid-column: 1 / span $item-columns;
+	transition: font-size 1s;
+}
+
+
+@keyframes grow-fade {
+    0% {max-width: 0;opacity: 0;margin-right: 0;}
+    50% {max-width: 200px;opacity: 0;}
+    100% {opacity: 1;margin-right: 15px;}
+}
 
 .media {
     height: 0;
@@ -95,6 +149,7 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     // align-items: flex-end;
     align-items: center;
     display: flex;
+    grid-row-start: $item-rows;
     grid-column: 1 / span $item-columns;
     
 }
