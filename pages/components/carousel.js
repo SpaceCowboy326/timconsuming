@@ -102,6 +102,7 @@ export default function Carousel({items}) {
 
 
     return (<div className={styles.outerContainer}>
+        <div className={styles.fadedEdgeLeft}></div>
         <div className={`${styles.scrollContainer} ${styles.leftScrollContainer}`}>
             {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
             <div onClick={() => scroll(true)} className={styles.icon}>
@@ -123,5 +124,6 @@ export default function Carousel({items}) {
                 <div className={styles.arrow2}></div>
             </div>
         </div>
+        <div className={styles.fadedEdgeRight}></div>
     </div>);
 };

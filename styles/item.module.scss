@@ -11,15 +11,17 @@
 
 
 
-$item-height: 22rem;
+$item-height: 18rem;
 $item-width: 18rem;
+// $item-width: 18vw;
 $item-padding: 0.5rem;
 
 $item-columns: 12;
-$item-rows: 16;
+$item-rows: 10;
+$item-rows-expanded: 16;
 
-$item-column-size: ($item-width - ($item-padding * 2)) / $item-columns;
-$item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
+// $item-column-size: ($item-width - ($item-padding * 2)) / $item-columns;
+// $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 
 .item {
     // scroll-snap-align: center;
@@ -31,7 +33,8 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     height: $item-height;
     padding: $item-padding;
     width: $item-width;
-    
+    // transition: width 2s, height 2s, background-color 2s, transform 2s;
+    transition: all 2s;
 
     &:hover {
         .title {
@@ -43,8 +46,10 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     }
 
     &.item__expanded {
+        // background-color: $primary-color-dark;
         height: 75vh;
-		padding: 1rem;
+        // grid-template-rows: repeat($item-rows-expanded, 1fr);
+        padding: 2rem;
         position: fixed;
         left: 50%;
         top: 50%;
@@ -58,9 +63,22 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     display: grid;
     grid-template-columns: repeat($item-columns, 1fr);
     grid-template-rows: repeat($item-rows, 1fr);
-
     height: 100%;
     width: 100%;
+}
+
+.itemDescription {
+    display: none;
+    grid-column: 1 / span $item-columns;
+    // grid-row: auto / span 2;
+    // max-height: 0;
+    opacity: 0;
+    transition: max-height 2s, opacity 2s;
+}
+
+.description {
+    font-size: 12px;
+    padding: 10px 20px;
 }
 
 .itemImage {
@@ -74,12 +92,16 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 .itemTitleContainer {
     display: flex;
     grid-column: 1 / span $item-columns;
+    padding-top: 0;
+    transition: all 2;
 }
 
 .itemTitle {
-    align-items: center;
-    display: flex;
+    font-size: 14;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     transition: font-size 1s;
+    overflow: hidden;
 }
 
 .itemTitleLabel {
@@ -91,25 +113,58 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 
 .item__expanded {
     .itemTitle {
-        font-size: 22px;
+        font-size: 24px;
+        white-space: unset;
+        text-overflow:unset;
+        // overflow:
+ 
     }
 
     .itemTitleLabel {
-        animation: grow-fade ease 2s;
+        animation: grow-fade ease-in 0.5s;
         margin-right: 15px;
         max-width: 200px;
         opacity: 1;
     }
 
     .source {
-        font-size: 22px;
+        font-size: 28px;
+        transform: translateY(-5px);
     }
 
     .sourceLabel {
-        animation: grow-fade ease 2s;
+        animation: grow-fade ease-in 0.5s;
         margin-right: 15px;
         max-width: 200px;
         opacity: 1;
+    }
+
+    .itemDescription {
+        display: block;
+        opacity: 1;
+    }
+
+
+    .actionButton {
+        font-size: 24px;
+        // width: 60%;
+        // padding: 10px 15px;
+    }
+
+    .buttonRow {
+        // grid-row: auto / span 2;
+    }
+
+    .itemImage {
+        grid-row-end: 6;
+    }
+
+    .itemTitleContainer {
+        padding-top: 15px;
+    }
+
+    .itemContent {
+        // background-color: $primary-color-light;
     }
 
 }
@@ -127,7 +182,7 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 }
 
 .source {
-    align-items: center;
+    // align-items: center;
     display: flex;
     // grid-column: 1 / span $item-columns;
 	transition: font-size 1s;
@@ -135,9 +190,10 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 
 
 @keyframes grow-fade {
-    0% {max-width: 0;opacity: 0;margin-right: 0;}
-    50% {max-width: 200px;opacity: 0;}
-    100% {opacity: 1;margin-right: 15px;}
+    0% {max-width: 0;opacity: 0;margin-right: 0;opacity: 0}
+    // 25% {opacity: 0;}
+    50% {max-width: 300px;margin-right: 15px;}
+    100% {opacity: 1;}
 }
 
 .media {
@@ -149,7 +205,7 @@ $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
     // align-items: flex-end;
     align-items: center;
     display: flex;
-    grid-row-start: $item-rows;
+    grid-row-start: $item-rows + 1;
     grid-column: 1 / span $item-columns;
     
 }

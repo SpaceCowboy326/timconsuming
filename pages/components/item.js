@@ -51,6 +51,8 @@ export default function Item({data, displayBackdrop, backdropShown}) {
         setExpanded(false);
     };
 
+    const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
+
     const defaultItemContent = <div className={styles.itemContent}>
         <div className={styles.itemImage}>
             {
@@ -71,7 +73,7 @@ export default function Item({data, displayBackdrop, backdropShown}) {
                 />
             }
         </div>
-
+        
         <div className={styles.itemTitleContainer}>
                 <Typography variant="h5" className={styles.itemTitleLabel} gutterBottom>
                     Name: 
@@ -91,6 +93,14 @@ export default function Item({data, displayBackdrop, backdropShown}) {
                 {data.source}
             </Typography>
         </div>
+        <div className={styles.itemDescription}>
+            <Typography variant="h5" styles={{display: 'block'}} className={styles.sourceLabel} gutterBottom color="textSecondary">
+                Description: 
+            </Typography>
+            <Typography variation="body1" classes={ {body1: styles.description} }>
+                I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
+            </Typography>
+        </div>
         <div className={styles.buttonRow}>
             <div className={styles.actionButtonContainer}>
                 <Button
@@ -100,7 +110,7 @@ export default function Item({data, displayBackdrop, backdropShown}) {
                     className={styles.actionButton}
                     variant="contained"
                 >
-                    Tell Me More
+                    {buttonText}
                 </Button>
             </div>
         </div>
