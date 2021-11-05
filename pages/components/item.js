@@ -17,11 +17,6 @@ const getStandardContent = (data) => {
 };
 
 export default function Item({data, displayBackdrop, backdropShown}) {
-    const [count, setCount] = useState(0);
-    const [dragStartPageX, setDragStartPageX] = useState(0);
-    const [dragStartScrollX, setDragStartScrollX] = useState(0);
-    const [scrollX, setScrollX] = useState(0);
-    const [addRemoveMouseUpListener, setAddRemoveMouseUpListener] = useState(false);
     const [expanded, setExpanded] = useState(false);
 
     const containerRef = useRef(null)
@@ -39,17 +34,38 @@ export default function Item({data, displayBackdrop, backdropShown}) {
     if (expanded) {
         itemClasses.push(styles.item__expanded);
     }
+    else {
+        itemClasses.push(styles.item__normal);
+    }
     const itemClassName = itemClasses.join(" ");
     const toggleExpanded = e => {
         console.log(`Setting expanded to ${!expanded}`);
         const new_state = !expanded;
         displayBackdrop({val: new_state, clickCallback: (e) => setExpanded(false)});
+        animateExpand();
         setExpanded(new_state);
     };
 
     const handleClose = () => {
         setExpanded(false);
     };
+
+    //TODO - probably don't keep this
+    const createManualMoveAnimation = ({to, from}) => {
+        // containerRef.current.
+    };
+
+    const animateExpand = () => {
+        // const {offsetTop, offsetLeft} = containerRef.current;
+        const client_rect = containerRef.current.getBoundingClientRect();
+        containerRef.current.classList.add(styles.item__expanded);
+        console.log({client_rect});
+
+        const client_rect_fixed = containerRef.current.getBoundingClientRect();
+        console.log({client_rect_fixed});
+
+        // const 
+    }
 
     const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
 
@@ -73,23 +89,20 @@ export default function Item({data, displayBackdrop, backdropShown}) {
                 />
             }
         </div>
-        
         <div className={styles.itemTitleContainer}>
-                <Typography variant="h5" className={styles.itemTitleLabel} gutterBottom>
-                    Name: 
-                </Typography>
-            <div className={styles.itemTitle}>
-                <Typography variant="body2" className={styles.itemTitle} gutterBottom>
-                    {data.name}
-                </Typography>
-            </div>
+            <Typography variant="h5" className={styles.itemTitleLabel} color="textSecondary">
+                Name: 
+            </Typography>
+            <Typography className={styles.itemTitle}>
+                {data.name}
+            </Typography>
         </div>
 
         <div className={styles.sourceContainer}>
-            <Typography variant="h5" className={styles.sourceLabel} gutterBottom color="textSecondary">
+            <Typography variant="h5" className={styles.sourceLabel} color="textSecondary">
                 Source: 
             </Typography>
-            <Typography className={styles.source} color="textSecondary">
+            <Typography className={styles.source} >
                 {data.source}
             </Typography>
         </div>
@@ -98,6 +111,8 @@ export default function Item({data, displayBackdrop, backdropShown}) {
                 Description: 
             </Typography>
             <Typography variation="body1" classes={ {body1: styles.description} }>
+                I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
+
                 I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
             </Typography>
         </div>
@@ -129,51 +144,11 @@ export default function Item({data, displayBackdrop, backdropShown}) {
     }
 
     
-    return (<Card className={itemClassName} variant="outlined">
-        {defaultItemContent}
-        {/* <div className={styles.itemContent}>
-            <div className={styles.itemImage}>
-                {
-                    data.imageUrl &&
-                        // <CardMedia
-                        //     className={styles.media}
-                        //     image={data.imageUrl}
-                        //     title="Paella dish"
-                        
-                        // ></CardMedia>
-                    <Image
-                        layout="fill"
-                        objectFit="cover"
-                        objectPosition={data.objectPosition}
-                        // height={300}
-                        // width={200}
-                        src={data.imageUrl}
-                    />
-                }
-            </div>
-
-            <div className={styles.itemTitle}>
-                <Typography variant="body2" className={styles.title} gutterBottom>
-                    {data.name}
-                </Typography>
-            </div>
-
-            <Typography className={styles.source} color="textSecondary">
-                {data.source}
-            </Typography>
-            <div className={styles.buttonRow}>
-                <div className={styles.actionButtonContainer}>
-                    <Button
-                        classes={{root: styles.actionButton, label: styles.actionButtonLabel}}
-                        fullWidth={true}
-                        onClick={toggleExpanded}
-                        className={styles.actionButton}
-                        variant="contained"
-                    >
-                        Tell Me More
-                    </Button>
-                </div>
-            </div>
-        </div> */}
-    </Card>);
+    return (
+        <div className={styles.itemContainer}>
+            <Card className={itemClassName} variant="outlined" ref={containerRef}>
+                {defaultItemContent}
+            </Card>
+        </div>
+    );
 };

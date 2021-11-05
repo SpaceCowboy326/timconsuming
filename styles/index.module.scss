@@ -1,13 +1,17 @@
 @import './colors.module.scss';
 
 .container {
+    background-color: $background-color;
     display: flex;
     flex-flow: row wrap;
+    height: 100vh;
     justify-content: center;
 }
 
 .contentContainer {
     background-color: $background-color;
+    // height: 100%;
+
     width: 100%;
 }
 
@@ -163,10 +167,7 @@
 
 .main {
     background-color: $background-color;
-    display: flex;
     justify-content: center;
-    flex-flow: row wrap;
-    min-height: 50vh;
     width: 100%;
 }
 

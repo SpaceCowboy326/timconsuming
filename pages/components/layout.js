@@ -4,10 +4,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 // import auth from './lib/spotify/auth';
 import auth from '../lib/spotify/auth'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, createTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect, useContext } from 'react';
 // import styles from '../styles/Home.module.css'
 import { Button, Backdrop, Typography, Fade, Paper, Box, Slide } from '@material-ui/core';
+
+// import avenirNextFont from '../../public/AvenirNextLTPro-Regular.otf';
 
 
 import styles from '../../styles/index.module.scss';
@@ -54,7 +56,16 @@ const getNavItemClasses = ({pageName, selectedPage, previous, transition}) => {
     return navItemClasses.join(" ");
 }
 
-const theme = createMuiTheme({
+// const bodyFont = "'Monoton', cursive"; NOPE
+// const bodyFont = "'Prata', serif"; NOPE
+// const bodyFont = "'EB Garamond', serif"; prolly not
+// const bodyFont = "'Amatic SC', cursive;"; NOPE
+
+// const bodyFont = "'Roboto'";
+const bodyFont = "'Noto Sans SC', sans-serif;";
+// const bodyFont = "'Rubik', sans-serif;";
+// const bodyFont = avenirNextFont;
+const theme = createTheme({
     typography: {
         // fontFamily: "'Rubik', sans-serif;", 
         // fontFamily: "'Amatic SC', cursive;", 
@@ -65,6 +76,18 @@ const theme = createMuiTheme({
         // fontFamily: "'Noto Sans SC', sans-serif;",
         // fontFamily: "'Monoton', cursive",
         fontFamily: "'Bungee', cursive",
+        h5: {
+            lineHeight: '.8',
+        },
+        body1: {
+            // fontFamily: "'Roboto'",
+            fontFamily: bodyFont,
+            fontWeight: 600,
+        },
+        body2: {
+            // fontFamily: "'Roboto'",
+            fontFamily: bodyFont,
+        },
     },
     palette: {
         // type: "dark",

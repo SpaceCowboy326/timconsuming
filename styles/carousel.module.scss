@@ -64,7 +64,7 @@ $item-width: 18rem;
     left: 40px;
     position: absolute;
     width: 75px;
-    z-index: 9999999999;
+    z-index: 999;
     transition: opacity 1s;
 }
 
@@ -74,7 +74,7 @@ $item-width: 18rem;
     right: 40px;
     position: absolute;
     width: 75px;
-    z-index: 9999999999;
+    z-index: 999;
     transition: opacity 1s;
 
 }
