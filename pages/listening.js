@@ -55,7 +55,7 @@ const initializeSpotifyPlayer = ({accessToken}) => {
     // Connect to the player!
     player.connect();
     return player;
-  }
+}
 
 
 let spotify_player;
@@ -122,9 +122,7 @@ export default function Listening() {
     const requiresLoginContent = <Paper elevation={2} classes={{root: `${styles.requiresLoginPaperContainer}`}}>
         <Paper elevation={5} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
             <Typography className={`${styles.sectionTitle} ${styles.requiresLoginText}`} color="textSecondary" variant={'h5'}>Why look when you can listen?</Typography>
-            {/* <div className={styles.sectionContent}> */}
                 <Button
-                    // variant="contained"
                     variant="outlined"
                     size="large"
                     onClick={spotifyLoginRedirect}
@@ -133,7 +131,6 @@ export default function Listening() {
                 >
                     Login to Spotify
                 </Button>
-            {/* </div> */}
         </Paper>
     </Paper>;
 
@@ -144,7 +141,7 @@ export default function Listening() {
                 <Carousel items={trackItems} showBackdrop={showBackdrop} />
             </div>
         </Paper>
-        <Paper elevation={3} classes={{root: styles.sectionContainer}}>
+        <Paper elevation={3} classes={{root: styles.playerContainer}}>
             {spotify_player_component}
         </Paper>
     </div>;

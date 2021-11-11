@@ -16,7 +16,8 @@ import styles from '../../styles/index.module.scss';
 const selected_class = `${styles.navItem} ${styles.selectedItem}`;
 const previously_selected_class = `${styles.navItem} ${styles.previousSelectedItem}`;
 // const fadeAnimationDuration = 1250;
-const fadeAnimationDuration = 750;
+// const fadeAnimationDuration = 750;
+const fadeAnimationDuration = 1250;
 
 const navImages = {
     drinking: '/images/002-alcohol.svg',
@@ -197,11 +198,14 @@ console.log("transition?", transition);
                                 </div>
                                 {nav}
                             {/* </Paper> */}
-                            <Slide direction={slideDirection} in={transition} timeout={fadeAnimationDuration}>
+                            {/* <Slide direction={slideDirection} in={transition} timeout={fadeAnimationDuration}> */}
+                            <Fade  in={transition} timeout={fadeAnimationDuration}>
+
                                 <div className={styles.contentContainer}>
                                     {children}
                                 </div>
-                            </Slide>
+                            {/* </Slide> */}
+                            </Fade>
                     </div>
                     <Fade in={transition} timeout={footerFadeDuration}>
                         <footer className={styles.footer}>

@@ -42,7 +42,6 @@ export default function Item({data, displayBackdrop, backdropShown}) {
         console.log(`Setting expanded to ${!expanded}`);
         const new_state = !expanded;
         displayBackdrop({val: new_state, clickCallback: (e) => setExpanded(false)});
-        animateExpand();
         setExpanded(new_state);
     };
 
@@ -50,22 +49,11 @@ export default function Item({data, displayBackdrop, backdropShown}) {
         setExpanded(false);
     };
 
-    //TODO - probably don't keep this
-    const createManualMoveAnimation = ({to, from}) => {
-        // containerRef.current.
-    };
-
-    const animateExpand = () => {
-        // const {offsetTop, offsetLeft} = containerRef.current;
-        const client_rect = containerRef.current.getBoundingClientRect();
-        containerRef.current.classList.add(styles.item__expanded);
-        console.log({client_rect});
-
-        const client_rect_fixed = containerRef.current.getBoundingClientRect();
-        console.log({client_rect_fixed});
-
-        // const 
-    }
+    // const animateExpand = () => {
+    //     const client_rect = containerRef.current.getBoundingClientRect();
+    //     containerRef.current.classList.add(styles.item__expanded);
+    //     console.log({client_rect})
+    // }
 
     const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
 
@@ -73,18 +61,10 @@ export default function Item({data, displayBackdrop, backdropShown}) {
         <div className={styles.itemImage}>
             {
                 data.imageUrl &&
-                    // <CardMedia
-                    //     className={styles.media}
-                    //     image={data.imageUrl}
-                    //     title="Paella dish"
-                    
-                    // ></CardMedia>
                 <Image
                     layout="fill"
                     objectFit="cover"
                     objectPosition={data.objectPosition}
-                    // height={300}
-                    // width={200}
                     src={data.imageUrl}
                 />
             }

@@ -2,20 +2,17 @@
 
 .title {
     color: $secondary-text;
-    // font-size: 14;
-    transition: color 0.5s linear;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     overflow: hidden;
+    transition: color 0.5s linear;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 };
 
-
-
-$item-height: 19em;
+$item-height: 21em;
 $item-width: 19em;
 
 $expanded-item-height: 50em;
-$expanded-item-width: 50em;
+$expanded-item-width: 52em;
 // $item-width: 18vw;
 $item-padding: 0.5em;
 
@@ -24,53 +21,38 @@ $item-rows: 10;
 $item-rows-expanded: 16;
 
 $expand-animation-duration: .25s;
-// $item-column-size: ($item-width - ($item-padding * 2)) / $item-columns;
-// $item-row-size: ($item-height - ($item-padding * 2)) / $item-rows;
 
 // TODO - do something cleaner for this. I don't even know what "+ 5" technically does.
 .itemContainer {
-    height: $item-height + 5;
-    // max-height: $item-height;
-    width: $item-width + 5;
+    height: $item-height;
+    width: $item-width;
 }
 
 .item {
-    // scroll-snap-align: center;
-    // &.MuiCard-root {
-    //     background-color: $background-color;
-    // }
     height: $item-height;
     max-height: $item-height;
     width: $item-width;
-    // border-color: $secondary-color-dark;
-    font-size: 1.25em;
     padding: $item-padding;
-    // transition: width 2s, height 2s, background-color 2s, transform 2s;
-    // transition: width 5s, max-height 5s;
-    // transition: all $expand-animation-duration;
 
-    // Only placed under .item to give this class precedence over default MUI class.
+    // TODO: Only placed under .item to give this class precedence over default MUI class.
     .itemTitle {
-        display: flex;
+        display: inline-block;
         font-size: max(1em, 14px);
-        max-width: 16em;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        // transition: font-size $expand-animation-duration;
-        transition: font-size $expand-animation-duration;
+        max-width: 14em;
+        // max-width: 150px;
         overflow: hidden;
+        text-overflow: ellipsis;
+        transition: font-size $expand-animation-duration;
+        white-space: nowrap;
     }
 
-    // Only placed under .item to give this class precedence over default MUI class.
+    // TODO: Only placed under .item to give this class precedence over default MUI class.
     .source {
-        // align-items: center;
         color: $secondary-text;
         display: flex;
         font-size: max(1em, 16px);
-        // grid-column: 1 / span $item-columns;
         transition: font-size $expand-animation-duration, color $expand-animation-duration * 3;
     }
-
 
     &:hover {
         .title {
@@ -85,24 +67,12 @@ $expand-animation-duration: .25s;
         visibility: hidden;
     }
 
-    &.item__normal {
-        // animation: minor-shrink ease-out $expand-animation-duration;
-    }
-
     &.item__expanded {
-        // background-color: $primary-color-dark;
-        // height: 75vh;
-        // font-size: 1.5rem;
         height: unset;
-        max-height: unset;
-        // min-height: $expanded-item-height;
-
-        // grid-template-rows: repeat($item-rows-expanded, 1fr);
-        padding: 1.5em 2em 1em 2em;
-        
-        // TODO - bring back?
-        position: fixed;
         left: 50%;
+        max-height: unset;
+        padding: 1.5em 2em 1em 2em;
+        position: fixed;
         top: 50%;
         transform: translate(-50%, -50%);
         width: $expanded-item-width;
@@ -112,17 +82,12 @@ $expand-animation-duration: .25s;
 
 .itemContent {
     display: grid;
-    // grid-template-columns: repeat($item-columns, 1fr);
-    // grid-template-rows: repeat($item-rows, 1fr);
     height: 100%;
     width: 100%;
 }
 
 .itemDescription {
     display: none;
-    // grid-column: 1 / span $item-columns;
-    // grid-row: auto / span 2;
-    // max-height: 0;
     margin-bottom: 1em;
     opacity: 0;
     transition: max-height $expand-animation-duration, opacity $expand-animation-duration;
@@ -131,13 +96,11 @@ $expand-animation-duration: .25s;
 .description {
     font-size: max(1em, 16px) !important;
     font-weight: 400 !important;
-    padding: 5px 20px;
+    // padding: 5px 20px;
+    padding: .25em 1.25em;
 }
 
 .itemImage {
-    // grid-column: 1 / span $item-columns;
-    // grid-row-start: 1;
-    // grid-row-end: 9;
     height: 12em;
     width: 100%;
     position: relative;
@@ -146,15 +109,11 @@ $expand-animation-duration: .25s;
 
 .itemTitleContainer {
     display: flex;
-    // align-content: flex-start;
-    // padding-top: 0;
-    // transition: all $expand-animation-duration;
 }
 
 
 .itemTitleLabel {
     display: none;
-    // font-size: 22px;
     max-width: 0;
     opacity: 0;
 }
@@ -178,16 +137,12 @@ $expand-animation-duration: .25s;
     .itemTitle {
         font-size: 1.75em;
         max-width: 30em;
-        padding-left: 20px;
-        // white-space: unset;
-        // text-overflow:unset;
-        // overflow:
+        // padding-left: 20px;
+        padding-left: .75em;
  
     }
 
     .itemTitleLabel {
-        // animation: grow-fade ease-in $expand-animation-duration;
-        // display: block;
         align-items: center;
         display: flex;
         max-width: 200px;
@@ -197,17 +152,13 @@ $expand-animation-duration: .25s;
     .source {
         color: rgb(0,0,0,0.87);
         font-size: 1.75em;
-        // font-size: 1.5em;
-        padding-left: 20px;
+        padding-left: .75em;
+
     }
 
     .sourceLabel {
-        // animation: grow-fade ease-in $expand-animation-duration;
         align-items: center;
         display: flex;
-        // margin-right: 15px;
-        // margin-top: .5em;
-
         max-width: 200px;
         opacity: 1;
     }
@@ -221,58 +172,21 @@ $expand-animation-duration: .25s;
 
     .actionButtonLabel {
         font-size: 2em;
-        // height: 1.75em;
-        // width: 60%;
-        // padding: 10px 15px;
-    }
-
-    .buttonRow {
-        // grid-row: auto / span 2;
     }
 
     .itemImage {
-        // grid-row-end: 6;
         height: 25em;
     }
 
-    // .itemTitleContainer {
-    //     padding-top: 15px;
-    // }
     .itemTitleContainer {
         height: 3em;
         margin-top: .5em;
-        // margin-top: 1em;
-        // height: 1.75em;
-        // padding-top: 0;
-        // transition: all $expand-animation-duration;
     }
     
     .sourceContainer {
         height: 3em;
-        // margin-top: .5em;
     }
-
-    .itemContent {
-        // background-color: $primary-color-light;
-    }
-
 }
-
-
-
-@keyframes grow-fade {
-    0% {max-width: 0;opacity: 0;margin-right: 0;opacity: 0}
-    // 25% {opacity: 0;}
-    50% {max-width: 300px;margin-right: 15px;}
-    100% {opacity: 1;}
-}
-
-@keyframes minor-shrink {
-    0% {height: $item-height + 2em; width: $item-width + 2em;}
-    // 25% {opacity: 0;}
-    100% {height: $item-height;width: $item-width}
-}
-
 
 .media {
     height: 0;
@@ -280,18 +194,13 @@ $expand-animation-duration: .25s;
 }
 
 .buttonRow {
-    // align-items: flex-end;
     align-items: center;
     display: flex;
-    // grid-row-start: $item-rows + 1;
-    // grid-column: 1 / span $item-columns;
     
 }
 
 .actionButtonContainer {
     display: flex;
-    // height: 1.75rem;
-    // justify-content: center;
     width: 100%;
 }
 
@@ -299,19 +208,12 @@ $expand-animation-duration: .25s;
     background-color: $secondary-color !important;
     color: $background-color !important;
     transition: height $expand-animation-duration;
-    // font-weight: 900 !important;
-    // padding: 0 0px !important;
 }
 
 .actionButtonLabel {
     font-size: 1.3em;
-    // color: black;
-    // -webkit-text-fill-color: white; /* Will override color (regardless of order) */
-    // -webkit-text-stroke-width: 0.5px;
-    // -webkit-text-stroke-color: darken($secondary-color, 15%);
     -webkit-text-stroke-width: 0.2px;
     -webkit-text-stroke-color: black;//darken($secondary-color, 7%);
-    // align-items: baseline;
 }
 
 .expandIcon {

@@ -56,5 +56,4 @@ export default (req, res) => {
             state: state
         }));
 
-
 };

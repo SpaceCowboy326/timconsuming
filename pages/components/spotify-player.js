@@ -6,9 +6,9 @@ import WebPlayer from '../lib/spotify/web-player';
 // import TrackDisplay from './track-display';
 // import PlaylistLib from '../lib/playlist';
 import search from '../lib/spotify/search';
-// import styles from '../styles/spotifyPlayer.module.scss';
+import styles from '../../styles/spotifyPlayer.module.scss';
 //TODO fix
-const styles = {};
+// const styles = {};
 
 
 import { IconButton, Button, Typography, Paper, Grid } from '@material-ui/core';
@@ -51,35 +51,38 @@ function SpotifyPlayer({player, playlist, token}) {
     };
 
     return <div className={styles.spotifyPlayer}>
-        <span>{currentlyPlaying}</span>
-        <div container spacing={3}>
-            <IconButton onClick={handlePreviousClick}>
-                <SkipPrevious/>
-            </IconButton>
-            <IconButton onClick={togglePlaying}>
-                {playing ? <PlayCircleFilled/> : <PauseCircleFilled/>}
-            </IconButton>
-            <IconButton onClick={handleNextClick}>
-                <SkipNext/>
-            </IconButton>
+        <IconButton
+            onClick={handlePreviousClick}
+            className={styles.previousButton}
+            
+        >
+            <SkipPrevious className={styles.playerIcon}/>
+        </IconButton>
+        <IconButton
+            onClick={togglePlaying}
+            className={styles.pausePlayButton}
+            classes={styles.playerIcon}
+        >
+            {
+                playing ?
+                    <PlayCircleFilled className={styles.playerIcon}/> :
+                    <PauseCircleFilled className={styles.playerIcon}/>
+            }
+        </IconButton>
+        <IconButton
+            onClick={handleNextClick}
+            className={styles.nextButton}
+            classes={{root: styles.playerIcon}}
+        >
+            <SkipNext className={styles.playerIcon}/>
+        </IconButton>
+        <div className={styles.currentlyPlayingContainer}>
+            <div className={styles.scrollContainer}>
+            <Typography classes={{root: styles.currentlyPlayingText}} color="textPrimary" variant={'h5'}>
+                {currentlyPlaying}
+            </Typography>
+            </div>
         </div>
-        {/* <Grid container spacing={3}>
-            <Grid item xs>
-                <IconButton onClick={handlePreviousClick}>
-                    <SkipPrevious/>
-                </IconButton>
-            </Grid>
-            <Grid item xs>
-                <IconButton onClick={togglePlaying}>
-                    {playing ? <PlayCircleFilled/> : <PauseCircleFilled/>}
-                </IconButton>
-            </Grid>
-            <Grid item xs>
-                <IconButton onClick={handleNextClick}>
-                    <SkipNext/>
-                </IconButton>
-            </Grid>
-        </Grid> */}
     </div>
 
 }

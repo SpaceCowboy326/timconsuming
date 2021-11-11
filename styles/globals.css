@@ -14,7 +14,7 @@ html {
 }
 
 html::-webkit-scrollbar { 
-    display: none;  /* Safari and Chrome */
+    display: none; /* Safari and Chrome */
 }
 
 a {
@@ -26,26 +26,20 @@ a {
   box-sizing: border-box;
 }
 
-@media (max-width: 2000px) {
+@media (max-width: 2000px), (max-height: 1200px) {
   html {
     font-size: 14px;
   }
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1600px), (max-height: 1000px) {
   html {
     font-size: 12px;
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1200px), (max-height: 850px) {
   html {
-    /* font-size: 10px; */
-  }
-}
-
-@media (max-width: 800px) {
-  html {
-    /* font-size: 8px; */
+    font-size: 10px;
   }
 }

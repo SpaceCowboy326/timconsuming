@@ -40,6 +40,26 @@
     width: 40em;
 }
 
+.listeningLoggedIn {
+    .sectionContainer {
+        background-color: $primary-color !important;
+        color: $secondary-text;
+        margin: 0 0 2em 0;
+        padding: 25px;
+
+        .sectionTitle {
+            color: $secondary-text !important;
+        }
+    
+        &:hover .sectionTitle {
+            color: $primary-text !important;
+        }
+    }
+
+    .sectionTitle {
+        background-color: unset !important;
+    }
+}
 
 .sectionContainer {
     // background-color: $primary-color !important;
@@ -56,6 +76,25 @@
         color: $primary-text;
     }
 }
+
+
+.playerContainer {
+    background-color: $primary-color !important;
+    color: $secondary-text;
+    padding: 1.5em 0 .5em;
+}
+
+.sectionContainer {
+    // background-color: $primary-color !important;
+    color: $secondary-text;
+    margin: 0 0 2em 0;
+    padding: 25px;
+
+    &:hover .sectionTitle {
+        color: $primary-text;
+    }
+}
+
 
 .sectionContent {
     flex: 0 1 90%;

@@ -62,21 +62,22 @@ $item-width: 18rem;
     background: linear-gradient(to right, $primary-color 0%, transparent 80%);
     height: 100%;
     left: 40px;
+    pointer-events: none;
     position: absolute;
+    transition: opacity 1s;
     width: 75px;
     z-index: 999;
-    transition: opacity 1s;
 }
 
 .fadedEdgeRight {
     background: linear-gradient(to left, $primary-color 0%, transparent 100%);
     height: 100%;
     right: 40px;
+    pointer-events: none;
     position: absolute;
+    transition: opacity 1s;
     width: 75px;
     z-index: 999;
-    transition: opacity 1s;
-
 }
 
 .gridContainer {
@@ -108,12 +109,6 @@ $item-width: 18rem;
     position: absolute;
     top: 25px;
     width: 90%;
-
-    // transition: transform 2s infinite;
-    // animation: 
-    // background-color: $secondary-color;
-    // box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
-    
 }
   
 .arrow::after, .arrow::before {
@@ -164,12 +159,6 @@ $item-width: 18rem;
     transform: rotate(-50deg);
 }
 
-// @keyframes arrow {
-//     0% {translate:(-50%, -50%);}
-//     50% {translate:(-100%, -50%);}
-//     100% {translate:(-50%, -50%);}
-// }
-
 @keyframes arrow {
     0% {transform: translate(0, 0);}
     50% {transform: translate(-8px, 0);}
@@ -184,8 +173,3 @@ $item-width: 18rem;
     // 58% {transform: translate(-8px, 0);}
     100% {transform: translate(0, 0);}
 }
-
-// @keyframes fadeOut {
-//     0% {opacity:1;}
-//     100% {opacity:0;}
-// }
