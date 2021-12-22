@@ -9,6 +9,8 @@ import React, { useState, useEffect, useContext } from 'react';
 // import styles from '../styles/Home.module.css'
 import { Button, Backdrop, Typography, Fade, Paper, Box, Slide } from '@material-ui/core';
 
+import SpotifyPlayer from '../components/spotify-player';
+
 // import avenirNextFont from '../../public/AvenirNextLTPro-Regular.otf';
 
 
@@ -101,11 +103,46 @@ const theme = createTheme({
     },
 });
 
-const SpotifyAuthContext = React.createContext({access_token: null, refresh_token: null});
+
+// Initializes the Spotify Web Player.  Should only occur once per page load.
+const initializeSpotifyPlayer = ({accessToken}) => {
+    if (!accessToken) {
+        return;
+    }
+    const player = new Spotify.Player({
+      name: 'Web Playback SDK Quick Start Player',
+      getOAuthToken: cb => { cb(accessToken); }
+    });
+    // Error handling
+    player.addListener('initialization_error', ({ message }) => { console.error(message); });
+    player.addListener('authentication_error', ({ message }) => { console.error(message); });
+    player.addListener('account_error', ({ message }) => { console.error(message); });
+    player.addListener('playback_error', ({ message }) => { console.error(message); });
+  
+
+    
+
+    // Ready
+    player.addListener('ready', ({ device_id }) => {
+      console.log('Ready with Device ID', device_id);
+    });
+  
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+    });
+  
+    // Connect to the player!
+    player.connect();
+
+    return player;
+}
+
+const SpotifyAuthContext = React.createContext({access_token: null, refresh_token: null, device_id: null});
 export {SpotifyAuthContext};
 
 const Layout = ({
-    access_token,
+    // access_token,
     children,
     displayBackdrop = false,
     refresh_token,
@@ -115,12 +152,30 @@ const Layout = ({
     const {previous} = router.query;
     const [transition, setTransition] = useState(true);
     const [slideDirection, setSlideDirection] = useState('up');
+    const [spotifyPlayer, setSpotifyPlayer] = useState(null);
+    const {access_token, device_id} = useContext(SpotifyAuthContext);
     useEffect(() => {
         setSlideDirection('up');
         setTransition(true);
     }, [selectedPage]);
-console.log("Slide direction?", slideDirection);
-console.log("transition?", transition);
+
+
+
+    useEffect(() => {
+        // console.log("gonna set up this web player listener thing");
+        // The spotify web player SDK will call this function once the SDK has been initialized
+        window.onSpotifyWebPlaybackSDKReady = () => {
+        
+          const player = initializeSpotifyPlayer({accessToken: access_token});
+        //   console.log("Initializing player!", player);
+          setSpotifyPlayer(player);
+        //   console.log("Look at this here player!", spotifyPlayer)
+        }
+    }, [access_token]);
+    
+
+// console.log("Slide direction?", slideDirection);
+// console.log("transition?", transition);
     const footerFadeDuration = transition ? 3000 : 50;
 
     // Click handler for nav items
@@ -162,6 +217,22 @@ console.log("transition?", transition);
     const page_title_action_text = <div className={styles.pageTitleActionTextContainer}>
                 <span className={styles.pageTitleActionText}>{(PAGE_TO_TEXT[selectedPage] || '...') + '?'}</span>
         </div>;
+
+
+    let spotifyPlayerPanel;
+    if (access_token) {
+        spotifyPlayerPanel = <Paper elevation={5} classes={{root: styles.spotifyPlayerPanel}}>
+            <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
+        </Paper>;
+    }
+
+let trackData = [],
+    spotify_player_component = null;
+// if (topTracks.data && topTracks.data.items) {
+    // trackData = topTracks.data.items;
+    // spotify_player_component = <SpotifyPlayer token={access_token} player={spotify_player}></SpotifyPlayer>;
+    // 
+// }
 
     return (
         <ThemeProvider theme={theme}>
@@ -220,38 +291,38 @@ console.log("transition?", transition);
                             {/* <Link href="/drinking">who the hell is Tim?</Link> */}
                         </footer>
                     </Fade>
+                    { spotifyPlayerPanel }
                 </div>
             {/* </SpotifyAuthContext.Provider> */}
         </ThemeProvider>
     );
 }
 
-export async function getServerSideProps({req, res, query}) {
-    const code = query.code;
-    
-    // const token_response = await fetch('http://localhost:3000/api/token');
-    const token_response = await auth.getNewaccess_token(code);
+// export async function getServerSideProps({req, res, query}) {
+//     const code = query.code;
+//     // const token_response = await fetch('http://localhost:3000/api/token');
+//     const token_response = await auth.getNewaccess_token(code);
 
-    console.log("What's the token response?", token_response);
-    // const json_token = await token_response.text();
-    // console.log("What's the token json?", json_token);
+//     console.log("What's the token response?", token_response);
+//     // const json_token = await token_response.text();
+//     // console.log("What's the token json?", json_token);
 
-    const {access_token, refresh_token, expires_in} = token_response;
+//     const {access_token, refresh_token, expires_in} = token_response;
 
-    const props = {code};
-    if (access_token) {
-      props.access_token = access_token;
-    }
-    if (refresh_token) {
-      props.refresh_token = refresh_token;
-    }
-    if (expires_in) {
-      props.expires_in = expires_in;
-    }
+//     const props = {code};
+//     if (access_token) {
+//       props.access_token = access_token;
+//     }
+//     if (refresh_token) {
+//       props.refresh_token = refresh_token;
+//     }
+//     if (expires_in) {
+//       props.expires_in = expires_in;
+//     }
   
-    return {
-      props
-    };
-};
+//     return {
+//       props
+//     };
+// };
 
 export default Layout;

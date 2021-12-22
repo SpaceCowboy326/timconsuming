@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useState, useEffect, useRef } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Backdrop, Grid, Button, Typography } from '@material-ui/core';
+import { Backdrop, Grid, Button, IconButton, Tooltip, Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import styles from '../../styles/item.module.scss';
 import Drink from './items/drink';
@@ -16,7 +16,7 @@ const getStandardContent = (data) => {
 
 };
 
-export default function Item({data, displayBackdrop, backdropShown}) {
+export default function Item({data, actions, displayBackdrop, backdropShown}) {
     const [expanded, setExpanded] = useState(false);
 
     const containerRef = useRef(null)
@@ -49,6 +49,24 @@ export default function Item({data, displayBackdrop, backdropShown}) {
         setExpanded(false);
     };
 
+    // If the data specifies any "actions", create a section for them.
+    let actionSection = null;
+    if (actions) {
+        actionSection = <div className={styles.actionSection}>
+        { actions.map((action, index) => {
+            return <Tooltip title={action.title} key={`action_${index}`}>
+                <IconButton
+                    color="primary"
+                    onClick={ () => action.click(data) }
+                    aria-label="play track"
+                    component="span"
+                >
+                    {action.icon}
+                </IconButton>
+            </Tooltip>
+        })}
+        </div>;
+    }
     // const animateExpand = () => {
     //     const client_rect = containerRef.current.getBoundingClientRect();
     //     containerRef.current.classList.add(styles.item__expanded);
@@ -96,6 +114,7 @@ export default function Item({data, displayBackdrop, backdropShown}) {
                 I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
             </Typography>
         </div>
+        { actionSection }
         <div className={styles.buttonRow}>
             <div className={styles.actionButtonContainer}>
                 <Button
@@ -112,7 +131,6 @@ export default function Item({data, displayBackdrop, backdropShown}) {
     </div>;
 
     let itemContent;
-    console.log("data type", data.type);
     switch (data.type) {
             case 'drink': 
                 itemContent = <Drink toggleExpanded={toggleExpanded} data={data}></Drink>;

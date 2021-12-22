@@ -8,7 +8,7 @@ import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const MIN_SCROLL_INCREMENT = 288;
 
-export default function Carousel({items}) {
+export default function Carousel({items, actions}) {
     const [scrolling, setScrolling] = useState(false);
     const [dragStartPageX, setDragStartPageX] = useState(0);
     const [dragStartScrollX, setDragStartScrollX] = useState(0);
@@ -33,7 +33,7 @@ export default function Carousel({items}) {
     const itemList = useMemo(() => 
         items.map(item => (
             <Grid key={item.id} item s={12}>
-                <Item data={item} backdropShown={showBackdrop} displayBackdrop={setBackdropDisplay} />
+                <Item data={item} actions={actions} backdropShown={showBackdrop} displayBackdrop={setBackdropDisplay} />
             </Grid>
         )), [items, showBackdrop]
     );

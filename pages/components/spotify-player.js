@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import WebPlayer from '../lib/spotify/web-player';
@@ -24,23 +24,37 @@ import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious } from '@mat
 function SpotifyPlayer({player, playlist, token}) {
     const [playing, setPlaying] = useState(false);
     const [currentlyPlaying, setCurrentlyPlaying] = useState('None');
+    
     const current_track = null;
     const togglePlaying = async () => {
         setPlaying(!playing);
-        console.log("Going to try playing?", playing);
-        console.log("With this token...", token);
         if (playing) {
             WebPlayer.play(token);
-            const currentlyPlaying = await WebPlayer.getCurrentlyPlaying(token);
-            console.log("Currently Playing is...", currentlyPlaying);
+            const formattedCurrentlyPlaying = await WebPlayer.getCurrentlyPlaying(token);
             // const currentlyPlayingText = WebPlayer.currentlyPlayingToArtistAndTrack(currentlyPlayingData)
-            setCurrentlyPlaying(currentlyPlaying);
+            setCurrentlyPlaying(formattedCurrentlyPlaying);
             // setCurrentlyPlaying(currently_playing);
         }
         else {
             WebPlayer.pause(token);
         }
     };
+
+    useEffect(() => {
+        if (player) {
+            player.addListener('player_state_changed', state => {
+                console.log("player state change", state);
+                const stateTrack = state?.track_window?.current_track;
+                if (state && !state.paused && stateTrack) {
+                    const formattedCurrentlyPlaying = WebPlayer.currentlyPlayingToArtistAndTrack({item: stateTrack});
+                    setPlaying(true);
+                    setCurrentlyPlaying(formattedCurrentlyPlaying);
+                }
+            });
+        }
+    }, [player]);
+
+    
 
     const handlePreviousClick = () => {
         WebPlayer.previous(token);
@@ -61,7 +75,7 @@ function SpotifyPlayer({player, playlist, token}) {
         <IconButton
             onClick={togglePlaying}
             className={styles.pausePlayButton}
-            classes={styles.playerIcon}
+            // classes={styles.playerIcon}
         >
             {
                 playing ?
@@ -72,7 +86,7 @@ function SpotifyPlayer({player, playlist, token}) {
         <IconButton
             onClick={handleNextClick}
             className={styles.nextButton}
-            classes={{root: styles.playerIcon}}
+            // classes={{root: styles.playerIcon}}
         >
             <SkipNext className={styles.playerIcon}/>
         </IconButton>

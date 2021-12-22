@@ -13,6 +13,7 @@ const SPOTIFY_ENDPOINTS = {
     NEXT: `https://api.spotify.com/v1/me/player/next`,
     PAUSE: `https://api.spotify.com/v1/me/player/pause`,
     PLAY: `https://api.spotify.com/v1/me/player/play`,
+    QUEUE: `https://api.spotify.com/v1/me/player/queue`,
     PREVIOUS: `https://api.spotify.com/v1/me/player/previous`,
     TRACKS: `https://api.spotify.com/v1/tracks`,
 
@@ -22,6 +23,7 @@ const SPOTIFY_ENDPOINTS = {
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const createHeaders = ({token}) => { return {Authorization: `Bearer ${token}`} };
+
 const play = async (token) => {
     const options = {
         headers: createHeaders({token}),
@@ -89,14 +91,47 @@ const previous = async (token) => {
     return fetch(SPOTIFY_ENDPOINTS.PREVIOUS, options);
 };
 
+const playTrack = async ({token, track}) => {
+    const options = {
+        headers: createHeaders({token}),
+        method: 'PUT',
+        body: JSON.stringify({
+            uris: [track],
+        })
+    };
 
+    console.log("options", options);
+    // console.log("token", token);
+
+    return fetch(SPOTIFY_ENDPOINTS.PLAY, options);
+
+}
+
+const queueTrack = async ({token, track}) => {
+    const queryParams = new URLSearchParams({uri: track}).toString();
+    const options = {
+        headers: createHeaders({token}),
+        method: 'POST',
+        // body: JSON.stringify({
+        //     uri: track,
+        // })
+    };
+
+    // console.log("token", token);
+console.log("queryparams", queryParams);
+    return fetch(`${SPOTIFY_ENDPOINTS.QUEUE}?${queryParams}`, options);
+
+}
 
 export default {
     getCurrentlyPlaying,
+    currentlyPlayingToArtistAndTrack,
     next,
     pause,
     play,
+    playTrack,
     previous,
+    queueTrack,
 };
 
 

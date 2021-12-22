@@ -93,6 +93,14 @@ $expand-animation-duration: .25s;
     transition: max-height $expand-animation-duration, opacity $expand-animation-duration;
 }
 
+.actionSection {
+    display: none;
+    justify-content: center;
+    margin-bottom: 1em;
+    opacity: 0;
+    transition: max-height $expand-animation-duration, opacity $expand-animation-duration;
+}
+
 .description {
     font-size: max(1em, 16px) !important;
     font-weight: 400 !important;
@@ -169,6 +177,11 @@ $expand-animation-duration: .25s;
         opacity: 1;
     }
 
+    .actionSection {
+        display: flex;
+        // margin-top: .5em;
+        opacity: 1;
+    }
 
     .actionButtonLabel {
         font-size: 2em;

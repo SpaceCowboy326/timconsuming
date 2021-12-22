@@ -46,14 +46,14 @@ export default (req, res) => {
     // your application requests authorization
 
     // sessionStorage.setItem('state', state)
-    
-    res.redirect('https://accounts.spotify.com/authorize?' +
+    console.log("We are redirecting!");
+    const redirect_url = 'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
             client_id: process.env.SPOTIFY_CLIENT_ID,
             scope: scope_collection.join(' '),
             redirect_uri: REDIRECT_URI,
             state: state
-        }));
-
+        })
+    res.status(200).json({ redirect_url })
 };

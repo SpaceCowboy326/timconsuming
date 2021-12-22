@@ -148,6 +148,13 @@
     background-color: $background-color;
 }
 
+.spotifyPlayerPanel {
+    background-color: $primary-color !important;
+    bottom: 0;
+    position: fixed;
+    padding: 1.5em 0 1em 0;
+}
+
 @keyframes pop {
     0% {
                 transform: scale(1);
