@@ -18,14 +18,16 @@
 .footer {
     // background-color: $primary-color !important;
     // margin-bottom: 5px;
-    display: flex;
-    justify-content: center;
+    // display: flex;
+    // justify-content: center;
+    // margin-bottom: 2.5em;
     width: 100%;
 }
 
 .footerPaper {
     background-color: $primary-color !important;
     display: flex;
+    // font-size: 32px;
     height: 3em;
     justify-content: center;
     align-items: center;
@@ -148,11 +150,12 @@
     background-color: $background-color;
 }
 
-.spotifyPlayerPanel {
-    background-color: $primary-color !important;
-    bottom: 0;
-    position: fixed;
-    padding: 1.5em 0 1em 0;
+.footerSpaceHolder {
+    // display: block;
+    // display: block;
+    // clear: both;
+    height: 2.5em;
+    width: 100%;
 }
 
 @keyframes pop {

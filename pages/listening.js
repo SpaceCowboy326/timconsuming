@@ -1,23 +1,17 @@
-import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image'
 
-import Layout, {SpotifyAuthContext} from './components/layout';
-import SpotifyPlayer from './components/spotify-player';
+import {SpotifyAuthContext} from './components/layout';
 import Carousel from './components/carousel';
 import { Button, Typography, Paper } from '@material-ui/core';
 import styles from '../styles/listening.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
 import spotifyData from './lib/spotify/data';
 import WebPlayer from './lib/spotify/web-player';
-const login_redirect_url = '/api/spotify/login';
-
-
 import {PlayArrow, PlayCircleFilled, PlaylistAdd, QueuePlayNext} from '@material-ui/icons';
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-
 import useSWR from 'swr';
+
+const login_redirect_url = '/api/spotify/login';
 
 const fetchWithToken = (url, token) => {
     console.log('fetcher url?', url);
@@ -29,10 +23,8 @@ const fetchWithToken = (url, token) => {
     };
 
     return fetch(url, options).then(response => response.json());
-    // return fetch(SPOTIFY_ENDPOINTS.SEARCH + "?" + search_query_params, options).then(respone => response.json())
 };
 
-// let spotify_player;
 export default function Listening() {
     const [displayBackdrop, setDisplayBackdrop] = useState(false);
     const {access_token} = useContext(SpotifyAuthContext);
@@ -41,15 +33,12 @@ export default function Listening() {
     const topTracks = useSWR(access_token ? [`https://api.spotify.com/v1/me/top/tracks`, access_token] : null, fetchWithToken)
 
     let trackData = [];
-        // spotify_player_component = null;
     if (topTracks.data && topTracks.data.items) {
         trackData = topTracks.data.items;
-    //     spotify_player_component = <SpotifyPlayer token={access_token} player={spotify_player}></SpotifyPlayer>;
-        
     }
-    // console.log('trackdata', trackData);
+
     const trackList = <ul>
-             {trackData.map(track => <li className="doot">
+             {trackData.map((track, idx) => <li key={`track_${idx}`} className="doot">
                  <p>Artist: {track.artists.map(artist => artist.name)}</p>
                  <p>Album: {track.album.name}</p>
                  <p>Track: {track.name}</p>
@@ -60,10 +49,6 @@ export default function Listening() {
         source:     track.name,
         name:       track.artists.map(artist => artist.name).join(", "),
         id:         index,
-        // location: "Asheville, NC",
-        // description: "",
-        // style: "Milkshake IPA",
-        // imageScale: "0.5",
         imageUrl:   track.album.images[0].url,
         uri:        track.uri,
     }));
@@ -126,16 +111,18 @@ export default function Listening() {
 
     const requiresLoginContent = <Paper elevation={2} classes={{root: `${styles.requiresLoginPaperContainer}`}}>
         <Paper elevation={5} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
-            <Typography className={`${styles.sectionTitle} ${styles.requiresLoginText}`} color="textSecondary" variant={'h5'}>Why look when you can listen?</Typography>
-                <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={spotifyLoginRedirect}
-                    classes={{root: styles.spotifyLoginButton, label: styles.spotifyLoginButtonLabel}}
-                    startIcon={spotifyLogo}
-                >
-                    Login to Spotify
-                </Button>
+            <Typography className={`${styles.sectionTitle} ${styles.requiresLoginText}`} color="textSecondary" variant={'h5'}>
+                Why look when you can listen?
+            </Typography>
+            <Button
+                variant="outlined"
+                size="large"
+                onClick={spotifyLoginRedirect}
+                classes={{root: styles.spotifyLoginButton, label: styles.spotifyLoginButtonLabel}}
+                startIcon={spotifyLogo}
+            >
+                Login to Spotify
+            </Button>
         </Paper>
     </Paper>;
 
@@ -146,9 +133,6 @@ export default function Listening() {
                 <Carousel items={trackItems} actions={actions} showBackdrop={showBackdrop} />
             </div>
         </Paper>
-        {/* <Paper elevation={3} classes={{root: styles.playerContainer}}>
-            {spotify_player_component}
-        </Paper> */}
     </div>;
 
     return (

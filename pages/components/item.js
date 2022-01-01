@@ -1,24 +1,12 @@
 import Image from 'next/image'
 import React, { useState, useEffect, useRef } from 'react';
-// import styles from '../styles/Home.module.css'
 import { Backdrop, Grid, Button, IconButton, Tooltip, Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import styles from '../../styles/item.module.scss';
 import Drink from './items/drink';
 
-const getExpandedContent = (data) => {
-
-
-};
-
-const getStandardContent = (data) => {
-
-
-};
-
 export default function Item({data, actions, displayBackdrop, backdropShown}) {
     const [expanded, setExpanded] = useState(false);
-
     const containerRef = useRef(null)
 
     // If the Backdrop is no longer shown (likely from clicking on the Backdrop itself), close any expanded items
@@ -67,11 +55,6 @@ export default function Item({data, actions, displayBackdrop, backdropShown}) {
         })}
         </div>;
     }
-    // const animateExpand = () => {
-    //     const client_rect = containerRef.current.getBoundingClientRect();
-    //     containerRef.current.classList.add(styles.item__expanded);
-    //     console.log({client_rect})
-    // }
 
     const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
 

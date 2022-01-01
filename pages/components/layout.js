@@ -1,24 +1,13 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-// import auth from './lib/spotify/auth';
-import auth from '../lib/spotify/auth'
 import { createMuiTheme, ThemeProvider, createTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect, useContext } from 'react';
-// import styles from '../styles/Home.module.css'
-import { Button, Backdrop, Typography, Fade, Paper, Box, Slide } from '@material-ui/core';
-
+import { Typography, Fade, Paper } from '@material-ui/core';
 import SpotifyPlayer from '../components/spotify-player';
-
 // import avenirNextFont from '../../public/AvenirNextLTPro-Regular.otf';
-
-
 import styles from '../../styles/index.module.scss';
-const selected_class = `${styles.navItem} ${styles.selectedItem}`;
-const previously_selected_class = `${styles.navItem} ${styles.previousSelectedItem}`;
-// const fadeAnimationDuration = 1250;
-// const fadeAnimationDuration = 750;
+import webPlayer from '../lib/spotify/web-player'
 const fadeAnimationDuration = 1250;
 
 const navImages = {
@@ -120,11 +109,12 @@ const initializeSpotifyPlayer = ({accessToken}) => {
     player.addListener('playback_error', ({ message }) => { console.error(message); });
   
 
-    
+
 
     // Ready
     player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id);
+      webPlayer.transferPlayback({token: accessToken, device_id});
     });
   
     // Not Ready
@@ -142,10 +132,7 @@ const SpotifyAuthContext = React.createContext({access_token: null, refresh_toke
 export {SpotifyAuthContext};
 
 const Layout = ({
-    // access_token,
     children,
-    displayBackdrop = false,
-    refresh_token,
     selectedPage,
 }) => {
     const router = useRouter();
@@ -159,29 +146,21 @@ const Layout = ({
         setTransition(true);
     }, [selectedPage]);
 
-
-
     useEffect(() => {
-        // console.log("gonna set up this web player listener thing");
         // The spotify web player SDK will call this function once the SDK has been initialized
-        window.onSpotifyWebPlaybackSDKReady = () => {
-        
-          const player = initializeSpotifyPlayer({accessToken: access_token});
-        //   console.log("Initializing player!", player);
-          setSpotifyPlayer(player);
-        //   console.log("Look at this here player!", spotifyPlayer)
+        if (!window.onSpotifyWebPlaybackSDKReady) {
+            window.onSpotifyWebPlaybackSDKReady = () => {
+                const player = initializeSpotifyPlayer({accessToken: access_token});
+                setSpotifyPlayer(player);
+            }
         }
     }, [access_token]);
-    
 
-// console.log("Slide direction?", slideDirection);
-// console.log("transition?", transition);
     const footerFadeDuration = transition ? 3000 : 50;
 
     // Click handler for nav items
     const handleActionClick = (nextPage, currentPage) => {
         setTransition(false);
-        console.log("nextPage is ", nextPage);
         const navTimer = setTimeout(() => {
             router.push(`/${nextPage}?previous=${currentPage}`);
         }, fadeAnimationDuration);
@@ -215,24 +194,18 @@ const Layout = ({
     </div>);
 
     const page_title_action_text = <div className={styles.pageTitleActionTextContainer}>
-                <span className={styles.pageTitleActionText}>{(PAGE_TO_TEXT[selectedPage] || '...') + '?'}</span>
+                <span className={styles.pageTitleActionText}>
+                    { PAGE_TO_TEXT[selectedPage] ? PAGE_TO_TEXT[selectedPage] + '?' : '...' }
+                </span>
         </div>;
 
-
     let spotifyPlayerPanel;
-    if (access_token) {
-        spotifyPlayerPanel = <Paper elevation={5} classes={{root: styles.spotifyPlayerPanel}}>
+        spotifyPlayerPanel = 
             <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
-        </Paper>;
-    }
+        ;
 
-let trackData = [],
-    spotify_player_component = null;
-// if (topTracks.data && topTracks.data.items) {
-    // trackData = topTracks.data.items;
-    // spotify_player_component = <SpotifyPlayer token={access_token} player={spotify_player}></SpotifyPlayer>;
-    // 
-// }
+    let trackData = [],
+        spotify_player_component = null;
 
     return (
         <ThemeProvider theme={theme}>
@@ -250,45 +223,40 @@ let trackData = [],
                         <script src="https://sdk.scdn.co/spotify-player.js"></script>
                     </Head>
                     <div className={styles.main}>
-                            {/* <Paper className={styles.headerPaper} elevation={2}> */}
-                                <div color="primary" className={styles.pageTitle}>
-                                    <div className={styles.pageTitleContainer}>
-                                        <div className={styles.pageTitlePrefixContainer}>
-                                            <Typography className={styles.pageTitlePrefix} variant="h3">
-                                                What is Tim
+                            <div color="primary" className={styles.pageTitle}>
+                                <div className={styles.pageTitleContainer}>
+                                    <div className={styles.pageTitlePrefixContainer}>
+                                        <Typography className={styles.pageTitlePrefix} variant="h3">
+                                            What is Tim
+                                        </Typography>
+                                    </div>
+                                    <div className={styles.pageTitleSuffixContainer}>
+                                        <Fade in={transition} timeout={fadeAnimationDuration}>
+                                            <Typography className={styles.pageTitleSuffix} variant="h3">
+                                                {page_title_action_text}
                                             </Typography>
-                                        </div>
-                                        <div className={styles.pageTitleSuffixContainer}>
-                                            <Fade in={transition} timeout={fadeAnimationDuration}>
-                                                <Typography className={styles.pageTitleSuffix} variant="h3">
-                                                    {page_title_action_text}
-                                                </Typography>
-                                            </Fade>
-                                        </div>
+                                        </Fade>
                                     </div>
                                 </div>
-                                {nav}
-                            {/* </Paper> */}
-                            {/* <Slide direction={slideDirection} in={transition} timeout={fadeAnimationDuration}> */}
+                            </div>
+                            {nav}
                             <Fade  in={transition} timeout={fadeAnimationDuration}>
 
                                 <div className={styles.contentContainer}>
                                     {children}
                                 </div>
-                            {/* </Slide> */}
                             </Fade>
                     </div>
                     <Fade in={transition} timeout={footerFadeDuration}>
                         <footer className={styles.footer}>
                             <Paper elevation={3} classes={{root: styles.footerPaper}}>
                                 <div>
-                                    <Typography variant="body2">
+                                    <Typography variant="h6">
                                         Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
                                         &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
                                     </Typography>
                                 </div>
                             </Paper>
-                            {/* <Link href="/drinking">who the hell is Tim?</Link> */}
                         </footer>
                     </Fade>
                     { spotifyPlayerPanel }

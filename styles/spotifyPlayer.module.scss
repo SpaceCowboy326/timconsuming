@@ -1,7 +1,9 @@
 @import './colors.module.scss';
 
+$collapsed-height: 2.5em;
 
 .spotifyPlayer {
+    // border-top: 1px solid rgba(0, 0, 0, 0.75);
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     grid-template-rows: repeat(8, 1fr);
@@ -16,8 +18,46 @@
 
     .playerIcon {
         font-size: 4rem;
+        // color: white;
+
         &:hover {
-            color: $primary-text;
+            // color: rgb(59, 202, 59);
+            
+            // color: $primary-text;
+        }
+    }
+}
+
+.spotifyPlayerPanel {
+    background-color: $primary-color !important;
+    // border: 1px solid rgba(32, 82, 107, 0.5);
+    border: 1px solid darken($primary-color, 30%);
+    bottom: 0;
+    position: fixed;
+    padding: 4em 0 1em 0;
+    transform: translateY(calc(100% - $collapsed-height));
+    transition: all 0.5s ease-in-out !important;
+
+    .openIcon {
+        // color: white;
+        font-size: 3rem;
+        transform: rotate(180deg);
+        transition: transform 0.5s;
+    }
+    
+    .openButton {
+        padding: 0;
+        position: absolute;
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+    }
+
+    &.spotifyPlayerPanel__shown {
+        transform: translateY(0);
+    
+        .openIcon {
+            transform: rotate(0deg);
         }
     }
 }
@@ -36,8 +76,10 @@
 }
 
 .currentlyPlayingText {
-    color: rgb(230, 120, 215) !important;
-    // color: lawngreen !important;
+    // color: rgb(230, 120, 215) !important;
+    // color: mediumseagreen !important;
+    color: lawngreen !important;
+    // color: $secondary-color !important;
 
 
 
@@ -46,13 +88,11 @@
 .currentlyPlayingContainer {
     align-items: center;
 
-border-radius: 5px;
-background-color: black;
-border: 2px solid slategrey;
-// padding: 5px;
-width: 20em;
-
-
+    border-radius: 5px;
+    background-color: black;
+    border: 2px solid slategrey;
+    // padding: 5px;
+    width: 20em;
 
     // color: $primary-text;
     display: grid;
@@ -64,19 +104,17 @@ width: 20em;
 
     position: relative;
     overflow: hidden;
-
 }
 
 .scrollContainer {
-    white-space: nowrap;
     animation: animate 10s linear infinite;
     animation-delay: 10s;
+    white-space: nowrap;
     width: 100%;
 }
 
 @keyframes animate
 {
-
     0%
     {
         transform: translateX(100%);

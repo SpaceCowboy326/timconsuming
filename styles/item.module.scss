@@ -9,7 +9,7 @@
 };
 
 $item-height: 21em;
-$item-width: 19em;
+$item-width: 20em;
 
 $expanded-item-height: 50em;
 $expanded-item-width: 52em;
@@ -38,7 +38,7 @@ $expand-animation-duration: .25s;
     .itemTitle {
         display: inline-block;
         font-size: max(1em, 14px);
-        max-width: 14em;
+        max-width: 12em;
         // max-width: 150px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -49,9 +49,14 @@ $expand-animation-duration: .25s;
     // TODO: Only placed under .item to give this class precedence over default MUI class.
     .source {
         color: $secondary-text;
-        display: flex;
+        // display: flex;
+        display: inline-block;
         font-size: max(1em, 16px);
+        max-width: 11em;
+        overflow: hidden;
+        text-overflow: ellipsis;
         transition: font-size $expand-animation-duration, color $expand-animation-duration * 3;
+        white-space: nowrap;
     }
 
     &:hover {
@@ -78,12 +83,6 @@ $expand-animation-duration: .25s;
         width: $expanded-item-width;
         z-index: 1001;
     }
-}
-
-.itemContent {
-    display: grid;
-    height: 100%;
-    width: 100%;
 }
 
 .itemDescription {
@@ -126,7 +125,6 @@ $expand-animation-duration: .25s;
     opacity: 0;
 }
 
-
 .sourceContainer {
     display: flex;
     // grid-column: 1 / span $item-columns;
@@ -160,6 +158,7 @@ $expand-animation-duration: .25s;
     .source {
         color: rgb(0,0,0,0.87);
         font-size: 1.75em;
+        max-width: 30em;
         padding-left: .75em;
 
     }
