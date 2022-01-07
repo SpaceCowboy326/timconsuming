@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { createMuiTheme, ThemeProvider, createTheme } from '@material-ui/core/styles';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { Typography, Fade, Paper } from '@material-ui/core';
 import SpotifyPlayer from '../components/spotify-player';
 // import avenirNextFont from '../../public/AvenirNextLTPro-Regular.otf';
@@ -46,7 +46,7 @@ const getNavItemClasses = ({pageName, selectedPage, previous, transition}) => {
         navItemClasses.push(styles.navItemListening)
     }
     return navItemClasses.join(" ");
-}
+};
 
 // const bodyFont = "'Monoton', cursive"; NOPE
 // const bodyFont = "'Prata', serif"; NOPE
@@ -141,6 +141,7 @@ const Layout = ({
     const [slideDirection, setSlideDirection] = useState('up');
     const [spotifyPlayer, setSpotifyPlayer] = useState(null);
     const {access_token, device_id} = useContext(SpotifyAuthContext);
+    // const {access_token, device_id} = useContext(SpotifyPlayerContext);
     useEffect(() => {
         setSlideDirection('up');
         setTransition(true);
@@ -159,15 +160,13 @@ const Layout = ({
     const footerFadeDuration = transition ? 3000 : 50;
 
     // Click handler for nav items
-    const handleActionClick = (nextPage, currentPage) => {
-        setTransition(false);
-        const navTimer = setTimeout(() => {
-            router.push(`/${nextPage}?previous=${currentPage}`);
-        }, fadeAnimationDuration);
-
-
-        return () => clearTimeout(navTimer);
-    };
+    const handleActionClick = useCallback((nextPage, currentPage) => {
+            setTransition(false);
+            const navTimer = setTimeout(() => {
+                router.push(`/${nextPage}?previous=${currentPage}`);
+            }, fadeAnimationDuration);
+            return () => clearTimeout(navTimer);
+    }, []);
 
     // Create navItem list
     const nav = (<div className={styles.nav}>
@@ -191,18 +190,13 @@ const Layout = ({
                 return list;
             }, [])
         }
-    </div>);
+    </div>);//, [selectedPage]);
 
-    const page_title_action_text = <div className={styles.pageTitleActionTextContainer}>
+    const pageTitleActionText = useMemo(() => <div className={styles.pageTitleActionTextContainer}>
                 <span className={styles.pageTitleActionText}>
                     { PAGE_TO_TEXT[selectedPage] ? PAGE_TO_TEXT[selectedPage] + '?' : '...' }
                 </span>
-        </div>;
-
-    let spotifyPlayerPanel;
-        spotifyPlayerPanel = 
-            <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
-        ;
+    </div>, [selectedPage]);
 
     let trackData = [],
         spotify_player_component = null;
@@ -233,7 +227,7 @@ const Layout = ({
                                     <div className={styles.pageTitleSuffixContainer}>
                                         <Fade in={transition} timeout={fadeAnimationDuration}>
                                             <Typography className={styles.pageTitleSuffix} variant="h3">
-                                                {page_title_action_text}
+                                                {pageTitleActionText}
                                             </Typography>
                                         </Fade>
                                     </div>
@@ -241,7 +235,6 @@ const Layout = ({
                             </div>
                             {nav}
                             <Fade  in={transition} timeout={fadeAnimationDuration}>
-
                                 <div className={styles.contentContainer}>
                                     {children}
                                 </div>
@@ -259,7 +252,7 @@ const Layout = ({
                             </Paper>
                         </footer>
                     </Fade>
-                    { spotifyPlayerPanel }
+                    <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
                 </div>
             {/* </SpotifyAuthContext.Provider> */}
         </ThemeProvider>

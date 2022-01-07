@@ -2,8 +2,12 @@ import '../styles/globals.css'
 import '../styles/index.module.scss';
 
 import App from "next/app"
-import Layout, {SpotifyAuthContext} from '../pages/components/layout'
+import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
 import auth from './lib/spotify/auth'
+
+const SpotifyPlayerContext = React.createContext({expanded: false});
+export {SpotifyPlayerContext};
+
 
 const PATH_TO_PAGE = {
   '/eating': 'eati'
@@ -20,9 +24,11 @@ function MyApp(props) {
   console.log("props be like", props);
 
   return <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
-      <Layout selectedPage={selected_page}>
-        <Component {...pageProps} />
-      </Layout>
+      <SpotifyPlayerContext.Provider>
+        <Layout selectedPage={selected_page}>
+          <Component {...pageProps} />
+        </Layout>
+      </SpotifyPlayerContext.Provider>
     </SpotifyAuthContext.Provider>;
 }
 

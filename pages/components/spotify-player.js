@@ -9,7 +9,8 @@ function SpotifyPlayer({player, token}) {
     const [playing, setPlaying] = useState(false);
     const [currentlyPlaying, setCurrentlyPlaying] = useState('None');
     const [listening, setListening] = useState(false);
-    const [panelShown, setPanelShown] = useState(false);
+    const {expanded, expand} = useContext(SpotifyPlayerContext);
+    const [panelShown, setPanelShown] = useState(expanded);
 
     const togglePlaying = async () => {
         const nowPlaying = !playing;
@@ -23,6 +24,10 @@ function SpotifyPlayer({player, token}) {
         }
         setPlaying(nowPlaying);
     };
+
+    useEffect(() => {
+        setPanelShown(true);
+    }, [expanded]);
 
     // Toggle the panel collapsed state.
     const togglePanelClick = () => {
