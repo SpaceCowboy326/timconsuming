@@ -26,19 +26,19 @@ a {
   box-sizing: border-box;
 }
 
-@media (max-width: 2000px), (max-height: 1200px) {
+@media (max-width: 2000px), (max-height: 1000px) {
   html {
-    font-size: 14px;
+    font-size: 13.5px;
   }
 }
 
-@media (max-width: 1600px), (max-height: 1000px) {
+@media (max-width: 1600px), (max-height: 850px) {
   html {
     font-size: 12px;
   }
 }
 
-@media (max-width: 1200px), (max-height: 850px) {
+@media (max-width: 1200px), (max-height: 600px) {
   html {
     font-size: 10px;
   }

@@ -28,6 +28,12 @@ $expand-animation-duration: .25s;
     width: $item-width;
 }
 
+.itemContent {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .item {
     height: $item-height;
     max-height: $item-height;
@@ -37,7 +43,8 @@ $expand-animation-duration: .25s;
     // TODO: Only placed under .item to give this class precedence over default MUI class.
     .itemTitle {
         display: inline-block;
-        font-size: max(1em, 14px);
+        // font-size: max(1.75em, 14px);
+        font-size: 1.5em;
         max-width: 12em;
         // max-width: 150px;
         overflow: hidden;
@@ -51,7 +58,8 @@ $expand-animation-duration: .25s;
         color: $secondary-text;
         // display: flex;
         display: inline-block;
-        font-size: max(1em, 16px);
+        // font-size: max(1.9em, 16px);
+        font-size: 1.75em;
         max-width: 11em;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -206,9 +214,10 @@ $expand-animation-duration: .25s;
 }
 
 .buttonRow {
-    align-items: center;
+    align-items: flex-end;
     display: flex;
-    
+    flex: 1 1 auto;
+    justify-content: flex-end;   
 }
 
 .actionButtonContainer {

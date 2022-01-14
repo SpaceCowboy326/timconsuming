@@ -3,12 +3,13 @@ import Image from 'next/image'
 
 import {SpotifyAuthContext} from './components/layout';
 import Carousel from './components/carousel';
-import { Button, Typography, Paper } from '@material-ui/core';
+import { Button, CircularProgress, Typography, Paper } from '@material-ui/core';
 import styles from '../styles/listening.module.scss';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import spotifyData from './lib/spotify/data';
 import WebPlayer from './lib/spotify/web-player';
 import {PlayArrow, PlayCircleFilled, PlaylistAdd, QueuePlayNext} from '@material-ui/icons';
+
 import useSWR from 'swr';
 
 const login_redirect_url = '/api/spotify/login';
@@ -25,8 +26,9 @@ const fetchWithToken = (url, token) => {
     return fetch(url, options).then(response => response.json());
 };
 
-export default function Listening() {
+export default function Listening({expandSpotifyPanel}) {
     const [displayBackdrop, setDisplayBackdrop] = useState(false);
+    const [redirecting, setRedirecting] = useState(false);
     const {access_token} = useContext(SpotifyAuthContext);
     const router = useRouter();
     // const topTracks = spotifyData.useTopTracks(access_token)
@@ -56,6 +58,7 @@ export default function Listening() {
     const playAction = {
         click: (data) => {
             console.log("playing...", data);
+            expandSpotifyPanel();
             WebPlayer.playTrack({
                 token: access_token,
                 track: data.uri,
@@ -97,17 +100,21 @@ export default function Listening() {
     }
 
     const spotifyLoginRedirect = async () => {
+        setRedirecting(true);
         const redirect_url_response = await fetch(login_redirect_url).then((res) => res.json());
         console.dir({redirect_url_response});
         router.push(redirect_url_response.redirect_url);
     };
 
-    const spotifyLogo = <Image
+    const spotifyLogo = useMemo(() => <Image
         objectFit="cover"
         height={50}
+        loading="eager"
         width={50}
         src={'/images/spotify-logo.png'}
-    />;
+    />, []);
+
+    const redirectLoading = <CircularProgress size="50px" thickness={5} />;
 
     const requiresLoginContent = <Paper elevation={2} classes={{root: `${styles.requiresLoginPaperContainer}`}}>
         <Paper elevation={5} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
@@ -119,7 +126,7 @@ export default function Listening() {
                 size="large"
                 onClick={spotifyLoginRedirect}
                 classes={{root: styles.spotifyLoginButton, label: styles.spotifyLoginButtonLabel}}
-                startIcon={spotifyLogo}
+                startIcon={redirecting ? redirectLoading : spotifyLogo}
             >
                 Login to Spotify
             </Button>
@@ -130,7 +137,7 @@ export default function Listening() {
         <Paper elevation={3} classes={{root: styles.sectionContainer}}>
             <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Check out these hot tracks!</Typography>
             <div className={styles.sectionContent}>
-                <Carousel items={trackItems} actions={actions} showBackdrop={showBackdrop} />
+                <Carousel type={'track'} items={trackItems} actions={actions} showBackdrop={showBackdrop} />
             </div>
         </Paper>
     </div>;

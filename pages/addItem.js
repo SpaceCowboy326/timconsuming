@@ -53,7 +53,7 @@ export default function AddItem() {
                 <FormControl className={styles.formControl}>
                     <TextField
                         id="name"
-                        placeholder="WHO AM I!?"
+                        placeholder="What it is?"
                         label="Name"
                         value={name}
                     />
@@ -77,7 +77,7 @@ export default function AddItem() {
                         multiline
                         rows={3}
                         value={description}
-                        placeholder="Tell everyone something about me."
+                        placeholder="What it do?"
                     />
                 </FormControl>
             </Box>

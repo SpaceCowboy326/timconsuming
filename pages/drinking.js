@@ -3,11 +3,12 @@ import Link from 'next/link'
 import Layout from './components/layout'
 import Carousel from './components/carousel'
 import { Button, Typography, Paper } from '@material-ui/core';
-import {items} from './data/drinking.json';
+import allItems from './data/drinking.json';
 import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
 import { connectToDatabase } from '../lib/mongodb'
 
+const items = allItems.items;
 
 
 export default function Drinking() {
@@ -23,19 +24,19 @@ export default function Drinking() {
                 {/* <Paper elevation={3} className={styles.sectionContainer}> */}
                     <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Beer:</Typography>
                     <div className={styles.sectionContent}>
-                        <Carousel items={items} showBackdrop={showBackdrop} />
+                        <Carousel type={'beverage'} items={items} showBackdrop={showBackdrop} />
                     </div>
                 </Paper>
                 <Paper elevation={3} className={styles.sectionContainer}>
                     <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Cocktails:</Typography>
                     <div className={styles.sectionContent}>
-                        <Carousel items={items} showBackdrop={showBackdrop} />
+                        <Carousel type={'beverage'} items={items} showBackdrop={showBackdrop} />
                     </div>
                 </Paper>
                 <Paper elevation={3} className={styles.sectionContainer}>
                     <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Non-Alcoholic:</Typography>
                     <div className={styles.sectionContent}>
-                        <Carousel items={items} showBackdrop={showBackdrop} />
+                        <Carousel type={'beverage'} items={items} showBackdrop={showBackdrop} />
                     </div>
                 </Paper>
             </div>
@@ -49,7 +50,7 @@ export async function getServerSideProps(context) {
     const {client, db} = await connectToDatabase();
     const collection = db.collection('items');
     const items = await collection.find({}).toArray();
-    console.log("Collection is", collection);
+    // console.log("Collection is", collection);
     console.log("But items is items", items);
     const isConnected = false;// await client.isConnected()
 

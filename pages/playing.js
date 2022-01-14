@@ -21,19 +21,19 @@ export default function Playing() {
                 {/* <Paper elevation={3} className={styles.sectionContainer}> */}
                     <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>FPS:</Typography>
                     <div className={styles.sectionContent}>
-                        <Carousel items={items} showBackdrop={showBackdrop} />
+                        <Carousel type={'game'} items={items} showBackdrop={showBackdrop} />
                     </div>
                 </Paper>
                 <Paper elevation={3} className={styles.sectionContainer}>
                     <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>RPG:</Typography>
                     <div className={styles.sectionContent}>
-                        <Carousel items={items} showBackdrop={showBackdrop} />
+                        <Carousel type={'game'} items={items} showBackdrop={showBackdrop} />
                     </div>
                 </Paper>
                 <Paper elevation={3} className={styles.sectionContainer}>
                     <Typography className={styles.sectionTitle} color="textSecondary" variant={'h5'}>Multiplayer:</Typography>
                     <div className={styles.sectionContent}>
-                        <Carousel items={items} showBackdrop={showBackdrop} />
+                        <Carousel type={'game'} items={items} showBackdrop={showBackdrop} />
                     </div>
                 </Paper>
             </div>

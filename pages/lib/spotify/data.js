@@ -1,13 +1,6 @@
 import querystring from 'querystring';
 import useSWR from 'swr';
 
-// const {
-//   SPOTIFY_CLIENT_ID: client_id,
-//   SPOTIFY_CLIENT_SECRET: client_secret,
-//   SPOTIFY_REFRESH_TOKEN: refresh_token
-// } = process.env;
-
-
 const SPOTIFY_ENDPOINTS = {
     SEARCH: `https://api.spotify.com/v1/search`,
     TOP_TRACKS: `https://api.spotify.com/v1/me/top/tracks`,

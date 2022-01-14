@@ -1,11 +1,37 @@
 import Image from 'next/image'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Backdrop, Grid, Button, IconButton, Tooltip, Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import styles from '../../styles/item.module.scss';
-import Drink from './items/drink';
 
-export default function Item({data, actions, displayBackdrop, backdropShown}) {
+const ITEM_TYPE_LIST = ['Drink', '']
+
+// Returns an object containing the field text for an item based on its 'type'
+const getFieldTextByType = (type) => {
+    let nameText = 'Name',
+        sourceText = 'Source',
+        buttonText = 'Tell Me More';
+
+    switch (type) {
+        case 'beverage':
+            break;
+        case 'media':
+            sourceText = 'Creator'
+            break;
+        case 'track':
+            nameText = 'Track';
+            sourceText = 'Artist';
+            break;
+    }
+
+    return {
+        BUTTON: buttonText,
+        NAME:   nameText,
+        SOURCE: sourceText,
+    }
+};
+
+export default function Item({data, actions, displayBackdrop, backdropShown, type}) {
     const [expanded, setExpanded] = useState(false);
     const containerRef = useRef(null)
 
@@ -16,6 +42,9 @@ export default function Item({data, actions, displayBackdrop, backdropShown}) {
         }
     }, [backdropShown]);
 
+    // Retrieve a list of fields 
+    const itemFieldText = useMemo(() => getFieldTextByType(type), [type]);
+    // console.log('itemFieldText', itemFieldText);
     // console.log(`I, ${data.name}, am rendering `);
 
     const itemClasses = [styles.item];
@@ -57,78 +86,64 @@ export default function Item({data, actions, displayBackdrop, backdropShown}) {
     }
 
     const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
-
-    const defaultItemContent = <div className={styles.itemContent}>
-        <div className={styles.itemImage}>
-            {
-                data.imageUrl &&
-                <Image
-                    layout="fill"
-                    objectFit="cover"
-                    objectPosition={data.objectPosition}
-                    src={data.imageUrl}
-                />
-            }
-        </div>
-        <div className={styles.itemTitleContainer}>
-            <Typography variant="h5" className={styles.itemTitleLabel} color="textSecondary">
-                Name: 
-            </Typography>
-            <Typography className={styles.itemTitle}>
-                {data.name}
-            </Typography>
-        </div>
-
-        <div className={styles.sourceContainer}>
-            <Typography variant="h5" className={styles.sourceLabel} color="textSecondary">
-                Source: 
-            </Typography>
-            <Typography className={styles.source} >
-                {data.source}
-            </Typography>
-        </div>
-        <div className={styles.itemDescription}>
-            <Typography variant="h5" styles={{display: 'block'}} className={styles.sourceLabel} gutterBottom color="textSecondary">
-                Description: 
-            </Typography>
-            <Typography variation="body1" classes={ {body1: styles.description} }>
-                I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
-
-                I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
-            </Typography>
-        </div>
-        { actionSection }
-        <div className={styles.buttonRow}>
-            <div className={styles.actionButtonContainer}>
-                <Button
-                    classes={{root: styles.actionButton, label: styles.actionButtonLabel}}
-                    fullWidth={true}
-                    onClick={toggleExpanded}
-                    className={styles.actionButton}
-                    variant="contained"
-                >
-                    {buttonText}
-                </Button>
-            </div>
-        </div>
-    </div>;
-
-    let itemContent;
-    switch (data.type) {
-            case 'drink': 
-                itemContent = <Drink toggleExpanded={toggleExpanded} data={data}></Drink>;
-                break;
-            default:
-                itemContent = <Drink toggleExpanded={toggleExpanded} data={data}></Drink>;
-                // itemContent = defaultItemContent;
-                break;
-    }
-
     
     return (
         <div className={styles.itemContainer}>
             <Card className={itemClassName} variant="outlined" ref={containerRef}>
-                {defaultItemContent}
+                <div className={styles.itemContent}>
+                    <div className={styles.itemImage}>
+                        {
+                            data.imageUrl &&
+                            <Image
+                                layout="fill"
+                                objectFit="cover"
+                                objectPosition={data.objectPosition}
+                                src={data.imageUrl}
+                            />
+                        }
+                    </div>
+                    <div className={styles.itemTitleContainer}>
+                        <Typography variant="h5" className={styles.itemTitleLabel} color="textSecondary">
+                            { itemFieldText.NAME }: 
+                        </Typography>
+                        <Typography className={styles.itemTitle}>
+                            {data.name}
+                        </Typography>
+                    </div>
+
+                    <div className={styles.sourceContainer}>
+                        <Typography variant="h5" className={styles.sourceLabel} color="textSecondary">
+                            { itemFieldText.SOURCE }: 
+                        </Typography>
+                        <Typography className={styles.source} >
+                            {data.source}
+                        </Typography>
+                    </div>
+                    <div className={styles.itemDescription}>
+                        <Typography variant="h5" styles={{display: 'block'}} className={styles.sourceLabel} gutterBottom color="textSecondary">
+                            Description: 
+                        </Typography>
+                        <Typography variation="body1" classes={ {body1: styles.description} }>
+                            I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
+
+                            I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
+                        </Typography>
+                    </div>
+                    { actionSection }
+                    <div className={styles.buttonRow}>
+                        <div className={styles.actionButtonContainer}>
+                            <Button
+                                classes={{root: styles.actionButton, label: styles.actionButtonLabel}}
+                                fullWidth={true}
+                                onClick={toggleExpanded}
+                                className={styles.actionButton}
+                                variant="contained"
+                            >
+                                { itemFieldText.BUTTON }
+                            </Button>
+                        </div>
+                    </div>
+                </div>
             </Card>
         </div>
     );

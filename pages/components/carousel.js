@@ -8,7 +8,7 @@ import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const MIN_SCROLL_INCREMENT = 288;
 
-export default function Carousel({items, actions}) {
+export default function Carousel({items, actions, type}) {
     const [scrolling, setScrolling] = useState(false);
     const [dragStartPageX, setDragStartPageX] = useState(0);
     const [dragStartScrollX, setDragStartScrollX] = useState(0);
@@ -33,7 +33,13 @@ export default function Carousel({items, actions}) {
     const itemList = useMemo(() => 
         items.map(item => (
             <Grid key={item.id} item s={12}>
-                <Item data={item} actions={actions} backdropShown={showBackdrop} displayBackdrop={setBackdropDisplay} />
+                <Item
+                    actions={actions}
+                    backdropShown={showBackdrop}
+                    data={item}
+                    displayBackdrop={setBackdropDisplay}
+                    type={type}
+                />
             </Grid>
         )), [items, showBackdrop]
     );
@@ -72,13 +78,18 @@ export default function Carousel({items, actions}) {
     // Set 'left' to true to scroll left, falsy to scroll right.
     // TODO - set scroll increment relative to carousel/page width.
     const scroll = (left) => {
+        console.log("scrollx", scrollX);
         console.log("offsetWidth", containerRef.current.offsetWidth);
         const scroll_increment = Math.max(containerRef.current.offsetWidth * 0.75, MIN_SCROLL_INCREMENT);
         console.log("scrollIncrement is", scroll_increment);
         const currentScroll = containerRef.current.scrollLeft;
         console.log("currentScroll is", currentScroll);
         const newScroll = left ? currentScroll - scroll_increment : currentScroll + scroll_increment;
-        containerRef.current.scroll({top: 0, left: newScroll, behavior: 'smooth'})
+        containerRef.current.scroll({top: 0, left: newScroll, behavior: 'smooth'});
+        // Update the scrollX state only after the "smooth" scrolling finishes.
+        // TODO - find a better solution.
+        setTimeout(() => setScrollX(newScroll * -1), 500);
+        // setScrollX(newScroll * -1);
     };
 
     // TODO - maybe attach this to window? not sure it's necessary
@@ -99,7 +110,6 @@ export default function Carousel({items, actions}) {
     if (containerRef && scrollX) {
         containerRef.current.scrollLeft = scrollX * -1;
     }
-
 
     return (<div className={styles.outerContainer}>
         <div className={styles.fadedEdgeLeft}></div>

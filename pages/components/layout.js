@@ -131,6 +131,10 @@ const initializeSpotifyPlayer = ({accessToken}) => {
 const SpotifyAuthContext = React.createContext({access_token: null, refresh_token: null, device_id: null});
 export {SpotifyAuthContext};
 
+const SpotifyPlayerContext = React.createContext({expanded: false});
+export {SpotifyPlayerContext};
+
+
 const Layout = ({
     children,
     selectedPage,

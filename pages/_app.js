@@ -1,12 +1,10 @@
 import '../styles/globals.css'
 import '../styles/index.module.scss';
 
+import {useState} from 'react';
 import App from "next/app"
 import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
 import auth from './lib/spotify/auth'
-
-const SpotifyPlayerContext = React.createContext({expanded: false});
-export {SpotifyPlayerContext};
 
 
 const PATH_TO_PAGE = {
@@ -20,20 +18,26 @@ const getSelectedPage = (path) => {
 function MyApp(props) {
   const { Component, pageProps, router, access_token, refresh_token } = props;
   const selected_page = getSelectedPage(router.route);
+  const [spotifyPanelExpanded, setSpotifyPanelExpanded] = useState(0);
+  
+  const expandSpotifyPanel = () => {
+    setSpotifyPanelExpanded(spotifyPanelExpanded + 1);
+  }
 
-  console.log("props be like", props);
+  // console.log("props be like", props);
+  console.log("Rendering _app");
 
   return <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
-      <SpotifyPlayerContext.Provider>
+      <SpotifyPlayerContext.Provider value={{expanded: spotifyPanelExpanded}}>
         <Layout selectedPage={selected_page}>
-          <Component {...pageProps} />
+          <Component {...pageProps} expandSpotifyPanel={expandSpotifyPanel} />
         </Layout>
       </SpotifyPlayerContext.Provider>
     </SpotifyAuthContext.Provider>;
 }
 
 MyApp.getInitialProps = async (appContext) => {
-  console.log("appContext", appContext);
+  // console.log("appContext", appContext);
   // console.log("context", ctx);
   // console.log("base_props", base_props);
   // return base_props;
@@ -46,7 +50,7 @@ MyApp.getInitialProps = async (appContext) => {
   let access_token, refresh_token, expires_in;
   if (code) {
     const token_response = await auth.getNewAccessToken(code);
-    console.log("What's the token response?", token_response);
+    // console.log("What's the token response?", token_response);
     props.access_token = token_response.access_token;
     props.refresh_token = token_response.refresh_token;
     props.expires_in = token_response.expires_in;

@@ -4,11 +4,16 @@ $collapsed-height: 2.5em;
 
 .spotifyPlayer {
     // border-top: 1px solid rgba(0, 0, 0, 0.75);
-    display: grid;
-    grid-template-columns: repeat(9, 1fr);
-    grid-template-rows: repeat(8, 1fr);
-    justify-items: center;
-    height: 6em;
+    // display: grid;
+    // grid-template-columns: repeat(9, 1fr);
+    // grid-template-rows: repeat(8, 1fr);
+    display: flex;
+    // height: 6em;
+    // flex: 0 0 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 50em;
+    // padding: 1em 0 0 0;
 
     .controlsContainer {
         // display: flex;
@@ -30,14 +35,23 @@ $collapsed-height: 2.5em;
 
 .spotifyPlayerPanel {
     background-color: $primary-color !important;
+    // background-color: #d1d5d5 !important;
+
     // border: 1px solid rgba(32, 82, 107, 0.5);
     border: 1px solid darken($primary-color, 30%);
     bottom: 0;
+    padding: 0 0 .75em 0;
     position: fixed;
-    padding: 4em 0 1em 0;
+    // padding: 4em 0 1em 0;
     transform: translateY(calc(100% - $collapsed-height));
     transition: all 0.5s ease-in-out !important;
 
+    .handle {
+        display: flex;
+        flex: 0 0 100%;
+        height: $collapsed-height;
+        width: 100%;
+    }
     .openIcon {
         // color: white;
         font-size: 3rem;
@@ -63,16 +77,20 @@ $collapsed-height: 2.5em;
 }
 
 .previousButton {
-    font-size: 2em;
-    grid-area: 1 / 4 / span 3 / span 1;
+    margin-right: 1em;
+    padding: 5px;
+    // grid-area: 1 / 4 / span 3 / span 1;
 }
 
 .pausePlayButton {
-    grid-area: 1 / 5 / span 3 / span 1;
+    padding: 5px;
+    // grid-area: 1 / 5 / span 3 / span 1;
 }
 
 .nextButton {
-    grid-area: 1 / 6 / span 3 / span 1;
+    padding: 5px;
+    margin-left: 1em;
+    // grid-area: 1 / 6 / span 3 / span 1;
 }
 
 .currentlyPlayingText {
@@ -80,25 +98,31 @@ $collapsed-height: 2.5em;
     // color: mediumseagreen !important;
     color: lawngreen !important;
     // color: $secondary-color !important;
+}
 
-
-
+.playbackButtons {
+    display: flex;
+    flex: 0 0 100%;
+    justify-content: center;
+    // margin: 0 0 0.25em 0;
 }
 
 .currentlyPlayingContainer {
     align-items: center;
-
     border-radius: 5px;
     background-color: black;
     border: 2px solid slategrey;
-    // padding: 5px;
-    width: 20em;
+    display: flex;
+    font-size: 2em;
+    flex: 0 0 80%;
+    height: 1.5em;
+    padding: .2em;
+    // width: 20em;
 
     // color: $primary-text;
-    display: grid;
-    font-size: 2em;
-    grid-area: 6 / 1 / span 3 / span 9;
-    justify-items: center;
+    // display: flex;
+    // grid-area: 6 / 1 / span 3 / span 9;
+    // justify-items: center;
     // padding-top: 10px;
 
 
@@ -106,9 +130,14 @@ $collapsed-height: 2.5em;
     overflow: hidden;
 }
 
+.playback {
+    flex: 0 0 100%;
+    padding: 0 7em;
+}
+
 .scrollContainer {
     animation: animate 10s linear infinite;
-    animation-delay: 10s;
+    animation-delay: 2s;
     white-space: nowrap;
     width: 100%;
 }

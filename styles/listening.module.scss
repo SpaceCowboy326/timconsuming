@@ -27,6 +27,10 @@
     padding: 20px;
 }
 
+.redirectLoadingSpinner {
+    // color: #1DD661;
+}
+
 .requiresLoginPaper {
     align-items: center;
     display: flex;
@@ -75,25 +79,6 @@
     }
 }
 
-
-.playerContainer {
-    background-color: $primary-color !important;
-    color: $secondary-text;
-    padding: 1.5em 0 .5em;
-}
-
-.sectionContainer {
-    // background-color: $primary-color !important;
-    color: $secondary-text;
-    margin: 0 0 2em 0;
-    padding: 25px;
-
-    &:hover .sectionTitle {
-        color: $primary-text;
-    }
-}
-
-
 .sectionContent {
     flex: 0 1 90%;
     margin-top: 10px;
@@ -102,12 +87,14 @@
 
 .spotifyLoginButton {
     margin-top: 30px !important;
-    color: $background-color !important;
-    border: 1px solid white !important;
     background-color: rgb(32, 82, 107) !important;
+    border: 1px solid white !important;
+    color: $background-color !important;
+    width: 23rem;
 }
 
 .spotifyLoginButtonLabel:not(.MuiButton-startIcon) {
+    font-size: 1.25rem;
     text-decoration: underline 0.15em rgba(255, 255, 255, 0);
     transition: text-decoration-color 750ms;
       
