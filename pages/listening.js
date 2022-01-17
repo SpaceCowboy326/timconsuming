@@ -26,7 +26,7 @@ const fetchWithToken = (url, token) => {
     return fetch(url, options).then(response => response.json());
 };
 
-export default function Listening({expandSpotifyPanel}) {
+export default function Listening() {
     const [displayBackdrop, setDisplayBackdrop] = useState(false);
     const [redirecting, setRedirecting] = useState(false);
     const {access_token} = useContext(SpotifyAuthContext);
@@ -58,7 +58,6 @@ export default function Listening({expandSpotifyPanel}) {
     const playAction = {
         click: (data) => {
             console.log("playing...", data);
-            expandSpotifyPanel();
             WebPlayer.playTrack({
                 token: access_token,
                 track: data.uri,
@@ -101,6 +100,8 @@ export default function Listening({expandSpotifyPanel}) {
 
     const spotifyLoginRedirect = async () => {
         setRedirecting(true);
+        // setTimeout(() => setRedirecting(false), 10000);
+        // return;
         const redirect_url_response = await fetch(login_redirect_url).then((res) => res.json());
         console.dir({redirect_url_response});
         router.push(redirect_url_response.redirect_url);
@@ -117,7 +118,7 @@ export default function Listening({expandSpotifyPanel}) {
     const redirectLoading = <CircularProgress size="50px" thickness={5} />;
 
     const requiresLoginContent = <Paper elevation={2} classes={{root: `${styles.requiresLoginPaperContainer}`}}>
-        <Paper elevation={5} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
+        <Paper elevation={5} sx={{background: "primary.main"}} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
             <Typography className={`${styles.sectionTitle} ${styles.requiresLoginText}`} color="textSecondary" variant={'h5'}>
                 Why look when you can listen?
             </Typography>

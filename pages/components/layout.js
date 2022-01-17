@@ -89,6 +89,13 @@ const theme = createTheme({
         // secondary: {
         // main: '#f3d885',
         // },
+        type: 'light',
+        primary: {
+            main: '#81d4fa',
+        },
+        secondary: {
+            main: '#F5AE0A',
+        },
     },
 });
 

@@ -65,7 +65,6 @@ export default function Carousel({items, actions, type}) {
         window.removeEventListener('mouseup', handleMouseUp);
         setScrolling(false);
         console.log("Ending scrolling at " + e.pageX);
-        console.log("What is this", this)
     };
 
     const handleBackdropClick = e => {

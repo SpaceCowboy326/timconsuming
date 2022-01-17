@@ -18,21 +18,14 @@ const getSelectedPage = (path) => {
 function MyApp(props) {
   const { Component, pageProps, router, access_token, refresh_token } = props;
   const selected_page = getSelectedPage(router.route);
-  const [spotifyPanelExpanded, setSpotifyPanelExpanded] = useState(0);
-  
-  const expandSpotifyPanel = () => {
-    setSpotifyPanelExpanded(spotifyPanelExpanded + 1);
-  }
 
   // console.log("props be like", props);
   console.log("Rendering _app");
 
   return <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
-      <SpotifyPlayerContext.Provider value={{expanded: spotifyPanelExpanded}}>
         <Layout selectedPage={selected_page}>
-          <Component {...pageProps} expandSpotifyPanel={expandSpotifyPanel} />
+          <Component {...pageProps} />
         </Layout>
-      </SpotifyPlayerContext.Provider>
     </SpotifyAuthContext.Provider>;
 }
 

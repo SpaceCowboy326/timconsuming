@@ -23,6 +23,7 @@ function SpotifyPlayer({player, token}) {
     const {expanded, expand} = useContext(SpotifyPlayerContext);
     const [panelShown, setPanelShown] = useState(expanded);
 
+    console.log("SpotifyPlayer Position", position);
     const togglePlaying = async () => {
         const nowPlaying = !playing;
         if (nowPlaying) {
@@ -61,15 +62,7 @@ function SpotifyPlayer({player, token}) {
         }
     };
 
-    // The SpotifyPlayerContext 'expanded' field will be incremented each time a user makes an action that should
-    // cause the panel to expand. The value is irrelevant, but a change always signifies the panel should reveal
-    // itself if collapsed.
-    useEffect(() => {
-        if (expanded) {
-            setPanelShown(true);
-        }
-    }, [expanded]);
-
+    // If the 
     useEffect(() => {
         if (playing) {
             const duration = currentlyPlaying.duration;
@@ -110,9 +103,13 @@ function SpotifyPlayer({player, token}) {
         {root: `${styles.spotifyPlayerPanel} ${styles.spotifyPlayerPanel__shown}`} :
         {root: styles.spotifyPlayerPanel};
 
+    // Attach a 'player_state_changed' listener to the Spotify Player. This event fires when almost any meaningful change
+    // happens to the playback state, and will be sent periodically while a song is playing with progress updates.
     useEffect(() => {
-        if (player && !listening) {
+        // if (player && !listening) {
+        if (player) {
             player.addListener('player_state_changed', state => {
+                console.log("Player State Change", state);
                 if (!state) {
                     return;
                 }
@@ -124,6 +121,7 @@ function SpotifyPlayer({player, token}) {
                         id: stateTrack.id,
                         text: formattedTrackText,
                     });
+                    setPanelShown(true);
                 };
                 if (!state.paused && !playing && stateTrack) {
                     setPlaying(true);
@@ -132,7 +130,8 @@ function SpotifyPlayer({player, token}) {
                     updatePositionIfNecessary({newPosition: state.position, duration: state.duration, currentPosition: position});
                 }
             });
-            setListening(true);
+            // setListening(true);
+            return () => player.removeListener('player_state_changed');
         }
     }, [player]);
 
@@ -192,7 +191,7 @@ function SpotifyPlayer({player, token}) {
                 </div>
             </div>
             <div className={styles.playback}>
-                <Slider onChangeCommitted={handlePlaybackSliderChangeAccepted} onChange={handlePlaybackSliderChange} color="primary" value={position}></Slider>
+                <Slider onChangeCommitted={handlePlaybackSliderChangeAccepted} onChange={handlePlaybackSliderChange} color="secondary" value={position}></Slider>
                 {/* <Slider onChange={handlePlaybackSliderChange} color="primary" value={position}></Slider> */}
             </div>
             <div className={styles.currentlyPlayingContainer}>

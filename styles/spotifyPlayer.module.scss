@@ -68,7 +68,7 @@ $collapsed-height: 2.5em;
     }
 
     &.spotifyPlayerPanel__shown {
-        transform: translateY(0);
+        transform: translateY(2px);
     
         .openIcon {
             transform: rotate(0deg);
@@ -88,8 +88,8 @@ $collapsed-height: 2.5em;
 }
 
 .nextButton {
-    padding: 5px;
     margin-left: 1em;
+    padding: 5px;
     // grid-area: 1 / 6 / span 3 / span 1;
 }
 

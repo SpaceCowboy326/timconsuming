@@ -28,7 +28,7 @@
 }
 
 .redirectLoadingSpinner {
-    // color: #1DD661;
+    color: #1DD661 !important;
 }
 
 .requiresLoginPaper {
@@ -67,7 +67,7 @@
 }
 
 .sectionContainer {
-    background-color: rgb(78, 118, 147) !important;
+    // background-color: rgb(78, 118, 147) !important;
     background-color: rgb(32, 82, 107) !important;
 
     color: $background-color !important;
