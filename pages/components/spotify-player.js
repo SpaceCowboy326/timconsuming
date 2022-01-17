@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import WebPlayer from '../lib/spotify/web-player';
 import styles from '../../styles/spotifyPlayer.module.scss';
-import { IconButton, Paper, Slider, Typography } from '@material-ui/core';
-import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious, ArrowDropDown } from '@material-ui/icons';
+import { IconButton, Paper, Slider, Typography } from '@mui/material';
+import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious, ArrowDropDown } from '@mui/icons-material';
 import {SpotifyPlayerContext} from '../components/layout';
 
 const MIN_POSITION = 1;
@@ -146,10 +146,7 @@ function SpotifyPlayer({player, token}) {
 
     return player ? <Paper elevation={5} classes={spotifyPanelClasses}>
         <div className={styles.handle}>
-            <IconButton
-                onClick={togglePanelClick}
-                className={styles.openButton}
-            >
+            <IconButton onClick={togglePanelClick} className={styles.openButton} size="large">
                 <ArrowDropDown className={styles.openIcon}/>
             </IconButton>
         </div>

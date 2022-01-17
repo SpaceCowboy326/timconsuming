@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
-import { Typography, Fade, Paper } from '@material-ui/core';
+import { Typography, Fade, Paper } from '@mui/material';
 import SpotifyPlayer from '../components/spotify-player';
 // import avenirNextFont from '../../public/AvenirNextLTPro-Regular.otf';
 import styles from '../../styles/index.module.scss';
@@ -82,7 +82,7 @@ const getNavItemClasses = ({pageName, selectedPage, previous, transition}) => {
 //         },
 //     },
 //     palette: {
-//         // type: "dark",
+//         // mode: "dark",
 //         // primary: {
 //         // main: '#b6c4f4',
 //         // },

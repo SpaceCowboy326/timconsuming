@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Backdrop, Grid, Button, IconButton, Tooltip, Typography } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
+import { Backdrop, Grid, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
 import styles from '../../styles/item.module.scss';
 
 const ITEM_TYPE_LIST = ['Drink', '']
@@ -71,16 +71,18 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     if (actions) {
         actionSection = <div className={styles.actionSection}>
         { actions.map((action, index) => {
-            return <Tooltip title={action.title} key={`action_${index}`}>
-                <IconButton
-                    color="primary"
-                    onClick={ () => action.click(data) }
-                    aria-label="play track"
-                    component="span"
-                >
-                    {action.icon}
-                </IconButton>
-            </Tooltip>
+            return (
+                <Tooltip title={action.title} key={`action_${index}`}>
+                    <IconButton
+                        color="primary"
+                        onClick={ () => action.click(data) }
+                        aria-label="play track"
+                        component="span"
+                        size="large">
+                        {action.icon}
+                    </IconButton>
+                </Tooltip>
+            );
         })}
         </div>;
     }

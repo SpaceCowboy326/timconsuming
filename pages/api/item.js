@@ -2,7 +2,7 @@
 import { connectToDatabase } from '../lib/mongodb'
 
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
     if (req.method === 'POST') {
         const {client, db} = await connectToDatabase();
         const collection = db.collection('items');

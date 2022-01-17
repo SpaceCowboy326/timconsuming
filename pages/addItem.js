@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Layout from './components/layout'
 import Carousel from './components/carousel'
-import { Box, Button, Typography, Paper, InputLabel, TextField, Select, MenuItem, FormControl } from '@material-ui/core';
+import { Box, Button, Typography, Paper, InputLabel, TextField, Select, MenuItem, FormControl } from '@mui/material';
 import {items} from './data/drinking.json';
 import styles from '../styles/addItem.module.scss';
 import React, { useState, useEffect, useContext } from 'react';

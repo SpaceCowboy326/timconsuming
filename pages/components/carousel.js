@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Grid, Button, Typography, Backdrop } from '@material-ui/core';
+import { Grid, Button, Typography, Backdrop } from '@mui/material';
 import Item from './item';
 import styles from '../../styles/carousel.module.scss';
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 
 const MIN_SCROLL_INCREMENT = 288;
 

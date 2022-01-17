@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Layout from './components/layout'
 import Carousel from './components/carousel'
-import { Button, Typography, Paper } from '@material-ui/core';
+import { Button, Typography, Paper } from '@mui/material';
 import allItems from './data/drinking.json';
 import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';

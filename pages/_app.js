@@ -5,13 +5,13 @@ import {useState} from 'react';
 import App from "next/app"
 import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
 import auth from './lib/spotify/auth'
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
 
 
 const bodyFont = "'Noto Sans SC', sans-serif;";
 // const bodyFont = "'Rubik', sans-serif;";
 // const bodyFont = avenirNextFont;
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
     typography: {
         // fontFamily: "'Rubik', sans-serif;", 
         // fontFamily: "'Amatic SC', cursive;", 
@@ -36,7 +36,7 @@ const theme = createTheme({
         },
     },
     palette: {
-        // type: "dark",
+        // mode: "dark",
         // primary: {
         // main: '#b6c4f4',
         // },
@@ -51,7 +51,7 @@ const theme = createTheme({
             main: '#F5AE0A',
         },
     },
-});
+}));
 
 const PATH_TO_PAGE = {
   '/eating': 'eati'
@@ -68,13 +68,17 @@ function MyApp(props) {
   // console.log("props be like", props);
   console.log("Rendering _app");
 
-  return <ThemeProvider theme={theme}>
-    <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
-        <Layout selectedPage={selected_page}>
-          <Component {...pageProps} />
-        </Layout>
-    </SpotifyAuthContext.Provider>
-  </ThemeProvider>;
+  return (
+      <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
+                <Layout selectedPage={selected_page}>
+                  <Component {...pageProps} />
+                </Layout>
+            </SpotifyAuthContext.Provider>
+          </ThemeProvider>
+      </StyledEngineProvider>
+  );
 }
 
 MyApp.getInitialProps = async (appContext) => {

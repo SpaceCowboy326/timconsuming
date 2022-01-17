@@ -3,12 +3,12 @@ import Image from 'next/image'
 
 import {SpotifyAuthContext} from './components/layout';
 import Carousel from './components/carousel';
-import { Button, CircularProgress, Typography, Paper } from '@material-ui/core';
+import { Button, CircularProgress, Typography, Paper } from '@mui/material';
 import styles from '../styles/listening.module.scss';
 import React, { useState, useContext, useMemo } from 'react';
 import spotifyData from './lib/spotify/data';
 import WebPlayer from './lib/spotify/web-player';
-import {PlayArrow, PlayCircleFilled, PlaylistAdd, QueuePlayNext} from '@material-ui/icons';
+import {PlayArrow, PlayCircleFilled, PlaylistAdd, QueuePlayNext} from '@mui/icons-material';
 
 import useSWR from 'swr';
 

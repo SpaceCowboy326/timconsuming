@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import React, { useState, useEffect, useRef } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Backdrop, Grid, Button, Typography } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
+import { Backdrop, Grid, Button, Typography } from '@mui/material';
+import Card from '@mui/material/Card';
 import styles from '../../../styles/drink.module.scss';
 import itemStyles from '../../../styles/item.module.scss';
 
