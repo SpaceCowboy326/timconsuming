@@ -5,7 +5,52 @@ import {useState} from 'react';
 import App from "next/app"
 import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
 import auth from './lib/spotify/auth'
+import {createTheme} from '@material-ui/core/styles';
 
+const bodyFont = "'Noto Sans SC', sans-serif;";
+// const bodyFont = "'Rubik', sans-serif;";
+// const bodyFont = avenirNextFont;
+const theme = createTheme({
+    typography: {
+        // fontFamily: "'Rubik', sans-serif;", 
+        // fontFamily: "'Amatic SC', cursive;", 
+        // fontFamily: "'EB Garamond', serif",
+        // fontFamily: "'Prata', serif",
+        // fontFamily: "'Bungee Shade', cursive",
+        // fontWeight: 700,
+        // fontFamily: "'Noto Sans SC', sans-serif;",
+        // fontFamily: "'Monoton', cursive",
+        fontFamily: "'Bungee', cursive",
+        h5: {
+            lineHeight: '.8',
+        },
+        body1: {
+            // fontFamily: "'Roboto'",
+            fontFamily: bodyFont,
+            fontWeight: 600,
+        },
+        body2: {
+            // fontFamily: "'Roboto'",
+            fontFamily: bodyFont,
+        },
+    },
+    palette: {
+        // type: "dark",
+        // primary: {
+        // main: '#b6c4f4',
+        // },
+        // secondary: {
+        // main: '#f3d885',
+        // },
+        type: 'light',
+        primary: {
+            main: '#81d4fa',
+        },
+        secondary: {
+            main: '#F5AE0A',
+        },
+    },
+});
 
 const PATH_TO_PAGE = {
   '/eating': 'eati'
@@ -22,11 +67,13 @@ function MyApp(props) {
   // console.log("props be like", props);
   console.log("Rendering _app");
 
-  return <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
+  return <ThemeProvider theme={theme}>
+    <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
         <Layout selectedPage={selected_page}>
           <Component {...pageProps} />
         </Layout>
-    </SpotifyAuthContext.Provider>;
+    </SpotifyAuthContext.Provider>
+  </ThemeProvider>;
 }
 
 MyApp.getInitialProps = async (appContext) => {

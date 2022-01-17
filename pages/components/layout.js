@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { createMuiTheme, ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
 import { Typography, Fade, Paper } from '@material-ui/core';
 import SpotifyPlayer from '../components/spotify-player';
@@ -54,50 +54,50 @@ const getNavItemClasses = ({pageName, selectedPage, previous, transition}) => {
 // const bodyFont = "'Amatic SC', cursive;"; NOPE
 
 // const bodyFont = "'Roboto'";
-const bodyFont = "'Noto Sans SC', sans-serif;";
-// const bodyFont = "'Rubik', sans-serif;";
-// const bodyFont = avenirNextFont;
-const theme = createTheme({
-    typography: {
-        // fontFamily: "'Rubik', sans-serif;", 
-        // fontFamily: "'Amatic SC', cursive;", 
-        // fontFamily: "'EB Garamond', serif",
-        // fontFamily: "'Prata', serif",
-        // fontFamily: "'Bungee Shade', cursive",
-        // fontWeight: 700,
-        // fontFamily: "'Noto Sans SC', sans-serif;",
-        // fontFamily: "'Monoton', cursive",
-        fontFamily: "'Bungee', cursive",
-        h5: {
-            lineHeight: '.8',
-        },
-        body1: {
-            // fontFamily: "'Roboto'",
-            fontFamily: bodyFont,
-            fontWeight: 600,
-        },
-        body2: {
-            // fontFamily: "'Roboto'",
-            fontFamily: bodyFont,
-        },
-    },
-    palette: {
-        // type: "dark",
-        // primary: {
-        // main: '#b6c4f4',
-        // },
-        // secondary: {
-        // main: '#f3d885',
-        // },
-        type: 'light',
-        primary: {
-            main: '#81d4fa',
-        },
-        secondary: {
-            main: '#F5AE0A',
-        },
-    },
-});
+// const bodyFont = "'Noto Sans SC', sans-serif;";
+// // const bodyFont = "'Rubik', sans-serif;";
+// // const bodyFont = avenirNextFont;
+// const theme = createTheme({
+//     typography: {
+//         // fontFamily: "'Rubik', sans-serif;", 
+//         // fontFamily: "'Amatic SC', cursive;", 
+//         // fontFamily: "'EB Garamond', serif",
+//         // fontFamily: "'Prata', serif",
+//         // fontFamily: "'Bungee Shade', cursive",
+//         // fontWeight: 700,
+//         // fontFamily: "'Noto Sans SC', sans-serif;",
+//         // fontFamily: "'Monoton', cursive",
+//         fontFamily: "'Bungee', cursive",
+//         h5: {
+//             lineHeight: '.8',
+//         },
+//         body1: {
+//             // fontFamily: "'Roboto'",
+//             fontFamily: bodyFont,
+//             fontWeight: 600,
+//         },
+//         body2: {
+//             // fontFamily: "'Roboto'",
+//             fontFamily: bodyFont,
+//         },
+//     },
+//     palette: {
+//         // type: "dark",
+//         // primary: {
+//         // main: '#b6c4f4',
+//         // },
+//         // secondary: {
+//         // main: '#f3d885',
+//         // },
+//         type: 'light',
+//         primary: {
+//             main: '#81d4fa',
+//         },
+//         secondary: {
+//             main: '#F5AE0A',
+//         },
+//     },
+// });
 
 
 // Initializes the Spotify Web Player.  Should only occur once per page load.
@@ -213,7 +213,6 @@ const Layout = ({
         spotify_player_component = null;
 
     return (
-        <ThemeProvider theme={theme}>
             {/* <SpotifyAuthContext.Provider value={{access_token, refresh_token}}> */}
                 <div className={styles.container}>
                     <Head>
@@ -266,7 +265,6 @@ const Layout = ({
                     <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
                 </div>
             {/* </SpotifyAuthContext.Provider> */}
-        </ThemeProvider>
     );
 }
 
