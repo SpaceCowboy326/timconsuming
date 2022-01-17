@@ -5,7 +5,8 @@ import {useState} from 'react';
 import App from "next/app"
 import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
 import auth from './lib/spotify/auth'
-import {createTheme} from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+
 
 const bodyFont = "'Noto Sans SC', sans-serif;";
 // const bodyFont = "'Rubik', sans-serif;";

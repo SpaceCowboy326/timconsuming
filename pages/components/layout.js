@@ -213,7 +213,6 @@ const Layout = ({
         spotify_player_component = null;
 
     return (
-            {/* <SpotifyAuthContext.Provider value={{access_token, refresh_token}}> */}
                 <div className={styles.container}>
                     <Head>
                         <title>TimConsuming</title>
@@ -264,7 +263,6 @@ const Layout = ({
                     </Fade>
                     <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
                 </div>
-            {/* </SpotifyAuthContext.Provider> */}
     );
 }
 
