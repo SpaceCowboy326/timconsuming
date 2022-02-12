@@ -32,7 +32,7 @@ export default function Listening() {
     const {access_token} = useContext(SpotifyAuthContext);
     const router = useRouter();
     // const topTracks = spotifyData.useTopTracks(access_token)
-    const topTracks = useSWR(access_token ? [`https://api.spotify.com/v1/me/top/tracks`, access_token] : null, fetchWithToken)
+    const topTracks = useSWR(access_token ? [`https://api.spotify.com/v1/me/top/tracks`, access_token] : null, fetchWithToken);
 
     let trackData = [];
     if (topTracks.data && topTracks.data.items) {
@@ -115,24 +115,36 @@ export default function Listening() {
         src={'/images/spotify-logo.png'}
     />, []);
 
-    const redirectLoading = <CircularProgress size="50px" thickness={5} />;
+    const redirectLoading = <CircularProgress color="secondary" size="50px" thickness={5} />;
+    const sectionContainerSx = redirectLoading ? {background: '#20526b'} : null;
 
-    const requiresLoginContent = <Paper elevation={2} classes={{root: `${styles.requiresLoginPaperContainer}`}}>
-        <Paper elevation={5} sx={{background: "primary.main"}} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
-            <Typography className={`${styles.sectionTitle} ${styles.requiresLoginText}`} color="textSecondary" variant={'h5'}>
+    const requiresLoginContent = !access_token ? <Paper elevation={2} sx={{bgcolor: 'primary.main'}} classes={{root: `${styles.requiresLoginPaperContainer}`}}>
+        <Paper elevation={5} sx={sectionContainerSx} classes={{root: `${styles.requiresLoginPaper} ${styles.sectionContainer}`}}>
+            <Typography color="white" variant={'h5'} sx={{mb: 3}}>
                 Why look when you can listen?
             </Typography>
             <Button
-                variant="outlined"
-                size="large"
+                classes={{root: styles.spotifyLoginButton}}
                 onClick={spotifyLoginRedirect}
-                classes={{root: styles.spotifyLoginButton, label: styles.spotifyLoginButtonLabel}}
+                size="large"
+                sx={{
+                    color: 'white',
+                    border: '1px solid white',
+                    textDecorationColor: 'rgba(255, 255, 255, 0)',
+                    transition: 'text-decoration-color 1250ms',
+                    '&:hover': {
+                        border: '1px solid white',
+                        textDecorationColor: 'white',
+                        textDecoration: 'underline',
+                    }
+                }}
                 startIcon={redirecting ? redirectLoading : spotifyLogo}
+                variant="outlined"
             >
                 Login to Spotify
             </Button>
         </Paper>
-    </Paper>;
+    </Paper> : null;
 
     const loggedInContent = <div className={styles.listeningLoggedIn}>
         <Paper elevation={3} classes={{root: styles.sectionContainer}}>

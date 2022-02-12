@@ -226,8 +226,6 @@ $expand-animation-duration: .25s;
 }
 
 .actionButton {
-    background-color: $secondary-color !important;
-    color: $background-color !important;
     transition: height $expand-animation-duration;
 }
 

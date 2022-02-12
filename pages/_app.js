@@ -45,12 +45,34 @@ const theme = createTheme(adaptV4Theme({
         // },
         type: 'light',
         primary: {
-            main: '#81d4fa',
+          main: '#81d4fa',
         },
         secondary: {
-            main: '#F5AE0A',
+          main: '#F5AE0A',
+          contrastText: '#FFFFFF',
         },
+        background: {
+          paper: '#81d4fa',
+        },
+        tertiary: {
+          main: "#3f51b5",
+        },
+        spotify: {
+          main: '#20526b'
+        }
     },
+    components: {
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            // backgroundColor: 'primary.main',
+          }
+        }
+      },
+      MuiTextField: {
+        
+      }
+    }
 }));
 
 const PATH_TO_PAGE = {

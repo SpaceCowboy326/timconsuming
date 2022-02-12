@@ -45,7 +45,6 @@ $item-width: 18rem;
         margin-right: 10px;
         transform: rotate(180deg);
     }
-
 }
 
 .viewport {
@@ -78,18 +77,6 @@ $item-width: 18rem;
     transition: opacity 1s;
     width: 75px;
     z-index: 999;
-}
-
-.gridContainer {
-    
-    // div:before {
-    //     box-shadow: -15px 0 15px -15px inset;
-    //     left: -15px;
-    //   }
-    //   div:after {
-    //     box-shadow: 15px 0 15px -15px inset;
-    //     right: -15px;
-    //   }
 }
 
 .icon {
@@ -170,6 +157,5 @@ $item-width: 18rem;
     10% {transform: translate(0, 0);}
     60% {transform: translate(-6px, 0);}
     75% {transform: translate(-6px, 0);}
-    // 58% {transform: translate(-8px, 0);}
     100% {transform: translate(0, 0);}
 }

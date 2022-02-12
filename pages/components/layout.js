@@ -114,9 +114,6 @@ const initializeSpotifyPlayer = ({accessToken}) => {
     player.addListener('authentication_error', ({ message }) => { console.error(message); });
     player.addListener('account_error', ({ message }) => { console.error(message); });
     player.addListener('playback_error', ({ message }) => { console.error(message); });
-  
-
-
 
     // Ready
     player.addListener('ready', ({ device_id }) => {

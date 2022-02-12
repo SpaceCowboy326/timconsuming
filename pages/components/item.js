@@ -1,10 +1,8 @@
-import Image from 'next/image'
+import Image from 'next/image';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Backdrop, Grid, Button, IconButton, Tooltip, Typography } from '@mui/material';
+import { Button, IconButton, Tooltip, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import styles from '../../styles/item.module.scss';
-
-const ITEM_TYPE_LIST = ['Drink', '']
 
 // Returns an object containing the field text for an item based on its 'type'
 const getFieldTextByType = (type) => {
@@ -67,31 +65,28 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     };
 
     // If the data specifies any "actions", create a section for them.
-    let actionSection = null;
-    if (actions) {
-        actionSection = <div className={styles.actionSection}>
-        { actions.map((action, index) => {
+    let actionSection = useMemo(() => <div className={styles.actionSection}>
+        {actions && actions.map((action, index) => {
             return (
                 <Tooltip title={action.title} key={`action_${index}`}>
                     <IconButton
-                        color="primary"
-                        onClick={ () => action.click(data) }
                         aria-label="play track"
+                        color="tertiary"
                         component="span"
-                        size="large">
-                        {action.icon}
+                        sx={{mx: 1.5}}
+                        onClick={ () => action.click(data) }
+                    >{action.icon}
                     </IconButton>
                 </Tooltip>
             );
         })}
-        </div>;
-    }
+    </div>, [actions]);
 
     const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
     
     return (
         <div className={styles.itemContainer}>
-            <Card className={itemClassName} variant="outlined" ref={containerRef}>
+            <Card sx={{bgcolor: '#fff'}} className={itemClassName} variant="outlined" ref={containerRef}>
                 <div className={styles.itemContent}>
                     <div className={styles.itemImage}>
                         {
@@ -138,6 +133,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
                                 classes={{root: styles.actionButton, label: styles.actionButtonLabel}}
                                 fullWidth={true}
                                 onClick={toggleExpanded}
+                                color="secondary"
                                 className={styles.actionButton}
                                 variant="contained"
                             >

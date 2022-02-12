@@ -3,7 +3,6 @@ import WebPlayer from '../lib/spotify/web-player';
 import styles from '../../styles/spotifyPlayer.module.scss';
 import { IconButton, Paper, Slider, Typography } from '@mui/material';
 import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious, ArrowDropDown } from '@mui/icons-material';
-import {SpotifyPlayerContext} from '../components/layout';
 
 const MIN_POSITION = 1;
 const POSITION_THRESHOLD = .5;
@@ -20,8 +19,8 @@ function SpotifyPlayer({player, token}) {
     const [currentlyPlaying, setCurrentlyPlaying] = useState({text: 'None'});
     const [position, setPosition] = useState(0);
     const [listening, setListening] = useState(false);
-    const {expanded, expand} = useContext(SpotifyPlayerContext);
-    const [panelShown, setPanelShown] = useState(expanded);
+    // const {expanded, expand} = useContext(SpotifyPlayerContext);
+    const [panelShown, setPanelShown] = useState(false);
 
     console.log("SpotifyPlayer Position", position);
     const togglePlaying = async () => {
@@ -121,10 +120,10 @@ function SpotifyPlayer({player, token}) {
                         id: stateTrack.id,
                         text: formattedTrackText,
                     });
-                    setPanelShown(true);
                 };
                 if (!state.paused && !playing && stateTrack) {
                     setPlaying(true);
+                    setPanelShown(true);
                 }
                 if (state.position && state.duration) {
                     updatePositionIfNecessary({newPosition: state.position, duration: state.duration, currentPosition: position});
@@ -188,8 +187,7 @@ function SpotifyPlayer({player, token}) {
                 </div>
             </div>
             <div className={styles.playback}>
-                <Slider onChangeCommitted={handlePlaybackSliderChangeAccepted} onChange={handlePlaybackSliderChange} color="secondary" value={position}></Slider>
-                {/* <Slider onChange={handlePlaybackSliderChange} color="primary" value={position}></Slider> */}
+                <Slider sx={{height: '10px'}} onChangeCommitted={handlePlaybackSliderChangeAccepted} onChange={handlePlaybackSliderChange} color="tertiary" value={position} size="large"></Slider>
             </div>
             <div className={styles.currentlyPlayingContainer}>
                 <div className={styles.scrollContainer}>

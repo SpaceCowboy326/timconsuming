@@ -7,6 +7,7 @@ import allItems from './data/drinking.json';
 import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
 import { connectToDatabase } from '../lib/mongodb'
+import {useItemData} from '../lib/util';
 
 const items = allItems.items;
 
@@ -17,6 +18,9 @@ export default function Drinking() {
         console.log("I am going to show a backdrop?", show);
         setDisplayBackdrop(show);
     }
+    const itemData = useItemData('Beverage');
+    console.log("ItemData is... anything?", itemData);
+    console.log("ItemData data is...", itemData.data);
 
     return (
             <div className={styles.drinking}>
