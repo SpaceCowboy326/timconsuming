@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import WebPlayer from '../lib/spotify/web-player';
 import styles from '../../styles/spotifyPlayer.module.scss';
-import { IconButton, Paper, Slider, Typography } from '@mui/material';
+import { Box, IconButton, Paper, Slider, Typography } from '@mui/material';
 import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious, ArrowDropDown } from '@mui/icons-material';
 
 const MIN_POSITION = 1;
@@ -144,14 +144,14 @@ function SpotifyPlayer({player, token}) {
     };
 
     return player ? <Paper elevation={5} classes={spotifyPanelClasses}>
-        <div className={styles.handle}>
+        <Box className={styles.handle}>
             <IconButton onClick={togglePanelClick} className={styles.openButton} size="large">
                 <ArrowDropDown className={styles.openIcon}/>
             </IconButton>
-        </div>
-        <div className={styles.spotifyPlayer}>
-            <div className={styles.playbackButtons}>
-                <div className={styles.previousButton}>
+        </Box>
+        <Box className={styles.spotifyPlayer}>
+            <Box className={styles.playbackButtons}>
+                <Box className={styles.previousButton}>
                     <IconButton
                         onClick={handlePreviousClick}
                         size={'small'}
@@ -160,8 +160,8 @@ function SpotifyPlayer({player, token}) {
                     >
                         <SkipPrevious className={styles.playerIcon}/>
                     </IconButton>
-                </div>
-                <div className={styles.pausePlayButton}>
+                </Box>
+                <Box className={styles.pausePlayButton}>
                     <IconButton
                         onClick={togglePlaying}
                         size={'small'}
@@ -174,8 +174,8 @@ function SpotifyPlayer({player, token}) {
                                 <PlayCircleFilled className={styles.playerIcon}/> 
                         }
                     </IconButton>
-                </div>
-                <div className={styles.nextButton} >
+                </Box>
+                <Box className={styles.nextButton} >
                     <IconButton
                         onClick={handleNextClick}
                         size={'small'}
@@ -184,19 +184,19 @@ function SpotifyPlayer({player, token}) {
                     >
                         <SkipNext className={styles.playerIcon}/>
                     </IconButton>
-                </div>
-            </div>
-            <div className={styles.playback}>
+                </Box>
+            </Box>
+            <Box className={styles.playback}>
                 <Slider sx={{height: '10px'}} onChangeCommitted={handlePlaybackSliderChangeAccepted} onChange={handlePlaybackSliderChange} color="tertiary" value={position} size="large"></Slider>
-            </div>
-            <div className={styles.currentlyPlayingContainer}>
-                <div className={styles.scrollContainer}>
+            </Box>
+            <Box className={styles.currentlyPlayingContainer}>
+                <Box className={styles.scrollContainer}>
                 <Typography classes={{root: styles.currentlyPlayingText}} color="textPrimary" variant={'h5'}>
                     {currentlyPlaying.text}
                 </Typography>
-                </div>
-            </div>
-        </div>
+                </Box>
+            </Box>
+        </Box>
     </Paper> :
     null;
 }

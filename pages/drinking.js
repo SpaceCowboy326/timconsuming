@@ -1,24 +1,23 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import Layout from './components/layout'
 import Carousel from './components/carousel'
 import { Button, Typography, Paper } from '@mui/material';
 import allItems from './data/drinking.json';
 import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
-import { connectToDatabase } from '../lib/mongodb'
 import {useItemData} from '../lib/util';
+import {getItems} from '../lib/item/items';
 
 const items = allItems.items;
 
-
-export default function Drinking() {
+export default function Drinking({initialItems}) {
     const [displayBackdrop, setDisplayBackdrop] = useState(false);
     const showBackdrop = (show) => {
         console.log("I am going to show a backdrop?", show);
         setDisplayBackdrop(show);
+
     }
-    const itemData = useItemData('Beverage');
+    // const itemData = useItemData('Beverage');
+    const itemData = {};
+    console.log("INITIAL ITEM DATA", initialItems);
     console.log("ItemData is... anything?", itemData);
     console.log("ItemData data is...", itemData.data);
 
@@ -44,22 +43,13 @@ export default function Drinking() {
                     </div>
                 </Paper>
             </div>
-            
     );
 }
 
 
 export async function getServerSideProps(context) {
-    // const { client } = await connectToDatabase()
-    const {client, db} = await connectToDatabase();
-    const collection = db.collection('items');
-    const items = await collection.find({}).toArray();
-    // console.log("Collection is", collection);
-    console.log("But items is items", items);
-    const isConnected = false;// await client.isConnected()
-
+    const initialItems = await getItems('Beverage');
     return {
-      props: { isConnected },
+        props: { initialItems },
     }
-  }
-  
+}

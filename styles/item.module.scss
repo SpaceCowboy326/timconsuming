@@ -8,11 +8,11 @@
     white-space: nowrap;
 };
 
-$item-height: 21em;
-$item-width: 20em;
+$item-height: 15rem;
+$item-width: 14rem;
 
-$expanded-item-height: 50em;
-$expanded-item-width: 52em;
+// $expanded-item-height: 60vh;
+$expanded-item-width: min(80vw, 45em);
 // $item-width: 18vw;
 $item-padding: 0.5em;
 
@@ -22,16 +22,16 @@ $item-rows-expanded: 16;
 
 $expand-animation-duration: .25s;
 
-// TODO - do something cleaner for this. I don't even know what "+ 5" technically does.
-.itemContainer {
-    height: $item-height;
-    width: $item-width;
-}
-
 .itemContent {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+.itemImage {
+    height: 8em;
+    position: relative;
+    width: 100%;
 }
 
 .item {
@@ -44,7 +44,7 @@ $expand-animation-duration: .25s;
     .itemTitle {
         display: inline-block;
         // font-size: max(1.75em, 14px);
-        font-size: 1.5em;
+        // font-size: 1.5em;
         max-width: 12em;
         // max-width: 150px;
         overflow: hidden;
@@ -56,10 +56,7 @@ $expand-animation-duration: .25s;
     // TODO: Only placed under .item to give this class precedence over default MUI class.
     .source {
         color: $secondary-text;
-        // display: flex;
         display: inline-block;
-        // font-size: max(1.9em, 16px);
-        font-size: 1.75em;
         max-width: 11em;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -95,7 +92,6 @@ $expand-animation-duration: .25s;
 
 .itemDescription {
     display: none;
-    margin-bottom: 1em;
     opacity: 0;
     transition: max-height $expand-animation-duration, opacity $expand-animation-duration;
 }
@@ -112,20 +108,8 @@ $expand-animation-duration: .25s;
     font-size: max(1em, 16px) !important;
     font-weight: 400 !important;
     // padding: 5px 20px;
-    padding: .25em 1.25em;
+    padding: 0 1.25em;
 }
-
-.itemImage {
-    height: 12em;
-    width: 100%;
-    position: relative;
-}
-
-
-.itemTitleContainer {
-    display: flex;
-}
-
 
 .itemTitleLabel {
     display: none;
@@ -145,19 +129,25 @@ $expand-animation-duration: .25s;
     opacity: 0;
 }
 
-
 .item.item__expanded {
-    animation: pulsate-fwd 0.75s ease-in-out both;
+    .itemImage {
+        height: 25em;
+    }
+
+    .itemTitleContainer {
+        display: flex;
+        height: 2.25em;
+        margin-top: .5em;
+    }
+
     .itemTitle {
-        font-size: 1.75em;
+        font-size: 1.5rem;
         max-width: 30em;
-        // padding-left: 20px;
-        padding-left: .75em;
- 
+        padding-left: .6rem;
     }
 
     .itemTitleLabel {
-        align-items: center;
+        align-items:flex-end;
         display: flex;
         max-width: 200px;
         opacity: 1;
@@ -165,74 +155,39 @@ $expand-animation-duration: .25s;
 
     .source {
         color: rgb(0,0,0,0.87);
-        font-size: 1.75em;
+        font-size: 1.5em;
         max-width: 30em;
         padding-left: .75em;
-
     }
 
     .sourceLabel {
-        align-items: center;
+        align-items: flex-end;
         display: flex;
         max-width: 200px;
         opacity: 1;
     }
 
+    .sourceContainer {
+        display: flex;
+        // align-items: center;
+        // justify-content: center;
+        height: 2.25em;
+    }
+
     .itemDescription {
         display: block;
-        margin-top: .5em;
+        margin-top: .1em;
         opacity: 1;
     }
 
     .actionSection {
         display: flex;
-        // margin-top: .5em;
         opacity: 1;
     }
-
-    .actionButtonLabel {
-        font-size: 2em;
-    }
-
-    .itemImage {
-        height: 25em;
-    }
-
-    .itemTitleContainer {
-        height: 3em;
-        margin-top: .5em;
-    }
-    
-    .sourceContainer {
-        height: 3em;
-    }
-}
-
-.media {
-    height: 0;
-    padding-top: 56.25%; // 16:9
-}
-
-.buttonRow {
-    align-items: flex-end;
-    display: flex;
-    flex: 1 1 auto;
-    justify-content: flex-end;   
 }
 
 .actionButtonContainer {
-    display: flex;
     width: 100%;
-}
-
-.actionButton {
-    transition: height $expand-animation-duration;
-}
-
-.actionButtonLabel {
-    font-size: 1.3em;
-    -webkit-text-stroke-width: 0.2px;
-    -webkit-text-stroke-color: black;//darken($secondary-color, 7%);
 }
 
 .expandIcon {

@@ -1,13 +1,7 @@
 @import './colors.module.scss';
 
 $item-height: 200px;
-// $item-width: 200px;
 $item-width: 18rem;
-.item {
-    border: 1px solid black;
-    height: $item-height;
-    width: $item-width;
-}
 
 .outerContainer {
     border-top: 2px solid rgb(177, 173, 173, 0);
@@ -48,12 +42,9 @@ $item-width: 18rem;
 }
 
 .viewport {
-    box-sizing: border-box;
     cursor: grab;
-    flex: 1 1;
-    min-width: $item-width;
     overflow: hidden;
-    padding: 20px 65px;
+    padding: 1.25rem 2rem;
     position: relative;
 }
 
@@ -87,7 +78,6 @@ $item-width: 18rem;
     width: 80px;
     height: 60px;
     cursor: pointer;
-    // animation: arrow 700ms linear infinite;
 }
   
 .arrow {

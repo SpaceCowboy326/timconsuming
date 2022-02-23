@@ -1,14 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { connectToDatabase } from '../../lib/mongodb'
+// import { connectToDatabase } from '../../lib/mongodb'
 
-const itemFields = [
-  'location',
-  'name',
-  'source',
-  'tags',
-  'type',
-  'imageUrl',
-];
+import {getItems} from '../../lib/item/items';
 
 export default async (req, res) => {
     if (req.method === 'GET') {
@@ -18,9 +11,7 @@ export default async (req, res) => {
             return;
         }
 
-        const {client, db} = await connectToDatabase();
-        const collection = db.collection('items');
-        const items = await collection.find({type: itemType}).toArray();
+        const items = await getItems(itemType);
         console.log("Insert result", items);
         res.status(200).json(items)
     } else {

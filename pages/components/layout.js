@@ -1,14 +1,15 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { ThemeProvider, StyledEngineProvider, createTheme } from '@mui/material/styles';
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
-import { Typography, Fade, Paper } from '@mui/material';
+import { Box, Fade, Paper, Typography } from '@mui/material';
+import { keyframes } from '@mui/system';
 import SpotifyPlayer from '../components/spotify-player';
+// import Scrollbar from '../components/scrollbar';
 // import avenirNextFont from '../../public/AvenirNextLTPro-Regular.otf';
 import styles from '../../styles/index.module.scss';
 import webPlayer from '../lib/spotify/web-player'
-const fadeAnimationDuration = 1250;
+const fadeAnimationDuration = 750;
 
 const navImages = {
     drinking: '/images/002-alcohol.svg',
@@ -25,80 +26,48 @@ const PAGE_TO_TEXT = {
     watching: 'Watching',
 };
 
-const getNavItemClasses = ({pageName, selectedPage, previous, transition}) => {
-    // start with default classes
-    const navItemClasses = [styles.navItem];
-    if (selectedPage === pageName) {
-        navItemClasses.push(styles.selectedItem);
+const navPopEffect = keyframes`
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+`;
 
-        if (!transition) {
-            navItemClasses.push(styles.selectedItem__out);
-        }
-        else {
-            navItemClasses.push(styles.selectedItem__in);
-        }
-    }
-    if (previous === pageName) {
-        navItemClasses.push(styles.previousSelectedItem);
-    }
+// Retrieve the styles for a particular nav item
+const getNavItemSx = ({pageName, selectedPage}) => {
+    let width = 5;
+    const sx = {
+        cursor: 'pointer',
+        transition: 'width 1.00s linear, margin 1.00s linear',
+        transform: 'scale(1.0)',
+        //TODO: think this 'ml' means the nav items are off-center, should not apply to first item
+        ml: 5,
+        mb: 0,
+    };
 
     if (pageName === 'listening') {
-        navItemClasses.push(styles.navItemListening)
+        width = 4;
+        sx.pt = '0.25rem';
     }
-    return navItemClasses.join(" ");
+
+    if (selectedPage !== pageName) {
+        sx['&:hover:not(.selectedItem)'] = {
+            animation: `${navPopEffect} 0.75s ease-in-out both`,
+        };
+    }
+    else {
+        width += 2;
+        sx.mt = '-1rem';
+    }
+    sx.width = `${width}rem`;
+     
+    return sx;
 };
-
-// const bodyFont = "'Monoton', cursive"; NOPE
-// const bodyFont = "'Prata', serif"; NOPE
-// const bodyFont = "'EB Garamond', serif"; prolly not
-// const bodyFont = "'Amatic SC', cursive;"; NOPE
-
-// const bodyFont = "'Roboto'";
-// const bodyFont = "'Noto Sans SC', sans-serif;";
-// // const bodyFont = "'Rubik', sans-serif;";
-// // const bodyFont = avenirNextFont;
-// const theme = createTheme({
-//     typography: {
-//         // fontFamily: "'Rubik', sans-serif;", 
-//         // fontFamily: "'Amatic SC', cursive;", 
-//         // fontFamily: "'EB Garamond', serif",
-//         // fontFamily: "'Prata', serif",
-//         // fontFamily: "'Bungee Shade', cursive",
-//         // fontWeight: 700,
-//         // fontFamily: "'Noto Sans SC', sans-serif;",
-//         // fontFamily: "'Monoton', cursive",
-//         fontFamily: "'Bungee', cursive",
-//         h5: {
-//             lineHeight: '.8',
-//         },
-//         body1: {
-//             // fontFamily: "'Roboto'",
-//             fontFamily: bodyFont,
-//             fontWeight: 600,
-//         },
-//         body2: {
-//             // fontFamily: "'Roboto'",
-//             fontFamily: bodyFont,
-//         },
-//     },
-//     palette: {
-//         // mode: "dark",
-//         // primary: {
-//         // main: '#b6c4f4',
-//         // },
-//         // secondary: {
-//         // main: '#f3d885',
-//         // },
-//         type: 'light',
-//         primary: {
-//             main: '#81d4fa',
-//         },
-//         secondary: {
-//             main: '#F5AE0A',
-//         },
-//     },
-// });
-
 
 // Initializes the Spotify Web Player.  Should only occur once per page load.
 const initializeSpotifyPlayer = ({accessToken}) => {
@@ -144,14 +113,13 @@ const Layout = ({
     selectedPage,
 }) => {
     const router = useRouter();
-    const {previous} = router.query;
+    // Leaving as an example of how to pass query params in case it's necessary later
+    // const {previous} = router.query;
     const [transition, setTransition] = useState(true);
-    const [slideDirection, setSlideDirection] = useState('up');
     const [spotifyPlayer, setSpotifyPlayer] = useState(null);
     const {access_token, device_id} = useContext(SpotifyAuthContext);
     // const {access_token, device_id} = useContext(SpotifyPlayerContext);
     useEffect(() => {
-        setSlideDirection('up');
         setTransition(true);
     }, [selectedPage]);
 
@@ -171,123 +139,112 @@ const Layout = ({
     const handleActionClick = useCallback((nextPage, currentPage) => {
             setTransition(false);
             const navTimer = setTimeout(() => {
+                // TODO - Previous is no longer used, currently keeping as an example
                 router.push(`/${nextPage}?previous=${currentPage}`);
             }, fadeAnimationDuration);
             return () => clearTimeout(navTimer);
     }, []);
 
     // Create navItem list
-    const nav = (<div className={styles.nav}>
+    const nav = useMemo(() => (<Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        height: '7rem',
+        justifyContent: 'center',
+        padding: '1rem 0',
+    }}>
         {
             PAGE_NAMES.reduce((list, pageName) => {
                 const navItemElem = (
-                    <div
+                    <Box
                         key={pageName}
-                        className={getNavItemClasses({pageName, selectedPage, previous, transition})}
+                        sx={getNavItemSx({pageName, selectedPage})}
                     >
                         <Image
                             onClick={e => handleActionClick(pageName, selectedPage)}
-                            height={200}
-                            width={200}
+                            layout="responsive"
+                            height={100}
+                            width={100}
                             src={navImages[pageName]}
                         />
-                    </div>
+                    </Box>
                 );
 
                 list.push(navItemElem);
                 return list;
-            }, [])
+            }, [handleActionClick])
         }
-    </div>);//, [selectedPage]);
+    </Box>), [selectedPage]);
 
-    const pageTitleActionText = useMemo(() => <div className={styles.pageTitleActionTextContainer}>
-                <span className={styles.pageTitleActionText}>
+    const pageTitleActionText = useMemo(() => <Box>
+                <span>
                     { PAGE_TO_TEXT[selectedPage] ? PAGE_TO_TEXT[selectedPage] + '?' : '...' }
                 </span>
-    </div>, [selectedPage]);
-
-    let trackData = [],
-        spotify_player_component = null;
+    </Box>, [selectedPage]);
 
     return (
-                <div className={styles.container}>
-                    <Head>
-                        <title>TimConsuming</title>
-                        <link rel="icon" href="/favicon.ico" />
-                        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-                        <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Noto+Sans+SC:wght@400;500&family=Zen+Dots&display=swap" rel="stylesheet" />
-
-                        <link rel="preconnect" href="https://fonts.gstatic.com"/>
-                        <link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda&family=Bungee+Shade&family=EB+Garamond&family=Prata&display=swap" rel="stylesheet"/>
-                        <link href="https://fonts.googleapis.com/css2?family=Bungee&family=Monoton&display=swap" rel="stylesheet"></link>
-                        <script src="https://sdk.scdn.co/spotify-player.js"></script>
-                    </Head>
-                    <div className={styles.main}>
-                            <div color="primary" className={styles.pageTitle}>
-                                <div className={styles.pageTitleContainer}>
-                                    <div className={styles.pageTitlePrefixContainer}>
-                                        <Typography className={styles.pageTitlePrefix} variant="h3">
-                                            What is Tim
-                                        </Typography>
-                                    </div>
-                                    <div className={styles.pageTitleSuffixContainer}>
-                                        <Fade in={transition} timeout={fadeAnimationDuration}>
-                                            <Typography className={styles.pageTitleSuffix} variant="h3">
-                                                {pageTitleActionText}
-                                            </Typography>
-                                        </Fade>
-                                    </div>
-                                </div>
-                            </div>
-                            {nav}
-                            <Fade  in={transition} timeout={fadeAnimationDuration}>
-                                <div className={styles.contentContainer}>
-                                    {children}
-                                </div>
-                            </Fade>
-                    </div>
-                    <Fade in={transition} timeout={footerFadeDuration}>
-                        <footer className={styles.footer}>
-                            <Paper elevation={3} classes={{root: styles.footerPaper}}>
-                                <div>
-                                    <Typography variant="h6">
-                                        Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
-                                        &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+        <Box>
+            {/* <Scrollbar></Scrollbar> */}
+            <Head>
+                <title>TimConsuming</title>
+            </Head>
+            <Box sx={{minHeight: '90vh'}}>
+                    <Box color="primary" sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        width: '100%',
+                    }}>
+                        <Box sx={{display: 'flex'}}>
+                            <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end'
+                            }}>
+                                <Typography className={styles.pageTitlePrefix} variant="h3">
+                                    What is Tim
+                                </Typography>
+                            </Box>
+                            <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                paddingLeft: '0.5em',
+                            }}>
+                                <Fade in={transition} timeout={fadeAnimationDuration}>
+                                    <Typography className={styles.pageTitleSuffix} variant="h3">
+                                        {pageTitleActionText}
                                     </Typography>
-                                </div>
-                            </Paper>
-                        </footer>
+                                </Fade>
+                            </Box>
+                        </Box>
+                    </Box>
+                    {nav}
+                    <Fade  in={transition} timeout={fadeAnimationDuration}>
+                        <Box>
+                            {children}
+                        </Box>
                     </Fade>
-                    <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
-                </div>
+            </Box>
+            <Fade in={transition} timeout={footerFadeDuration}>
+                <footer className={styles.footer}>
+                    <Paper elevation={3} sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '3rem', 
+                        width: '99%',
+                    }}>
+                        <Box>
+                            <Typography variant="body1">
+                                Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
+                                &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                            </Typography>
+                        </Box>
+                    </Paper>
+                </footer>
+            </Fade>
+            <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
+        </Box>
     );
 }
-
-// export async function getServerSideProps({req, res, query}) {
-//     const code = query.code;
-//     // const token_response = await fetch('http://localhost:3000/api/token');
-//     const token_response = await auth.getNewaccess_token(code);
-
-//     console.log("What's the token response?", token_response);
-//     // const json_token = await token_response.text();
-//     // console.log("What's the token json?", json_token);
-
-//     const {access_token, refresh_token, expires_in} = token_response;
-
-//     const props = {code};
-//     if (access_token) {
-//       props.access_token = access_token;
-//     }
-//     if (refresh_token) {
-//       props.refresh_token = refresh_token;
-//     }
-//     if (expires_in) {
-//       props.expires_in = expires_in;
-//     }
-  
-//     return {
-//       props
-//     };
-// };
 
 export default Layout;

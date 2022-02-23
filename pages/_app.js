@@ -5,33 +5,21 @@ import {useState} from 'react';
 import App from "next/app"
 import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
 import auth from './lib/spotify/auth'
-import { ThemeProvider, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
+import { ThemeProvider, responsiveFontSizes, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
 
 
 const bodyFont = "'Noto Sans SC', sans-serif;";
-// const bodyFont = "'Rubik', sans-serif;";
-// const bodyFont = avenirNextFont;
-const theme = createTheme(adaptV4Theme({
+let theme = createTheme({
     typography: {
-        // fontFamily: "'Rubik', sans-serif;", 
-        // fontFamily: "'Amatic SC', cursive;", 
-        // fontFamily: "'EB Garamond', serif",
-        // fontFamily: "'Prata', serif",
-        // fontFamily: "'Bungee Shade', cursive",
-        // fontWeight: 700,
-        // fontFamily: "'Noto Sans SC', sans-serif;",
-        // fontFamily: "'Monoton', cursive",
         fontFamily: "'Bungee', cursive",
         h5: {
-            lineHeight: '.8',
+            // lineHeight: '.8',
         },
         body1: {
-            // fontFamily: "'Roboto'",
             fontFamily: bodyFont,
             fontWeight: 600,
         },
         body2: {
-            // fontFamily: "'Roboto'",
             fontFamily: bodyFont,
         },
     },
@@ -70,14 +58,10 @@ const theme = createTheme(adaptV4Theme({
         }
       },
       MuiTextField: {
-        
       }
     }
-}));
-
-const PATH_TO_PAGE = {
-  '/eating': 'eati'
-};
+});
+theme = responsiveFontSizes(theme);
 
 const getSelectedPage = (path) => {
   return path.substring(1);

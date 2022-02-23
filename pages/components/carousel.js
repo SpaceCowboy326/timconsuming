@@ -1,10 +1,8 @@
-import Head from 'next/head'
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 // import styles from '../styles/Home.module.css'
-import { Grid, Button, Typography, Backdrop } from '@mui/material';
+import { Box, Grid, Backdrop } from '@mui/material';
 import Item from './item';
 import styles from '../../styles/carousel.module.scss';
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 
 const MIN_SCROLL_INCREMENT = 288;
 
@@ -27,7 +25,6 @@ export default function Carousel({items, actions, type}) {
     //TODO - not sure if it's necessary to wrap or if you should pass state setters directly?
     const setBackdropDisplay = ({val, clickCallback}) => {
         setShowBackdrop(val);
-        // setBackdropClickCallback(clickCallback);
     };
 
     const itemList = useMemo(() => 
@@ -110,29 +107,27 @@ export default function Carousel({items, actions, type}) {
         containerRef.current.scrollLeft = scrollX * -1;
     }
 
-    return (<div className={styles.outerContainer}>
-        <div className={styles.fadedEdgeLeft}></div>
-        <div className={`${styles.scrollContainer} ${styles.leftScrollContainer}`}>
-            {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
-            <div onClick={() => scroll(true)} className={styles.icon}>
-                <div className={styles.arrow}></div>
-                <div className={styles.arrow2}></div>
-            </div>
-        </div>
-        <div className={styles.transparentEdgeViewportOverlay}></div>
-        <div className={styles.viewport} ref={containerRef}>
+    return (<Box className={styles.outerContainer}>
+        <Box className={styles.fadedEdgeLeft}></Box>
+        <Box className={`${styles.scrollContainer} ${styles.leftScrollContainer}`}>
+            <Box onClick={() => scroll(true)} className={styles.icon}>
+                <Box className={styles.arrow}></Box>
+                <Box className={styles.arrow2}></Box>
+            </Box>
+        </Box>
+        <Box className={styles.transparentEdgeViewportOverlay}></Box>
+        <Box className={styles.viewport} ref={containerRef}>
             <Grid classes={{root: styles.gridContainer}} container spacing={3} wrap="nowrap" onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} >
                 {itemList}
             </Grid>
             <Backdrop style={backdropStyles} onClick={handleBackdropClick} open={showBackdrop}/>
-        </div>
-        <div className={`${styles.scrollContainer} ${styles.rightScrollContainer}`}>
-            {/* <DoubleArrowIcon fontSize={'large'}></DoubleArrowIcon> */}
-            <div onClick={() => scroll(false)} className={styles.icon}>
-                <div className={styles.arrow}></div>
-                <div className={styles.arrow2}></div>
-            </div>
-        </div>
-        <div className={styles.fadedEdgeRight}></div>
-    </div>);
+        </Box>
+        <Box className={`${styles.scrollContainer} ${styles.rightScrollContainer}`}>
+            <Box onClick={() => scroll(false)} className={styles.icon}>
+                <Box className={styles.arrow}></Box>
+                <Box className={styles.arrow2}></Box>
+            </Box>
+        </Box>
+        <Box className={styles.fadedEdgeRight}></Box>
+    </Box>);
 };

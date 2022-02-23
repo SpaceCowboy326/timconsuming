@@ -1,11 +1,18 @@
 import Image from 'next/image';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Button, IconButton, Tooltip, Typography } from '@mui/material';
-import Card from '@mui/material/Card';
+import { Box, Button, Card, IconButton, Tooltip, Typography } from '@mui/material';
 import styles from '../../styles/item.module.scss';
 
 // Returns an object containing the field text for an item based on its 'type'
-const getFieldTextByType = (type) => {
+const closeButtonTextOptions = [
+    'Cool story bro.',
+    'Neato.',
+    'I\'m done.',
+    'Next!',
+    'Fin.',
+];
+
+const getFieldTextByType = (type, expanded) => {
     let nameText = 'Name',
         sourceText = 'Source',
         buttonText = 'Tell Me More';
@@ -22,6 +29,11 @@ const getFieldTextByType = (type) => {
             break;
     }
 
+    if (expanded) {
+        const closeTextIndex = Math.floor(Math.random() * closeButtonTextOptions.length);
+        buttonText = closeButtonTextOptions[closeTextIndex];
+    }
+
     return {
         BUTTON: buttonText,
         NAME:   nameText,
@@ -31,7 +43,23 @@ const getFieldTextByType = (type) => {
 
 export default function Item({data, actions, displayBackdrop, backdropShown, type}) {
     const [expanded, setExpanded] = useState(false);
-    const containerRef = useRef(null)
+
+    // Keydown listener to close modal on 'esc'
+    const closeModalOnEsc = (e) => {
+        if (e.code === 'Escape') {
+            displayBackdrop({val: false});
+            setExpanded(false);
+        }
+    };
+
+    // Add/remove a keydown listener when the item is expanded/closed.
+    useEffect(() => {
+        document.removeEventListener('keydown', closeModalOnEsc);
+        if (expanded) {
+            document.addEventListener('keydown', closeModalOnEsc);
+        }
+        return () => document.removeEventListener('keydown', closeModalOnEsc);
+    }, [expanded]);
 
     // If the Backdrop is no longer shown (likely from clicking on the Backdrop itself), close any expanded items
     useEffect(() => {
@@ -41,8 +69,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     }, [backdropShown]);
 
     // Retrieve a list of fields 
-    const itemFieldText = useMemo(() => getFieldTextByType(type), [type]);
-    // console.log('itemFieldText', itemFieldText);
+    const itemFieldText = useMemo(() => getFieldTextByType(type, expanded), [type, expanded]);
     // console.log(`I, ${data.name}, am rendering `);
 
     const itemClasses = [styles.item];
@@ -54,7 +81,6 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     }
     const itemClassName = itemClasses.join(" ");
     const toggleExpanded = e => {
-        console.log(`Setting expanded to ${!expanded}`);
         const new_state = !expanded;
         displayBackdrop({val: new_state, clickCallback: (e) => setExpanded(false)});
         setExpanded(new_state);
@@ -65,7 +91,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     };
 
     // If the data specifies any "actions", create a section for them.
-    let actionSection = useMemo(() => <div className={styles.actionSection}>
+    let actionSection = useMemo(() => <Box className={styles.actionSection}>
         {actions && actions.map((action, index) => {
             return (
                 <Tooltip title={action.title} key={`action_${index}`}>
@@ -80,69 +106,64 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
                 </Tooltip>
             );
         })}
-    </div>, [actions]);
+    </Box>, [actions]);
 
     const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
     
     return (
-        <div className={styles.itemContainer}>
-            <Card sx={{bgcolor: '#fff'}} className={itemClassName} variant="outlined" ref={containerRef}>
-                <div className={styles.itemContent}>
-                    <div className={styles.itemImage}>
-                        {
-                            data.imageUrl &&
-                            <Image
-                                layout="fill"
-                                objectFit="cover"
-                                objectPosition={data.objectPosition}
-                                src={data.imageUrl}
-                            />
-                        }
-                    </div>
-                    <div className={styles.itemTitleContainer}>
-                        <Typography variant="h5" className={styles.itemTitleLabel} color="textSecondary">
-                            { itemFieldText.NAME }: 
-                        </Typography>
-                        <Typography className={styles.itemTitle}>
-                            {data.name}
-                        </Typography>
-                    </div>
+        <Card sx={{bgcolor: '#fff'}} className={itemClassName} variant="outlined">
+            <Box className={styles.itemContent}>
+                <Box className={styles.itemImage}>
+                    {
+                        data.imageUrl &&
+                        <Image
+                            layout="fill"
+                            // height={200}
+                            // width={300}
+                            objectFit="cover"
+                            objectPosition={data.objectPosition}
+                            src={data.imageUrl}
+                        />
+                    }
+                </Box>
+                <Box className={styles.itemTitleContainer}>
+                    <Typography variant="h6" className={styles.itemTitleLabel} color="textSecondary">
+                        { itemFieldText.NAME }: 
+                    </Typography>
+                    <Typography className={styles.itemTitle}>
+                        {data.name}
+                    </Typography>
+                </Box>
 
-                    <div className={styles.sourceContainer}>
-                        <Typography variant="h5" className={styles.sourceLabel} color="textSecondary">
-                            { itemFieldText.SOURCE }: 
-                        </Typography>
-                        <Typography className={styles.source} >
-                            {data.source}
-                        </Typography>
-                    </div>
-                    <div className={styles.itemDescription}>
-                        <Typography variant="h5" styles={{display: 'block'}} className={styles.sourceLabel} gutterBottom color="textSecondary">
-                            Description: 
-                        </Typography>
-                        <Typography variation="body1" classes={ {body1: styles.description} }>
-                            I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
-
-                            I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
-                        </Typography>
-                    </div>
-                    { actionSection }
-                    <div className={styles.buttonRow}>
-                        <div className={styles.actionButtonContainer}>
-                            <Button
-                                classes={{root: styles.actionButton, label: styles.actionButtonLabel}}
-                                fullWidth={true}
-                                onClick={toggleExpanded}
-                                color="secondary"
-                                className={styles.actionButton}
-                                variant="contained"
-                            >
-                                { itemFieldText.BUTTON }
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </Card>
-        </div>
+                <Box className={styles.sourceContainer}>
+                    <Typography variant="h6" className={styles.sourceLabel} color="textSecondary">
+                        { itemFieldText.SOURCE }: 
+                    </Typography>
+                    <Typography className={styles.source} >
+                        {data.source}
+                    </Typography>
+                </Box>
+                <Box className={styles.itemDescription}>
+                    <Typography variant="h6" styles={{display: 'block'}} className={styles.sourceLabel} gutterBottom color="textSecondary">
+                        Description: 
+                    </Typography>
+                    <Typography variation="body1" classes={ {body1: styles.description} }>
+                        I am an ITEM and I have qualities about me that can be measured and described. I may taste like a certain flower, or I may be an entertaining but pointless entry in the realm of cinema. Whatever I may be, Tim spent a bit of time eating/drinking/playing/listening to me. For some reason, he thought that meant he should shout it out to the internet.
+                    </Typography>
+                </Box>
+                { actionSection }
+                <Box sx={{width: '100%'}}>
+                    <Button
+                        fullWidth={true}
+                        onClick={toggleExpanded}
+                        color="secondary"
+                        sx={{fontSize: expanded ? '1.5em' : null}}
+                        variant="contained"
+                    >
+                        { itemFieldText.BUTTON }
+                    </Button>
+                </Box>
+            </Box>
+        </Card>
     );
 };
