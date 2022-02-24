@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react';
-import { Box, Fade, Paper, Typography } from '@mui/material';
+import { Box, Fade, Link, Paper, Typography } from '@mui/material';
 import { keyframes } from '@mui/system';
 import SpotifyPlayer from '../components/spotify-player';
 // import Scrollbar from '../components/scrollbar';
@@ -87,7 +87,7 @@ const initializeSpotifyPlayer = ({accessToken}) => {
     // Ready
     player.addListener('ready', ({ device_id }) => {
       console.log('Ready with Device ID', device_id);
-      webPlayer.transferPlayback({token: accessToken, device_id});
+    //   webPlayer.transferPlayback({token: accessToken, device_id});
     });
   
     // Not Ready
@@ -172,9 +172,9 @@ const Layout = ({
 
                 list.push(navItemElem);
                 return list;
-            }, [handleActionClick])
+            }, [])
         }
-    </Box>), [selectedPage]);
+    </Box>), [selectedPage, handleActionClick]);
 
     const pageTitleActionText = useMemo(() => <Box>
                 <span>
@@ -184,7 +184,6 @@ const Layout = ({
 
     return (
         <Box>
-            {/* <Scrollbar></Scrollbar> */}
             <Head>
                 <title>TimConsuming</title>
             </Head>
@@ -219,9 +218,9 @@ const Layout = ({
                     </Box>
                     {nav}
                     <Fade  in={transition} timeout={fadeAnimationDuration}>
-                        <Box>
+                        <div>
                             {children}
-                        </Box>
+                        </div>
                     </Fade>
             </Box>
             <Fade in={transition} timeout={footerFadeDuration}>
@@ -234,15 +233,17 @@ const Layout = ({
                         width: '99%',
                     }}>
                         <Box>
-                            <Typography variant="body1">
-                                Nav Icons made by <a target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</a> from
-                                &nbsp;<a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+                            <Typography variant="body2">
+                                Nav Icons made by <Link sx={{color: 'white', fontWeight: 'bold'}} underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</Link> from
+                                &nbsp;<Link sx={{color: 'white', fontWeight: 'bold'}} underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</Link>
                             </Typography>
                         </Box>
                     </Paper>
                 </footer>
             </Fade>
-            <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+                <SpotifyPlayer token={access_token} player={spotifyPlayer}></SpotifyPlayer>
+            </Box>
         </Box>
     );
 }

@@ -1,45 +1,14 @@
 @import './colors.module.scss';
 
-.title {
-    color: $secondary-text;
-    overflow: hidden;
-    transition: color 0.5s linear;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-};
-
 $item-height: 15rem;
 $item-width: 14rem;
 
 // $expanded-item-height: 60vh;
 $expanded-item-width: min(80vw, 45em);
 // $item-width: 18vw;
-$item-padding: 0.5em;
-
-$item-columns: 12;
-$item-rows: 10;
-$item-rows-expanded: 16;
-
 $expand-animation-duration: .25s;
 
-.itemContent {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.itemImage {
-    height: 8em;
-    position: relative;
-    width: 100%;
-}
-
-.item {
-    height: $item-height;
-    max-height: $item-height;
-    width: $item-width;
-    padding: $item-padding;
-
+// .item {
     // TODO: Only placed under .item to give this class precedence over default MUI class.
     .itemTitle {
         display: inline-block;
@@ -64,31 +33,14 @@ $expand-animation-duration: .25s;
         white-space: nowrap;
     }
 
-    &:hover {
-        .title {
-            color: $primary-text;
-        }
+    // &:hover {
 
-        transform: scale(1.05);
-        transition: transform 0.1s linear;
-    }
+    // }
 
-    &.item__placeholder {
-        visibility: hidden;
-    }
-
-    &.item__expanded {
-        height: unset;
-        left: 50%;
-        max-height: unset;
-        padding: 1.5em 2em 1em 2em;
-        position: fixed;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: $expanded-item-width;
-        z-index: 1001;
-    }
-}
+    // &.item__placeholder {
+        // visibility: hidden;
+    // }
+// }
 
 .itemDescription {
     display: none;
@@ -119,21 +71,15 @@ $expand-animation-duration: .25s;
 
 .sourceContainer {
     display: flex;
-    // grid-column: 1 / span $item-columns;
 }
 
 .sourceLabel {
     display: none;
-    // font-size: 22px;
     max-width: 0;
     opacity: 0;
 }
 
 .item.item__expanded {
-    .itemImage {
-        height: 25em;
-    }
-
     .itemTitleContainer {
         display: flex;
         height: 2.25em;
@@ -169,8 +115,6 @@ $expand-animation-duration: .25s;
 
     .sourceContainer {
         display: flex;
-        // align-items: center;
-        // justify-content: center;
         height: 2.25em;
     }
 
@@ -188,8 +132,4 @@ $expand-animation-duration: .25s;
 
 .actionButtonContainer {
     width: 100%;
-}
-
-.expandIcon {
-    color: black;
 }

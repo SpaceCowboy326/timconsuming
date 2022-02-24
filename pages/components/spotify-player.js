@@ -1,8 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import WebPlayer from '../lib/spotify/web-player';
-import styles from '../../styles/spotifyPlayer.module.scss';
 import { Box, IconButton, Paper, Slider, Typography } from '@mui/material';
 import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious, ArrowDropDown } from '@mui/icons-material';
+import { keyframes } from '@mui/system';
+
+const flexCenterSx = {display: 'flex', justifyContent: 'center'};
+const collapsedHeight = 2.5;
+const textScrollEffect = keyframes`
+    0% {
+        transform: translateX(120%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+`;
 
 const MIN_POSITION = 1;
 const POSITION_THRESHOLD = .5;
@@ -98,10 +109,6 @@ function SpotifyPlayer({player, token}) {
         WebPlayer.seek({position: millisecondPosition, token});
     }
 
-    const spotifyPanelClasses = panelShown ?
-        {root: `${styles.spotifyPlayerPanel} ${styles.spotifyPlayerPanel__shown}`} :
-        {root: styles.spotifyPlayerPanel};
-
     // Attach a 'player_state_changed' listener to the Spotify Player. This event fires when almost any meaningful change
     // happens to the playback state, and will be sent periodically while a song is playing with progress updates.
     useEffect(() => {
@@ -143,57 +150,91 @@ function SpotifyPlayer({player, token}) {
         WebPlayer.next(token);
     };
 
-    return player ? <Paper elevation={5} classes={spotifyPanelClasses}>
-        <Box className={styles.handle}>
-            <IconButton onClick={togglePanelClick} className={styles.openButton} size="large">
-                <ArrowDropDown className={styles.openIcon}/>
+    const openIconRotate = panelShown ? '0' : '180deg';
+    const panelTranslate = panelShown ? '2px' : `calc(100% - ${collapsedHeight}em)`;
+
+    return player ? <Paper elevation={5} sx={{
+        border: '1px solid #4bbbf0',
+        bottom: 0,
+        padding: '0 0 .75em 0',
+        position: 'fixed',
+        transform: `translateY(${panelTranslate})`,
+        transition: 'all 0.5s ease-in-out',
+    }}>
+        <Box sx={{
+            display: 'flex',
+            height: `${collapsedHeight}em`,
+            width: '100%',
+         }}>
+            <IconButton onClick={togglePanelClick} sx={{
+                      padding: 0,
+                      position: 'absolute',
+                      left: '50%',
+                      top: 0,
+                      transform: 'translateX(-50%)',
+            }} size="large">
+                <ArrowDropDown sx={{
+                    fontSize: '3rem',
+                    transform: `rotate(${openIconRotate})`,
+                    transition: 'transform 0.5s',
+                }}/>
             </IconButton>
         </Box>
-        <Box className={styles.spotifyPlayer}>
-            <Box className={styles.playbackButtons}>
-                <Box className={styles.previousButton}>
+        <Box sx={{width: '80vw'}}>
+            <Box sx={flexCenterSx}>
+                <Box sx={{mr: '1em', padding: '.25em'}}>
                     <IconButton
                         onClick={handlePreviousClick}
                         size={'small'}
-                        // className={styles.previousButton}
-                        // classes={{root: styles.previousButton}}
                     >
-                        <SkipPrevious className={styles.playerIcon}/>
+                        <SkipPrevious sx={{fontSize: '4rem'}}/>
                     </IconButton>
                 </Box>
-                <Box className={styles.pausePlayButton}>
+                <Box sx={{padding: '.25em'}}>
                     <IconButton
                         onClick={togglePlaying}
                         size={'small'}
-                        // className={styles.pausePlayButton}
-                        // classes={{root: styles.pausePlayButton}}
                     >
                         {
                             playing ?
-                                <PauseCircleFilled className={styles.playerIcon}/> :
-                                <PlayCircleFilled className={styles.playerIcon}/> 
+                                <PauseCircleFilled sx={{fontSize: '4rem'}}/> :
+                                <PlayCircleFilled sx={{fontSize: '4rem'}}/> 
                         }
                     </IconButton>
                 </Box>
-                <Box className={styles.nextButton} >
+                <Box sx={{ml: '1em', padding: '.25em'}} >
                     <IconButton
                         onClick={handleNextClick}
                         size={'small'}
-                        // className={styles.nextButton}
-                        // classes={{root: styles.nextButton}}
                     >
-                        <SkipNext className={styles.playerIcon}/>
+                        <SkipNext sx={{fontSize: '4rem'}}/>
                     </IconButton>
                 </Box>
             </Box>
-            <Box className={styles.playback}>
+            <Box sx={{padding: '0 7em'}}>
                 <Slider sx={{height: '10px'}} onChangeCommitted={handlePlaybackSliderChangeAccepted} onChange={handlePlaybackSliderChange} color="tertiary" value={position} size="large"></Slider>
             </Box>
-            <Box className={styles.currentlyPlayingContainer}>
-                <Box className={styles.scrollContainer}>
-                <Typography classes={{root: styles.currentlyPlayingText}} color="textPrimary" variant={'h5'}>
-                    {currentlyPlaying.text}
-                </Typography>
+            <Box sx={flexCenterSx}>
+                <Box sx={{
+                    alignItems: 'center',
+                    borderRadius: '5px',
+                    bgcolor: 'black',
+                    border: '2px solid slategrey',
+                    display: 'flex',
+                    overflow: 'hidden',
+                    padding: '.2em',
+                    width: '90%',
+                }}>
+                    <Box sx={{
+                        animation: `${textScrollEffect} 8s linear infinite`,
+                        animationDelay: '2s',
+                        whiteSpace: 'nowrap',
+                        width: '80%',
+                    }}>
+                        <Typography sx={{color: 'lawngreen'}} variant={'h5'}>
+                            {currentlyPlaying.text}
+                        </Typography>
+                    </Box>
                 </Box>
             </Box>
         </Box>

@@ -1,7 +1,38 @@
 import Image from 'next/image';
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Box, Button, Card, IconButton, Tooltip, Typography } from '@mui/material';
 import styles from '../../styles/item.module.scss';
+
+const itemHeight = 15,
+    itemWidth = 14;
+
+const sharedItemSx = {
+    bgcolor: 'white',
+};
+const expandedItemSx = {
+        height: 'unset',
+        left: '50%',
+        maxHeight: 'unset',
+        padding: '1.5em 2em 1em 2em',
+        position: 'fixed',
+        top: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 'min(80vw, 45em)',
+        zIndex: 1001,
+};
+const listItemSx = {
+    // height: `${itemHeight}em`,
+    // maxHeight: `${itemHeight}em`,
+    width: `${itemWidth}em`,
+    padding: '0.5em',
+    ':hover': {
+        // .title {
+            // color: $primary-text;
+        // }
+        transform: 'scale(1.05)',
+        transition: 'transform 0.1s linear',
+    },
+};
 
 // Returns an object containing the field text for an item based on its 'type'
 const closeButtonTextOptions = [
@@ -45,12 +76,13 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     const [expanded, setExpanded] = useState(false);
 
     // Keydown listener to close modal on 'esc'
-    const closeModalOnEsc = (e) => {
+    const closeModalOnEsc = useCallback((e) => {
+        console.log("Close on ESC!");
         if (e.code === 'Escape') {
             displayBackdrop({val: false});
             setExpanded(false);
         }
-    };
+    }, [displayBackdrop, setExpanded]);
 
     // Add/remove a keydown listener when the item is expanded/closed.
     useEffect(() => {
@@ -64,31 +96,23 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     // If the Backdrop is no longer shown (likely from clicking on the Backdrop itself), close any expanded items
     useEffect(() => {
         if (!backdropShown && expanded) {
+            console.log("no backdrop? expanded? shut it down");
             setExpanded(false);
         }
     }, [backdropShown]);
 
-    // Retrieve a list of fields 
+    // Retrieve an object containing the proper labels for fields, based on type.
     const itemFieldText = useMemo(() => getFieldTextByType(type, expanded), [type, expanded]);
-    // console.log(`I, ${data.name}, am rendering `);
 
-    const itemClasses = [styles.item];
-    if (expanded) {
-        itemClasses.push(styles.item__expanded);
-    }
-    else {
-        itemClasses.push(styles.item__normal);
-    }
-    const itemClassName = itemClasses.join(" ");
-    const toggleExpanded = e => {
+    const toggleExpanded = useCallback(e => {
         const new_state = !expanded;
-        displayBackdrop({val: new_state, clickCallback: (e) => setExpanded(false)});
-        setExpanded(new_state);
-    };
+        console.log("Setting expanded to...", new_state);
 
-    const handleClose = () => {
-        setExpanded(false);
-    };
+        displayBackdrop({val: new_state, clickCallback: (e) => {console.log("click CALLBACK"); setExpanded(false)}});
+        setExpanded(new_state);
+    }, [displayBackdrop, expanded]);
+
+    // const handleClose = useCallback(() => setExpanded(false), [setExpanded]);
 
     // If the data specifies any "actions", create a section for them.
     let actionSection = useMemo(() => <Box className={styles.actionSection}>
@@ -108,18 +132,36 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
         })}
     </Box>, [actions]);
 
-    const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
-    
+    // const buttonText = expanded ? "Thanks I've heard enough." : "Tell Me More";
+    // const calculatedItemHeight = expanded ? 'unset' : `${itemHeight}em`,
+        // calculatedItemWidth = expanded ? expandedItemWidth : `${itemWidth}em`;
+
+    const itemSx = useMemo(
+        () => expanded ? {...expandedItemSx, ...sharedItemSx} : {...listItemSx, ...sharedItemSx},
+        [expanded]
+    );
+    const itemImageHeight = expanded ? '25em' : '8em';
+
+    console.log("Rendering item. Expanded?", {expanded, name: data.name});
+
     return (
-        <Card sx={{bgcolor: '#fff'}} className={itemClassName} variant="outlined">
-            <Box className={styles.itemContent}>
-                <Box className={styles.itemImage}>
+        <Card sx={itemSx}
+            variant="outlined"
+        >
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+            }}>
+                <Box sx={{
+                    height: `${itemImageHeight}`,
+                    position: 'relative',
+                    width: '100%',
+                }}>
                     {
                         data.imageUrl &&
                         <Image
                             layout="fill"
-                            // height={200}
-                            // width={300}
                             objectFit="cover"
                             objectPosition={data.objectPosition}
                             src={data.imageUrl}
@@ -152,7 +194,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
                     </Typography>
                 </Box>
                 { actionSection }
-                <Box sx={{width: '100%'}}>
+                <Box sx={{mt: '.5em', width: '100%'}}>
                     <Button
                         fullWidth={true}
                         onClick={toggleExpanded}
