@@ -48,8 +48,8 @@ export default function Listening() {
         </ul>;
     
     const trackItems = trackData.map((track, index) => ({
-        source:     track.name,
-        name:       track.artists.map(artist => artist.name).join(", "),
+        source:     track.artists.map(artist => artist.name).join(", "),
+        name:       track.name,
         id:         index,
         imageUrl:   track.album.images[0].url,
         uri:        track.uri,

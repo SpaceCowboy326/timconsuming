@@ -154,7 +154,8 @@ function SpotifyPlayer({player, token}) {
     const panelTranslate = panelShown ? '2px' : `calc(100% - ${collapsedHeight}em)`;
 
     return player ? <Paper elevation={5} sx={{
-        border: '1px solid #4bbbf0',
+        border: '1px solid',
+		borderColor: 'primary.dark',
         bottom: 0,
         padding: '0 0 .75em 0',
         position: 'fixed',

@@ -217,7 +217,7 @@ const Layout = ({
                         </Box>
                     </Box>
                     {nav}
-                    <Fade  in={transition} timeout={fadeAnimationDuration}>
+                    <Fade in={transition} timeout={fadeAnimationDuration}>
                         <div>
                             {children}
                         </div>
