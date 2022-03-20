@@ -69,7 +69,6 @@ export default function Listening() {
         staleTime: 300,
     });
 
-    useEffect(() => console.log("!!!Access token is changing!!!"), [accessToken]);
     const { isLoading: userPlaylistsLoading, error: userPlaylistsError, data: userPlaylists } =
         useQuery(
             ['userPlaylists', accessToken],
@@ -79,8 +78,6 @@ export default function Listening() {
                 staleTime: 300,
             }
         );
-
-    useEffect(() => console.log("!!!userPlaylists token is changing!!!"), [userPlaylists]);
 
     // User selected a playlist - add the track and close the menu.
     const handlePlaylistClick = useCallback((playlistId) => {
@@ -184,7 +181,7 @@ export default function Listening() {
     const requiresLoginContent = useMemo(() => {
         return !accessToken ?
             <Paper elevation={2} sx={requiresLoginPaperSx}>
-                <Paper elevation={5} sx={sectionContainerSx}>
+                <Paper elevation={5} sx={{...sectionContainerSx, bgcolor: '#363636'}}>
                     <Typography color="white" variant={'h5'} sx={{mb: 3}}>
                         Why look when you can listen?
                     </Typography>
@@ -192,6 +189,7 @@ export default function Listening() {
                         onClick={spotifyLoginRedirect}
                         size="large"
                         sx={{
+                            bgcolor: '#222324',
                             color: 'white',
                             border: '1px solid white',
                             textDecorationColor: 'rgba(255, 255, 255, 0)',

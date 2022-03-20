@@ -142,7 +142,6 @@ export default function Carousel({items, actions, type, category}) {
     };
 
     const handleScrollingEnd = e => {
-        console.log("scroll end?");
         window.removeEventListener('mouseup', handleScrollingStart);
         window.removeEventListener('touchend', handleScrollingStart);
         setScrolling(false);

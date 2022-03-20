@@ -55,18 +55,12 @@ export default function AddItem({initialData = {}}) {
     const [rating, setRating] = useState(initialData.rating || FIELD_DEFAULTS.RATING);
     const [editId, setEditId] = useState(initialData._id);
 
-    console.log("initialData", initialData);
-    console.log("editId", editId);
-
     // Assemble the city options/
     const cityOptions = useMemo(() => unitedStatesLocations[state]?.sort() || [], [state, country]);
-    console.log('city options?', cityOptions);
 
     const handleUploadImage = (e, b) => {
-        console.log("Files", e.target.files);
         const files = e?.target?.files;
         if (files && files.length) {
-            console.log("files[0]?", files[0]);
             const image = files[0];
             setImageFile(image);
             setImagePreviewSrc(URL.createObjectURL(image));

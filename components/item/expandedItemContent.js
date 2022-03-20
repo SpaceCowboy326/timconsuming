@@ -42,7 +42,6 @@ const getFieldTextByType = (type) => {
         countryText = 'Country',
         descriptionText = 'Description';
 
-        // console.log("type?", type);
     switch (type) {
         case 'beverage':
             break;

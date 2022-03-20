@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import querystring from 'querystring';
-const REDIRECT_URI = `http://localhost:3000/listening`;
+// const REDIRECT_URI = `http://localhost:3000/listening`;
 
 // const generateRandomString = length => {
 //     let text = '';
@@ -22,7 +22,7 @@ const getNewAccessToken = async (req, res) => {
     const {code} = query;
     // const redirectUri = `${baseRedirectUrl}/${REDIRECT_SUFFIX}`;
     // console.log("AUTH redirect to", redirectUri);
-    
+    console.log("red uri", process.env.SPOTIFY_REDIRECT_URI + REDIRECT_SUFFIX);
     const tokenOpts = {
         method: 'POST',
         headers: {
@@ -34,7 +34,7 @@ const getNewAccessToken = async (req, res) => {
           code: code,
           client_id: process.env.SPOTIFY_CLIENT_ID,
           client_secret: process.env.SPOTIFY_SECRET,
-          redirect_uri: REDIRECT_URI,
+          redirect_uri: process.env.SPOTIFY_REDIRECT_URI + REDIRECT_SUFFIX,
         })
     };
 

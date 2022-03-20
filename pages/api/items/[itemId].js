@@ -19,6 +19,5 @@ export default async (req, res) => {
         break;
     }
 
-    console.log("ITEM result", result);
     res.status(200).json({ name: 'John Doe' })
 }

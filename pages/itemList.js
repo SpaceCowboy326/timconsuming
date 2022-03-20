@@ -42,7 +42,6 @@ const columns = [
 
 export default function ItemList({itemList}) {
     itemList.forEach((item,index) => item.id = index);
-    console.log({itemList});
     return (<Box sx={{height: '100%', width: '100%'}}>
         <DataGrid
             autoHeight

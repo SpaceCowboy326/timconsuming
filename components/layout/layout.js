@@ -30,7 +30,6 @@ const Layout = ({
     const [accessToken, setAccessToken] = useState(access_token);
     const [accessTokenRequiresRefresh, setAccessTokenRequiresRefresh] = useState(false);
 
-// console.log("_app refreshing");
 
     // Remove the "code" sent by Spotify redirect so we don't attempt to request a new access token
     // with the same code on refresh. Also, it's ugly.
@@ -53,9 +52,6 @@ const Layout = ({
         return () => delete window.onSpotifyWebPlaybackSDKReady;
     }, [setSpotifyPlaybackReady]);
 
-
-// console.log("Has spotifyPlaybackReady?", spotifyPlaybackReady);
-// console.log("Has accessToken?", accessToken);
     // Once the playback SDK library is initialized and a Spotify Access Token is available, we can initialize our own player.
     useEffect(() => {
         if (spotifyPlaybackReady && accessToken) {
@@ -87,12 +83,10 @@ const Layout = ({
     // immediately mark the token as expired. If not, it will wait until the window is refocused to refresh the token.
     const invalidateAccessTokenOnFocus = useCallback(() => {
         if (document.hasFocus()) {
-            // console.log("invalidating access token immediately")
             setAccessTokenRequiresRefresh(true);
         }
         else {
             const invalidateAccessToken = () => {
-                // console.log("invalidating access token after focus event fired.")
                 setAccessTokenRequiresRefresh(true);
                 window.removeEventListener('focus', invalidateAccessToken)
             }
@@ -134,7 +128,6 @@ const Layout = ({
 
     return (
         <SpotifyAuthContext.Provider value={{accessToken, refreshToken}}>
-            {/* <Box sx={{overflow: "scroll"}} onWheel={(e) => {console.log("I'm wheeling!", e); e.preventDefault();e.stopPropagation();return false;}} > */}
             <Head>
                 <title>TimConsuming</title>
             </Head>

@@ -37,9 +37,6 @@ export default function TypeDisplay({data, type, actions}) {
 	// }, data);
     // const itemData = useItemData('Beverage');
     const itemData = {};
-    // console.log("INITIAL ITEM DATA", data);
-    // console.log("ItemData is... anything?", itemData);
-    // console.log("ItemData data is...", itemData.data);
 
     return (
 		<Box sx={{

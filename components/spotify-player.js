@@ -33,7 +33,6 @@ const millisecondsToMinutes = (milliseconds) => {
     return `${minutes}:${secondsText}`;
 };
 const estimateMillisecondPosition= ({duration, normalizedPosition}) => {
-    // console.log("estimateMillisecondPosition", {normalizedPosition, duration});
     return ((normalizedPosition / 100) * duration);
 };
 
@@ -52,7 +51,6 @@ function SpotifyPlayer({player, token}) {
             const currentlyPlayingTrack = await WebPlayer.getCurrentlyPlaying({token, device_id: player.device_id});
             const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack({item: currentlyPlayingTrack});
             if (currentlyPlayingTrack.item.id !== currentlyPlaying.id) {
-                // console.log("setting currently playing...");
                 setCurrentlyPlaying({
                     duration: currentlyPlayingTrack.item.duration_ms,
                     id: currentlyPlayingTrack.item.id,
@@ -87,7 +85,6 @@ function SpotifyPlayer({player, token}) {
         let positionInterval;
         if (playing) {
             positionInterval = setInterval(() => {
-            // console.log("interval running", offset);
                 offset += POSITION_INTERVAL;
                 const newPosition = startPosition + offset;
                 updatePositionIfNecessary({newPosition, duration, currentPosition: position});
@@ -106,7 +103,6 @@ function SpotifyPlayer({player, token}) {
     }
 
     const handlePlaybackSliderChangeAccepted = (event, newValue) => {
-        // console.log({currentlyPlaying})
         const millisecondPosition = estimateMillisecondPosition({duration: currentlyPlaying.duration, normalizedPosition: newValue});
         // WebPlayer.seek({position: millisecondPosition, token});
         player.seek(millisecondPosition);
@@ -134,7 +130,6 @@ function SpotifyPlayer({player, token}) {
             return;
         }
         player.addListener('player_state_changed', state => {
-            // console.log("Player State Change", state);
             if (!state) {
                 return;
             }
