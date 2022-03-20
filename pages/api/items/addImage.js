@@ -1,10 +1,8 @@
 import formidable from 'formidable';
 
 export default async function handler(req, res) {
-    // console.log("req", req);
-    const callback = (data) => {
-        console.log("file data", data);
-    };
+    const tempResponse = {message: "awesome job"};
+    return res.status(200).json(tempResponse);
     if (req.method === 'POST') {
         const form = formidable({
           filename: (name, ext, part, form) => {
