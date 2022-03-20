@@ -8,15 +8,15 @@ import Image from 'next/image';
 
 const innerArrowEffect = keyframes`
     0% {transform: translate(0, 0);}
-    50% {transform: translate(-8px, 0);}
+    50% {transform: translate(-.3em, 0);}
     100% {transform: translate(0, 0);}
 `;
 
 const outerArrowEffect = keyframes`
     0% {transform: translate(0, 0);}
     10% {transform: translate(0, 0);}
-    60% {transform: translate(-6px, 0);}
-    75% {transform: translate(-6px, 0);}
+    60% {transform: translate(.3em, 0);}
+    75% {transform: translate(.4em, 0);}
     100% {transform: translate(0, 0);}
 `;
 
@@ -45,9 +45,17 @@ const backdropSx = {
 };
 
 const outerArrowSx = {
+    // top: '50%',
     animation: `${outerArrowEffect} 3s infinite`,
 	display: 'flex',
-	height: '4em',
+	height: '3.5em',
+    '.outerChevronLeft': {
+        ml: '-.7em',
+
+    },
+    '.outerChevronRight': {
+        
+    }
 };
 
 const innerArrowSx = {
@@ -56,9 +64,11 @@ const innerArrowSx = {
 	height: '3em',
     '.innerChevronLeft': {
         ml: '-2em',
+        // left: '-2.8em',
+
     },
     '.innerChevronRight': {
-        mr: '-2em',
+        mr: '-2.5em',
     }
 };
 
@@ -68,7 +78,10 @@ const scrollContainerSx = {
     cursor: 'pointer',
 	display: 'flex',
 	height: '100%',
-    opacity: 0,
+    overflow: 'hidden',
+    // opacity: 0,
+    // width: '4em',
+    // position: 'relative',
     transition: 'opacity 1s',
     '& svg': {
         fill: (theme) => theme.palette.secondary.main,
@@ -112,20 +125,26 @@ export default function Carousel({items, actions, type, category}) {
 
     useEffect(() => {
         if (scrolling) {
-            window.addEventListener('mouseup', handleMouseUp);
-            return () => window.addEventListener('mouseup', handleMouseUp);
+            window.addEventListener('mouseup', handleScrollingEnd);
+            window.addEventListener('touchend', handleScrollingEnd);
+            return () => {
+                window.removeEventListener('mouseup', handleScrollingEnd);
+                window.removeEventListener('touchend', handleScrollingEnd);
+            }
         }
     }, [scrolling]);
 
-    const handleMouseDown = e => {
+    const handleScrollingStart = e => {
         setScrolling(true);
-        setDragStartPageX(e.pageX);
+        setDragStartPageX(e.pageX || e.touches?.[0]?.screenX);
         setDragStartScrollX(scrollX);
         e.preventDefault();
     };
 
-    const handleMouseUp = e => {
-        window.removeEventListener('mouseup', handleMouseUp);
+    const handleScrollingEnd = e => {
+        console.log("scroll end?");
+        window.removeEventListener('mouseup', handleScrollingStart);
+        window.removeEventListener('touchend', handleScrollingStart);
         setScrolling(false);
     };
 
@@ -149,10 +168,15 @@ export default function Carousel({items, actions, type, category}) {
         // setScrollX(newScroll * -1);
     };
 
-    // TODO - maybe attach this to window? not sure it's necessary
-    const handleMouseMove = e => {
-        if (scrolling) {
-            const difference = (e.pageX - dragStartPageX) * 2;
+    const handleTouchStart = (e) => {
+        setDragStartPageX(e.touches?.[0]?.screenX);
+        setDragStartScrollX(scrollX);
+    }
+
+    const handleScrollDrag = e => {
+        if (e.type === 'touchmove' || scrolling) {
+            const value = e.pageX || e.touches?.[0]?.screenX
+            const difference = (value - dragStartPageX) * 2;
             const currentScrollX = dragStartScrollX + difference;
             if (
                 currentScrollX < 0 &&
@@ -168,25 +192,33 @@ export default function Carousel({items, actions, type, category}) {
     }
 
     return (
-		<Box sx={{
-			borderTop: '2px solid',
-			borderBottom: '2px solid',
-            // borderColor: 'secondary.main',
-            borderColor: (theme) => alpha(theme.palette.secondary.main, 0),
-			display: 'flex',
-			minWidth: '18rem',
-			position: 'relative',
-			transition: 'border-color 0.5s linear',
-			'&:hover': {
-				borderTop: '2px solid',
-				borderBottom: '2px solid',
-				borderColor: 'secondary.light',
-				'.scrollContainer': {
-					opacity: 1,
-				}
-			}
-		}}>
-			<Box mr={2}>
+		<Box
+            sx={{
+                borderTop: '2px solid',
+                borderBottom: '2px solid',
+                // borderColor: 'secondary.main',
+                borderColor: (theme) => alpha(theme.palette.secondary.main, 0),
+                display: 'flex',
+                minWidth: '18rem',
+                position: 'relative',
+                transition: 'border-color 0.5s linear',
+                '&:hover': {
+                    borderTop: '2px solid',
+                    borderBottom: '2px solid',
+                    borderColor: 'secondary.light',
+                    '.scrollContainer': {
+                        opacity: 1,
+                    }
+                },
+                // overflow: 'hidden',
+            }}
+            onMouseDown={handleScrollingStart}
+            onMouseMove={handleScrollDrag}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleScrollDrag}
+        >
+			<Box>
+
 				<Box
 					onClick={() => scroll(true)}
 					sx={{
@@ -195,7 +227,7 @@ export default function Carousel({items, actions, type, category}) {
                     className={'scrollContainer'}
 				>
 					<Box sx={{...outerArrowSx}}>
-                        <ChevronLeft fill={'yellow'}></ChevronLeft>
+                        <ChevronLeft fill={'yellow'} className={'outerChevronLeft'}></ChevronLeft>
 					</Box>
 					<Box sx={{...innerArrowSx}}>
                         <ChevronLeft className={'innerChevronLeft'}></ChevronLeft>
@@ -204,27 +236,23 @@ export default function Carousel({items, actions, type, category}) {
 			</Box>
 			<Box
 				sx={{
-                    
 					cursor: 'grab',
 					overflow: 'hidden',
-					padding: '1.25rem 2rem',
+                    py: '1.25em',
 					position: 'relative',
 				}}
 				ref={containerRef}
 			>
 				<Grid
                     container
-                    onMouseDown={handleMouseDown}
-                    onMouseMove={handleMouseMove}
                     spacing={3}
                     wrap="nowrap"
                 >
 					{itemList}
 				</Grid>
-				<Backdrop sx={backdropSx} onScroll={e => {e.stopPropagation();e.preventDefault();}} onClick={handleBackdropClick} open={showBackdrop}/>
+				<Backdrop sx={backdropSx} onClick={handleBackdropClick} open={showBackdrop}/>
 			</Box>
 			<Box
-				ml={2}
 			>
 				<Box
 					onClick={() => scroll(false)}
@@ -234,7 +262,7 @@ export default function Carousel({items, actions, type, category}) {
 					<Box sx={{...innerArrowSx}}>
                         <ChevronRight className={'innerChevronRight'}></ChevronRight>
 					</Box>
-					<Box sx={outerArrowSx}>
+					<Box sx={outerArrowSx} className={'outerChevronRight'}>
                         <ChevronRight></ChevronRight>
 					</Box>
 				</Box>

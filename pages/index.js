@@ -1,16 +1,28 @@
-import Head from 'next/head'
-import Link from 'next/link'
+import { Box, Paper, Typography } from "@mui/material";
+import { keyframes, styled } from '@mui/system';
+import Image from 'next/image'
 
-// import styles from '../styles/Home.module.css'
-import { Button, Typography } from '@mui/material';
-import Layout from './components/layout';
-import styles from '../styles/index.module.scss';
-
+const textBlink = keyframes`
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+`;
 
 export default function Home() {
-
-
-  return (
-    <div></div>
-  )
-}
+    return <Box sx={{display: 'flex', justifyContent: 'center', mt: '3em', height: '20em', alignContent: 'center', alignItems: 'center', position: 'relative'}}>
+        <Paper elevation={3} sx={{px: '5em', py: '2em', zIndex: 1}}>
+            <Paper elevation={8}  sx={{bgcolor: 'secondary.main', color: 'secondary.contrastText', display: 'flex', alignItems: 'center', p: '2em', zIndex: 3}}>
+                <Typography sx={{animation: `${textBlink} 3s infinite`, zIndex: 4}} variant={'h5'}>Select an Icon to Start Browsing.</Typography>
+            </Paper>
+        </Paper>
+    </Box>;
+};

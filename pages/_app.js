@@ -1,12 +1,19 @@
 import '../styles/globals.css'
-import '../styles/index.module.scss';
+// import '../styles/index.module.scss';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import App from "next/app"
-import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../pages/components/layout'
-import auth from './lib/spotify/auth'
+// import Layour from '../components/'
+import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../components/layout/layout'
+import auth from '../lib/spotify/auth'
 import { ThemeProvider, responsiveFontSizes, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
+const queryClient = new QueryClient({
+  queries: {
+    refetchOnWindowFocus: false,
+  }
+});
 
 const bodyFont = "'Noto Sans SC', sans-serif;";
 let theme = createTheme({
@@ -35,11 +42,14 @@ let theme = createTheme({
         primary: {
           main: '#81d4fa',
         },
+        background: '#FFFFFF',
         secondary: {
+          // main: '#3C4CAA',
           main: '#F5AE0A',
           contrastText: '#FFFFFF',
         },
         background: {
+          // menulist: '#FFFFFF',
           paper: '#81d4fa',
         },
         tertiary: {
@@ -49,17 +59,6 @@ let theme = createTheme({
           main: '#20526b'
         }
     },
-    components: {
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            // backgroundColor: 'primary.main',
-          }
-        }
-      },
-      MuiTextField: {
-      }
-    }
 });
 theme = responsiveFontSizes(theme);
 
@@ -69,21 +68,22 @@ const getSelectedPage = (path) => {
 
 function MyApp(props) {
   const { Component, pageProps, router, access_token, refresh_token } = props;
-  const selected_page = getSelectedPage(router.route);
+  const selectedPage = getSelectedPage(router.route);
 
-  // console.log("props be like", props);
-  console.log("Rendering _app");
+  // console.log("Rendering _app");
 
   return (
-      <StyledEngineProvider injectFirst>
+    <StyledEngineProvider injectFirst>
+        <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
-            <SpotifyAuthContext.Provider value={{access_token, refresh_token}}>
-                <Layout selectedPage={selected_page}>
+            {/* <SpotifyAuthContext.Provider value={{accessToken, refreshToken}}> */}
+                <Layout access_token={access_token} refresh_token={refresh_token} selectedPage={selectedPage}>
                   <Component {...pageProps} />
                 </Layout>
-            </SpotifyAuthContext.Provider>
+            {/* </SpotifyAuthContext.Provider> */}
           </ThemeProvider>
-      </StyledEngineProvider>
+        </QueryClientProvider>
+    </StyledEngineProvider>
   );
 }
 
@@ -94,27 +94,27 @@ MyApp.getInitialProps = async (appContext) => {
   // return base_props;
   const {ctx, Component} = appContext;
   const {req, res, query} = ctx;
-  const props = {};
+  const additionalProps = {};
   const code = query.code;
   
   // const token_response = await fetch('http://localhost:3000/api/token');
-  let access_token, refresh_token, expires_in;
   if (code) {
     const token_response = await auth.getNewAccessToken(code);
     // console.log("What's the token response?", token_response);
-    props.access_token = token_response.access_token;
-    props.refresh_token = token_response.refresh_token;
-    props.expires_in = token_response.expires_in;
+    additionalProps.access_token = token_response.access_token;
+    additionalProps.refresh_token = token_response.refresh_token;
+    additionalProps.expires_in = token_response.expires_in;
   }
-  // const json_token = await token_response.text();
-  // console.log("What's the token json?", json_token);
-  let base_props = {};
-  base_props = await App.getInitialProps(appContext);
+  const baseProps = await App.getInitialProps(appContext);
   // if (Component.getInitialProps) {
   //   // base_props = await Component.getInitialProps(ctx);
   //   base_props = await Component.getInitialProps(appContext);
   // }
-  Object.assign(props, base_props);
+  const props = {
+    ...baseProps,
+    ...additionalProps,
+  }
+
   return props;
 };
 

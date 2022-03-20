@@ -17,6 +17,7 @@ const navPopEffect = keyframes`
         transform: scale(1);
     }
 `;
+
 const navImages = {
     drinking: '/images/002-alcohol.svg',
     listening: '/images/headphone.svg',

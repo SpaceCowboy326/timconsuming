@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         return parsePromise.then(({fields, files}) => {
           console.log("FIELDS", fields);
           console.log("FILES", files);
-          const file = files.file[0];
+          const file = files.file;
           const newFilename = file.newFilename;
 
           // const newFilename = files?.file?.newFilename;

@@ -15,6 +15,11 @@ const scope_collection = [
     'user-read-currently-playing',
     'user-top-read',
     'streaming',
+    'playlist-modify-private',
+    'playlist-modify-public',
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    'user-library-modify',
 ];
   
 const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
@@ -22,6 +27,7 @@ const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 
 const PORT = '3000';
 const REDIRECT_URI = `http://localhost:3000/listening`;
+const REDIRECT_SUFFIX = '/listening';
 
 const COOKIE_STATE_KEY = 'spotify_auth_state';
 const COOKIE_ACCESS_KEY = 'spotify_auth_access';
@@ -39,6 +45,10 @@ const generateRandomString = length => {
 };
 
 export default (req, res) => {
+    const {query} = req;
+    const {baseRedirectUrl} = query;
+    // const redirectUrl = `${baseRedirectUrl}${REDIRECT_SUFFIX}`;
+    // console.log("we will redirect to", redirectUrl);
     // console.log("Process.env?", process.env);
     // console.log("Process.env client id", process.env.SPOTIFY_CLIENT_ID);
     const state = generateRandomString(16);
@@ -46,8 +56,7 @@ export default (req, res) => {
     // your application requests authorization
 
     // sessionStorage.setItem('state', state)
-    console.log("We are redirecting!");
-    const redirect_url = 'https://accounts.spotify.com/authorize?' +
+    const spotifyRedirectUrl = 'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
             client_id: process.env.SPOTIFY_CLIENT_ID,
@@ -55,5 +64,5 @@ export default (req, res) => {
             redirect_uri: REDIRECT_URI,
             state: state
         })
-    res.status(200).json({ redirect_url })
+    res.status(200).json({ redirect_url: spotifyRedirectUrl })
 };

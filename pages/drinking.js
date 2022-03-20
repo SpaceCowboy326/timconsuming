@@ -1,20 +1,16 @@
-import Carousel from './components/carousel'
-import { Button, Typography, Paper } from '@mui/material';
-import allItems from './data/drinking.json';
-import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
 import {useItemData} from '../lib/util';
 import {getItems} from '../lib/item/items';
-import TypeDisplay from './components/typeDisplay';
+import TypeDisplay from '../components/typeDisplay';
 
 // const items = allItems.items;
 
 export default function Drinking({initialItems}) {
     // const itemData = useItemData('Beverage');
     const itemData = {};
-    console.log("INITIAL ITEM DATA", initialItems);
-    console.log("ItemData is... anything?", itemData);
-    console.log("ItemData data is...", itemData.data);
+    // console.log("INITIAL ITEM DATA", initialItems);
+    // console.log("ItemData is... anything?", itemData);
+    // console.log("ItemData data is...", itemData.data);
 
     return <TypeDisplay type="Beverage" data={initialItems}></TypeDisplay>;
 }
@@ -22,7 +18,7 @@ export default function Drinking({initialItems}) {
 
 export async function getServerSideProps(context) {
     const initialItems = await getItems('Beverage');
-	console.log("What did we find from DB?", initialItems);
+	// console.log("What did we find from DB?", initialItems);
     return {
         props: { initialItems },
     }

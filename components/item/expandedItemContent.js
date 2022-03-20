@@ -13,6 +13,8 @@ const GridItemInfo = styled(Grid)(({ theme }) => ({
 const dataFontSize = '1.5rem';
 const labelColumnSize = 2;
 const valueColumnSize = 12 - labelColumnSize;
+const xsLabelColumnSize = 12;
+const xsValueColumnSize = 12;
 
 const getLocationText = (data) => {
     let locationText = '';
@@ -116,7 +118,7 @@ export default function ExpandedItemContent({data, actions, type}) {
                             aria-label="play track"
                             color="tertiary"
                             component="span"
-                            sx={{mx: 1.5}}
+                            sx={{mx: '.35em'}}
                             onClick={ (e) => action.click({data, e}) }
                         >{action.icon}
                         </IconButton>
@@ -131,12 +133,12 @@ export default function ExpandedItemContent({data, actions, type}) {
             <Box sx={{mt: '.5em', mb: '1rem'}}>
                 <Divider><Chip sx={{fontSize: '1rem'}} label='Basic Info'/></Divider>
                 <Grid container sx={{mb: '1rem'}}>
-                    <GridItemInfo sx={{justifyContent: 'left', pt: '.25rem'}} item xs={labelColumnSize}>
+                    <GridItemInfo sx={{justifyContent: 'left', pt: '.25rem'}} item md={labelColumnSize} xs={xsLabelColumnSize}>
                         <Typography variant="h6" color="textSecondary">
                                 { itemFieldText.NAME }: 
                         </Typography>
                     </GridItemInfo>
-                    <GridItemInfo item xs={valueColumnSize}>
+                    <GridItemInfo item md={valueColumnSize} xs={xsValueColumnSize}>
                         <Typography sx={{fontSize: dataFontSize}} variant="body1">
                             {data.name}
                             { data.nameUrl && 
@@ -152,7 +154,7 @@ export default function ExpandedItemContent({data, actions, type}) {
                             }
                         </Typography>
                     </GridItemInfo>
-                    <GridItemInfo sx={{justifyContent: 'left', pt: '.25rem'}} item xs={labelColumnSize}>
+                    <GridItemInfo sx={{justifyContent: 'left', pt: '.25rem'}} item md={labelColumnSize} xs={xsLabelColumnSize}>
                         <Typography variant="h6" color="textSecondary">
                             { itemFieldText.SOURCE }: 
                         </Typography>
@@ -178,7 +180,7 @@ export default function ExpandedItemContent({data, actions, type}) {
                             { itemFieldText.ALBUM }: 
                         </Typography>
                     </GridItemInfo>}
-                    {data.album && <GridItemInfo item xs={valueColumnSize}>
+                    {data.album && <GridItemInfo item md={valueColumnSize} xs={xsValueColumnSize}>
                         <Typography sx={{fontSize: dataFontSize}} variant="body1">
                             {data.album}
                         </Typography>

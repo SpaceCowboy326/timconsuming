@@ -19,7 +19,7 @@ const MIN_POSITION = 1;
 const POSITION_THRESHOLD = .5;
 const POSITION_INTERVAL = 200;
 const DEFAULT_VOLUME = 50;
-const playbackIconSize = 3;
+const playbackIconSize = 3.5;
 const normalizePosition = ({max, value}) => ((value - MIN_POSITION) * 100) / (max - MIN_POSITION);
 
 const millisecondsToMinutes = (milliseconds) => {
@@ -207,20 +207,20 @@ function SpotifyPlayer({player, token}) {
                     }}/>
                 </IconButton>
             </Box>
-            <Box sx={{minWidth: '30em', width: '60vw'}}>
+            <Box sx={{minWidth: '30rem', width: '60vw'}}>
                 <Box sx={{justifyContent: 'center', display: 'flex'}}>
                     <Box sx={{flex: '0 1 50%'}}></Box>
                     <Box sx={{display: 'flex'}}>
-                        <Box sx={{mr: '1em', padding: '.25em'}}>
+                        <Box sx={{mr: '1rem', padding: '.25rem'}}>
                             <IconButton
                                 aria-label="Music Player Seek Backward"
                                 onClick={handlePreviousClick}
                                 size={'small'}
                             >
-                                <SkipPrevious sx={{fontSize: `${playbackIconSize}em`}}/>
+                                <SkipPrevious sx={{fontSize: `${playbackIconSize}rem`}}/>
                             </IconButton>
                         </Box>
-                        <Box sx={{padding: '.25em'}}>
+                        <Box sx={{padding: '.25rem'}}>
                             <IconButton
                                 aria-label="Music Player Toggle Play/Pause"
                                 onClick={togglePlaying}
@@ -228,33 +228,33 @@ function SpotifyPlayer({player, token}) {
                             >
                                 {
                                     playing ?
-                                        <PauseCircleFilled sx={{fontSize: `${playbackIconSize}em`}}/> :
-                                        <PlayCircleFilled sx={{fontSize: `${playbackIconSize}em`}}/> 
+                                        <PauseCircleFilled sx={{fontSize: `${playbackIconSize}rem`}}/> :
+                                        <PlayCircleFilled sx={{fontSize: `${playbackIconSize}rem`}}/> 
                                 }
                             </IconButton>
                         </Box>
-                        <Box sx={{ml: '1em', padding: '.25em'}} >
+                        <Box sx={{ml: '1rem', padding: '.25rem'}} >
                             <IconButton
                                 aria-label="Music Player Seek Forward"
                                 onClick={handleNextClick}
                                 size={'small'}
                             >
-                                <SkipNext sx={{fontSize: `${playbackIconSize}em`}}/>
+                                <SkipNext sx={{fontSize: `${playbackIconSize}rem`}}/>
                             </IconButton>
                         </Box>
                     </Box>
                     <Box sx={{flex: '0 1 50%'}}>
-                        <Box sx={{alignItems: 'center', alignContent: 'center', display: 'flex', m: '1.25em 1.25em 0 1.25em', width: '10em'}}>
-                            <VolumeDown/>
+                        <Box sx={{ display: 'flex', m: '.75rem 1.25rem 0 1.25rem', width: '10rem'}}>
+                            <VolumeDown sx={{mt: '.5em'}}/>
                             <Slider
                                 aria-label="Volume Control"
                                 color="tertiary"
                                 onChange={handleVolumeSliderChange}
                                 size="small"
-                                sx={{height: '.25em', ml: '0', mr: '.3em'}}
+                                sx={{height: '.25em', mt: '1.35em', ml: '0', mr: '.3em', p: '0 !important'}}
                                 value={volume}
                             ></Slider>
-                            <VolumeUp/>
+                            <VolumeUp sx={{mt: '.5em'}}/>
                         </Box>
                     </Box>
                 </Box>

@@ -1,15 +1,11 @@
 import Carousel from './carousel'
 import { Box, Button, Typography, Paper } from '@mui/material';
-// import allItems from '../pages/data/drinking.json';
-// import styles from '../styles/drinking.module.scss';
 import React, { useState, useEffect, useContext } from 'react';
-// import {useItemData} from '../../lib/util';
-// import {getItems} from '../../lib/item/items';
 
 // const items = allItems.items;
 const categories = ['Beer', 'Cocktails', 'Non-Alcoholic'];
 
-export default function TypeDisplay({data, type}) {
+export default function TypeDisplay({data, type, actions}) {
     // const itemData = useItemData('Beverage');
     const itemData = {};
     // console.log("INITIAL ITEM DATA", data);
@@ -28,13 +24,16 @@ export default function TypeDisplay({data, type}) {
 					elevation={3}
 					key={`${index}_category_display`}
 					sx={{
-						m: 3,
-						p: 2,
+						my: 3,
+						py: 2,
 						// color: 'textSecondary',
 						// '&:hover': {bgColor: 'red'},
 						'&:hover .sectionTitle': {
 							color: "text.primary",
-						}
+						},
+						'&:first-of-type': {
+							mt: 0,
+						},
 					}}
 				>
 					<Typography
@@ -43,17 +42,21 @@ export default function TypeDisplay({data, type}) {
 						variant={'h5'}
 						sx={{
 							flex: '0 1 100%',
+							ml: '.75em',
 							transition: 'color 0.5s linear',
 						}}
 					>{category}:</Typography>
 					<Box
 						mt={1}
 						sx={{
-							flex: '0 1 90%',
-							width: '93vw',
+							// width: '93vw',
+							width: {
+								xs: '99vw',
+								sm: '93vw',
+							}
 						}}
 					>
-						<Carousel category={category} type={type} items={data}/>
+						<Carousel category={category} actions={actions} type={type} items={data}/>
 					</Box>
 				</Paper>
 			))}

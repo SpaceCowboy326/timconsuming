@@ -3,7 +3,7 @@ import { connectToDatabase } from '../../../lib/mongodb'
 
 
 export default async (req, res) => {
-    console.log("Let's look for those tags!");
+    // console.log("Let's look for those tags!");
     if (req.method === 'GET') {
         const {client, db} = await connectToDatabase();
         const collection = db.collection('items')
