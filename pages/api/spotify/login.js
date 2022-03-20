@@ -26,7 +26,6 @@ const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 
 const PORT = '3000';
-const REDIRECT_URI = `http://localhost:3000/listening`;
 const REDIRECT_SUFFIX = '/listening';
 
 const COOKIE_STATE_KEY = 'spotify_auth_state';
@@ -61,7 +60,7 @@ export default (req, res) => {
             response_type: 'code',
             client_id: process.env.SPOTIFY_CLIENT_ID,
             scope: scope_collection.join(' '),
-            redirect_uri: REDIRECT_URI,
+            redirect_uri: `${process.env.SPOTIFY_REDIRECT_URI}${REDIRECT_SUFFIX}`,
             state: state
         })
     res.status(200).json({ redirect_url: spotifyRedirectUrl })
