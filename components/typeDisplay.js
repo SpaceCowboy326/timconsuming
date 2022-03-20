@@ -5,7 +5,36 @@ import React, { useState, useEffect, useContext } from 'react';
 // const items = allItems.items;
 const categories = ['Beer', 'Cocktails', 'Non-Alcoholic'];
 
+
+
+const getDataByFields = ({fields = [], data}) => {
+	fields = [...fields];
+	const field = fields.shift();
+	const data_by_field_value = data.reduce((categorized_data, row) => {
+		const value = row[field];
+		if (!categorized_data[value]) {
+			categorized_data[value] = [];
+		}
+		categorized_data[value].push(row);
+		return categorized_data;
+	}, {});
+
+	if (fields.length) {
+		const field_keys = Object.keys(data_by_field_value);
+		field_keys.forEach(field_key => {
+			data_by_field_value[field_key] = getDataByFields({fields: fields, data: data_by_field_value[field_key]});
+		});
+	}
+
+	return data_by_field_value;
+};
+
+
+
 export default function TypeDisplay({data, type, actions}) {
+	// const categorizedData = useMemo(() => {
+
+	// }, data);
     // const itemData = useItemData('Beverage');
     const itemData = {};
     // console.log("INITIAL ITEM DATA", data);
