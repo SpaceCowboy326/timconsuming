@@ -77,10 +77,14 @@ const ratingToText = rating => {
             ratingText = '¡Perfección!';
             break;
         case 9:
+            ratingText = 'Well hot damn';
+            break;
         case 8:
             ratingText = 'Pretty Dang Good';
             break;
         case 7:
+            ratingText = 'I dig it';
+            break;
         case 6:
             ratingText = 'Better Than Average';
             break;
@@ -88,8 +92,10 @@ const ratingToText = rating => {
             ratingText = 'It\'s Alright';
             break;
         case 4:
-        case 3:
             ratingText = 'Not So Great';
+            break;
+        case 3:
+            ratingText = 'Meh.';
             break;
         case 2:
             ratingText = 'Would not play again';

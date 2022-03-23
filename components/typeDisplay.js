@@ -29,9 +29,15 @@ const getDataByFields = ({fields = [], data}) => {
 	return data_by_field_value;
 };
 
-
+const getTagCounts = (data) => {
+	return data.reduce((tagCounts, item) => {
+		item.tags.forEach((tag) => {console.log(`${tag}: ${tagCounts[tag] || 0}`); tagCounts[tag] = tagCounts[tag] ? tagCounts[tag] + 1 : 1});
+		return tagCounts;
+	}, {});
+};
 
 export default function TypeDisplay({data, type, actions}) {
+	useEffect(() => console.log(getTagCounts(data)), [data]);
 	// const categorizedData = useMemo(() => {
 
 	// }, data);
@@ -51,7 +57,7 @@ export default function TypeDisplay({data, type, actions}) {
 					key={`${index}_category_display`}
 					sx={{
 						my: 3,
-						py: 2,
+						p: 2,
 						// color: 'textSecondary',
 						// '&:hover': {bgColor: 'red'},
 						'&:hover .sectionTitle': {
