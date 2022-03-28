@@ -180,9 +180,9 @@ export default function ExpandedItemContent({data, actions, type}) {
                             }
                         </Typography>
                     </GridItemInfo>
-                    {data.album && <GridItemInfo sx={{justifyContent: 'left', pt: '.25rem'}} item xs={labelColumnSize}>
+                    {data.album && <GridItemInfo sx={{justifyContent: 'left', pt: '.25rem'}} item md={labelColumnSize} xs={xsLabelColumnSize}>
                         <Typography variant="h6" color="textSecondary">
-                            { itemFieldText.ALBUM }: 
+                            { itemFieldText.ALBUM }:
                         </Typography>
                     </GridItemInfo>}
                     {data.album && <GridItemInfo item md={valueColumnSize} xs={xsValueColumnSize}>
@@ -190,7 +190,7 @@ export default function ExpandedItemContent({data, actions, type}) {
                             {data.album}
                         </Typography>
                     </GridItemInfo>}
-                    { data.country && <GridItemInfo item sx={{ mt: 1}} xs={12}>
+                    { data.country && <GridItemInfo item sx={{ mt: 1 }} xs={12}>
                         <Typography variant="h6" color="textSecondary">
                             { itemFieldText.LOCATION }
                         </Typography>

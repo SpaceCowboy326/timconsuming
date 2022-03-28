@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 // const items = allItems.items;
 const categories = ['Beer', 'Cocktails', 'Non-Alcoholic'];
-
+const MIN_TAGS = 4;
 
 
 const getDataByFields = ({fields = [], data}) => {
@@ -31,13 +31,46 @@ const getDataByFields = ({fields = [], data}) => {
 
 const getTagCounts = (data) => {
 	return data.reduce((tagCounts, item) => {
-		item.tags.forEach((tag) => {console.log(`${tag}: ${tagCounts[tag] || 0}`); tagCounts[tag] = tagCounts[tag] ? tagCounts[tag] + 1 : 1});
+		item.tags.forEach((tag) => tagCounts[tag] = tagCounts[tag] ? tagCounts[tag] + 1 : 1);
 		return tagCounts;
 	}, {});
 };
 
+
+
+const pickNTags = ({n, tagCounts, picked}) => {
+	const tags = Object.keys(tagCounts).filter(tag => tagCounts[tag] >= MIN_TAGS);
+	const weightedTags = tags.map((tag, index, arr) => {
+		const previousValue = index > 0 ? arr[index - 1] : 0;
+		return previousValue + tagCounts[tag];
+	});
+	console.log("weighted tags:", weightedTags);
+
+	const randomLimit = weightedTags[ weightedTags.length - 1 ];
+	const pickedNum = Math.floor(Math.random() * randomLimit);
+	console.log("Picked Num:", pickedNum);
+	let i = 0;
+	while (weightedTags[i] < pickedNum) {
+		i++;
+	}
+	picked.push(tags[i]);
+	if (picked.length === n) {
+		return picked;
+	}
+	else {
+		delete tagCounts[tags[i]];
+		return pickNTags({n, tagCounts, picked});
+	}
+};
+
 export default function TypeDisplay({data, type, actions}) {
-	useEffect(() => console.log(getTagCounts(data)), [data]);
+	useEffect(() => {
+		const tagCounts = getTagCounts(data);
+		console.log("tagCounts", tagCounts);
+		const picked = [];
+		const pickedTags = pickNTags({n: 3, tagCounts, picked});
+		console.log("pickedTags", pickedTags);
+	}, [data]);
 	// const categorizedData = useMemo(() => {
 
 	// }, data);
