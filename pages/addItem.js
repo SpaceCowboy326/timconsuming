@@ -134,7 +134,7 @@ export default function AddItem({initialData = {}}) {
         const saveUrl = editId ? `/api/items/${editId}` : '/api/items';
         console.log("saveUrl", saveUrl);
         const response = await fetch(saveUrl, options);
-        if (response.status === 200) {
+        if (!editId && response.status === 200) {
             resetForm();
         }
         console.log("Response", response);

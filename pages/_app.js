@@ -31,13 +31,6 @@ let theme = createTheme({
         },
     },
     palette: {
-        // mode: "dark",
-        // primary: {
-        // main: '#b6c4f4',
-        // },
-        // secondary: {
-        // main: '#f3d885',
-        // },
         type: 'light',
         primary: {
           main: '#81d4fa',
@@ -59,6 +52,23 @@ let theme = createTheme({
           main: '#20526b'
         }
     },
+    // palette: {
+    //   mode: "dark",
+    //   primary: {
+    //     main: '#121212',
+    //   },
+    //   secondary: {
+    //     main: '#FF3F80',
+    //   },
+    //   tertiary: {
+    //     main: '#3E50B4',
+    //   },
+
+    //   background: {
+    //     // default: '#525252',
+    //     paper: '#121212',
+    //   },
+    // },
 });
 theme = responsiveFontSizes(theme);
 

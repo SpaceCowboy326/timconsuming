@@ -79,7 +79,10 @@ const scrollContainerSx = {
 	display: 'flex',
 	height: '100%',
     overflow: 'hidden',
-    // opacity: 0,
+    opacity: {
+        xs: 1,
+        md: 0,
+    },
     // width: '4em',
     // position: 'relative',
     transition: 'opacity 1s',

@@ -1,33 +1,34 @@
 import Carousel from './carousel'
-import { Box, Button, Typography, Paper } from '@mui/material';
-import React, { useState, useEffect, useContext } from 'react';
 
-// const items = allItems.items;
-const categories = ['Beer', 'Cocktails', 'Non-Alcoholic'];
+import { Box, IconButton, Typography, Paper, Tooltip } from '@mui/material';
+import React, { useState, useEffect, useMemo } from 'react';
+import { styled, keyframes } from '@mui/system';
+import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
 const MIN_TAGS = 4;
-
-
-const getDataByFields = ({fields = [], data}) => {
-	fields = [...fields];
-	const field = fields.shift();
-	const data_by_field_value = data.reduce((categorized_data, row) => {
-		const value = row[field];
-		if (!categorized_data[value]) {
-			categorized_data[value] = [];
-		}
-		categorized_data[value].push(row);
-		return categorized_data;
-	}, {});
-
-	if (fields.length) {
-		const field_keys = Object.keys(data_by_field_value);
-		field_keys.forEach(field_key => {
-			data_by_field_value[field_key] = getDataByFields({fields: fields, data: data_by_field_value[field_key]});
-		});
+const addCategoryIconEffect = keyframes`
+0%,
+	100% {
+		transform: translateY(0) rotate(0);
+		transform-origin: 50% 50%;
 	}
-
-	return data_by_field_value;
-};
+	15% {
+		transform: translateY(-.32em) rotate(-6deg);
+	}
+	30% {
+		transform: translateY(.16em) rotate(6deg);
+	}
+	45% {
+		transform: translateY(-.16em) rotate(-3.6deg);
+	}
+	60% {
+		transform: translateY(.08em) rotate(2.4deg);
+	}
+	75% {
+		transform: translateY(-.04em) rotate(-1.2deg);
+	}
+`;
 
 const getTagCounts = (data) => {
 	return data.reduce((tagCounts, item) => {
@@ -36,19 +37,21 @@ const getTagCounts = (data) => {
 	}, {});
 };
 
-
-
-const pickNTags = ({n, tagCounts, picked}) => {
-	const tags = Object.keys(tagCounts).filter(tag => tagCounts[tag] >= MIN_TAGS);
-	const weightedTags = tags.map((tag, index, arr) => {
-		const previousValue = index > 0 ? arr[index - 1] : 0;
-		return previousValue + tagCounts[tag];
-	});
-	console.log("weighted tags:", weightedTags);
+const pickNTags = ({n, tagCounts, picked = []}) => {
+	const tags = Object.keys(tagCounts).filter(
+		tag => tagCounts[tag] >= MIN_TAGS && !picked.includes(tag)
+	);
+	let sum = 0,
+		weightedTags = [];
+	for (let tagIndex = 0; tagIndex < tags.length; tagIndex++) {
+		const tag = tags[tagIndex];
+		const count = Math.floor(tagCounts[tag] * 0.5);
+		sum += count;
+		weightedTags.push(sum);
+	}
 
 	const randomLimit = weightedTags[ weightedTags.length - 1 ];
 	const pickedNum = Math.floor(Math.random() * randomLimit);
-	console.log("Picked Num:", pickedNum);
 	let i = 0;
 	while (weightedTags[i] < pickedNum) {
 		i++;
@@ -58,41 +61,67 @@ const pickNTags = ({n, tagCounts, picked}) => {
 		return picked;
 	}
 	else {
-		delete tagCounts[tags[i]];
 		return pickNTags({n, tagCounts, picked});
 	}
 };
 
+function getIntersection(a, b) {
+	const setB = new Set(b);
+	return [...new Set(a)].filter(x => setB.has(x));
+}
+
 export default function TypeDisplay({data, type, actions}) {
+    const [typeCategories, setTypeCategories] = useState([]);
 	useEffect(() => {
 		const tagCounts = getTagCounts(data);
-		console.log("tagCounts", tagCounts);
-		const picked = [];
-		const pickedTags = pickNTags({n: 3, tagCounts, picked});
-		console.log("pickedTags", pickedTags);
+		const pickedTags = pickNTags({n: 3, tagCounts});
+		setTypeCategories(pickedTags)
 	}, [data]);
-	// const categorizedData = useMemo(() => {
 
-	// }, data);
-    // const itemData = useItemData('Beverage');
-    const itemData = {};
+	const dataByCategory = useMemo(() => {
+		const starterCategories = typeCategories.reduce((acc, category) => {
+			acc[category] = []
+			return acc;
+		}, {})
+		return data.reduce((categorizedData, row) => {
+			
+			const displayedTags = getIntersection(row.tags, typeCategories);
+			displayedTags.forEach(tag => categorizedData[tag].push(row));
+			return categorizedData;
+		}, starterCategories)
+	}, [typeCategories]);
+
+	const handleAddCategoryClick = (e) => {
+		const tagCounts = getTagCounts(data);
+		const newPicked = pickNTags({n: typeCategories.length + 1, tagCounts, picked: typeCategories});
+		setTypeCategories([...newPicked]);
+	};
+
+	const handleRemoveCategoryClick = (category, e) => {
+		const removeIndex = typeCategories.indexOf(category);
+		const newCategories = [...typeCategories];
+		newCategories.splice(removeIndex, 1);
+		setTypeCategories(newCategories);
+	}
 
     return (
 		<Box sx={{
 			display: 'flex',
-			justifyContent: 'center',
 			flexFlow: 'row wrap',
+			justifyContent: 'center',
 			width: '100%'
 		}}>
-			{categories.map((category, index) => (
+			{typeCategories.map((category, index) => (
 				<Paper
 					elevation={3}
 					key={`${index}_category_display`}
 					sx={{
-						my: 3,
-						p: 2,
-						// color: 'textSecondary',
-						// '&:hover': {bgColor: 'red'},
+						my: '1em',
+						p: {
+							sx: '1em 0',
+							md: '1em'
+						},
+						position: 'relative',
 						'&:hover .sectionTitle': {
 							color: "text.primary",
 						},
@@ -101,6 +130,30 @@ export default function TypeDisplay({data, type, actions}) {
 						},
 					}}
 				>
+					<Tooltip title="Remove Category">
+					<IconButton
+						aria-label={'Remove Category'}
+						color="tertiary"
+						sx={{
+							cursor: 'pointer',
+							position: 'absolute',
+							right: {
+								xs: '-.4em',
+								md: '.5em',
+							},
+							transition: 'transform .25s ease-out',
+							top: {
+								xs: '-.4em',
+								md: '.5em',
+							},
+							'&:hover': {
+								transform: 'scale(1.2)',
+							}
+						}}
+						onClick={(e) => handleRemoveCategoryClick(category, e)}
+                    ><HighlightOffIcon sx={{fontSize: '2rem'}}/>
+					</IconButton>	
+					</Tooltip>
 					<Typography
 						color="textSecondary"
 						className={'sectionTitle'}
@@ -121,10 +174,47 @@ export default function TypeDisplay({data, type, actions}) {
 							}
 						}}
 					>
-						<Carousel category={category} actions={actions} type={type} items={data}/>
+						<Carousel
+							actions={actions}
+							category={category}
+							items={dataByCategory[category]}
+							type={type}
+						/>
 					</Box>
 				</Paper>
 			))}
+			<Box
+				sx={{
+					cursor: 'pointer',
+					display: 'flex',
+					alignItems: 'center',
+					flexDirection: 'column',
+					py: '2em',
+					// height: '5em',
+					justifyContent: 'center',
+					flexWrap: 'wrap',
+					'&:hover .addCategoryText': {
+						color: 'text.primary',
+					},
+					'&:hover .addCategoryIcon': {
+						animation: `${addCategoryIconEffect} 2s infinite`
+					}
+				}}
+				onClick={handleAddCategoryClick}
+			>
+				<Typography sx={{transition: 'color 1s ease-out'}} color="textSecondary" className={'addCategoryText'} variant={'h5'}>Please sir, I'd like another</Typography>
+				<Tooltip title="Add Category">
+					<IconButton		
+						aria-label="Add Category"
+					>
+						<AddCircleTwoToneIcon
+							className={'addCategoryIcon'}
+							color="secondary"
+							sx={{fontSize: '2.5rem'}}
+						/>
+					</IconButton>
+				</Tooltip>
+			</Box>
 		</Box>
     );
 }

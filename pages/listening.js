@@ -31,6 +31,13 @@ const requiresLoginPaperSx = {
     width: '98vw',
 };
 
+const playlistOptions = [
+    '0viZpIBjNkJj9OMIEcAtqQ', // I Mean, I Wish I Didn't Like It
+    '44eQFIoHZdzCEozLZEZ05I', // Hippity Hop
+    '23ZzYbc3qJ1N9rNUh58ffO', // Classic Rock. Mostly.
+
+]
+
 const fetchWithToken = (url, token) => {
     // console.log('fetcher url?', url);
     // console.log('fetcher token?', token);
@@ -44,14 +51,17 @@ const fetchWithToken = (url, token) => {
 };
 
 // Converts Spotify track data into a format item.js can display.
-const trackToItem = (track) => ({
+const trackToItem = ({track, playlist}) => ({
     album:      track.album.name,
     source:     track.artists.map(artist => artist.name).join(", "),
+    sourceUrl:  track.artists[0].external_urls.spotify,
     name:       track.name,
+    nameUrl:    track.external_urls.spotify,
     id:         track.id,
-    _id:         track.id,
+    _id:        track.id,
     imageUrl:   track.album.images[0].url,
     uri:        track.uri,
+    tags:       [playlist],
 });
 
 export default function Listening() {
@@ -103,7 +113,7 @@ export default function Listening() {
         </Menu>,
         [userPlaylists, showPlaylistMenu]
     );
-    const trackItems = useMemo(() => topTracks?.items?.map(trackToItem), [topTracks]);
+    const trackItems = useMemo(() => topTracks?.items?.map((track) => trackToItem({track, playlist: 'Top Tracks'})), [topTracks]);
  
     const actionsByName = useMemo(() => {
         return {
@@ -139,7 +149,6 @@ export default function Listening() {
             },
             saveTrack: {
                 click: ({data, e}) => {
-                    // console.log("saveTrack data", data);
                     WebPlayer.saveTrack({
                         accessToken,
                         id: data.id,

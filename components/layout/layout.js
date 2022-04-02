@@ -131,7 +131,7 @@ const Layout = ({
             <Head>
                 <title>TimConsuming</title>
             </Head>
-            <Box sx={{minHeight: '90vh'}}>
+            <Box>
                 <Title selectedPage={selectedPage} transition={transition}/>
                 <TopNav selectedPage={selectedPage} setTransition={setTransition} transition={transition}/>
                     <Fade in={transition} timeout={fadeAnimationDuration}>
@@ -142,7 +142,7 @@ const Layout = ({
                         </div>
                     </Fade>
             </Box>
-            {selectedPage && <Footer show={transition}/>}
+            {selectedPage && <Footer show={transition} playerPanelShown={accessToken && spotifyPlayer}/>}
             {selectedPage && <SpotifyPlayer token={accessToken} player={spotifyPlayer}></SpotifyPlayer>}
             {/* </Box> */}
         </SpotifyAuthContext.Provider>

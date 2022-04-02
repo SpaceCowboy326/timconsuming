@@ -3,9 +3,8 @@ import React from 'react';
 import { Box, Fade, Link, Paper, Typography } from '@mui/material';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-    alignItems: 'center',
+    alignItems: 'start',
     display: 'flex',
-    height: '3rem', 
     justifyContent: 'center',
     width: '99%',
 }));
@@ -18,15 +17,16 @@ const StyledLink = styled(Link)(({ theme }) => ({
     }
 }));
 
-function Footer({show}) {
+function Footer({show, playerPanelShown}) {
     const footerFadeDuration = show ? 3000 : 50;
 
     return (
-        <footer>
+        // <footer>
+
             <Fade in={show} timeout={footerFadeDuration}>
                 <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                    <StyledPaper elevation={3}>
-                        <Typography variant="body2">
+                    <StyledPaper sx={{height: playerPanelShown ? '5rem' : '3rem'}} elevation={3}>
+                        <Typography sx={{mt: '1em'}} variant="body2">
                             Nav Icons made by&nbsp;
                             <StyledLink underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</StyledLink>&nbsp;
                             from&nbsp;
@@ -35,7 +35,7 @@ function Footer({show}) {
                     </StyledPaper>
                 </Box>
             </Fade>
-        </footer>
+        // </footer>
     );
 };
 export default Footer;
