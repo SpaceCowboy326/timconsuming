@@ -10,8 +10,10 @@ import { ThemeProvider, responsiveFontSizes, StyledEngineProvider, createTheme, 
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 
 const queryClient = new QueryClient({
-  queries: {
-    refetchOnWindowFocus: false,
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }
   }
 });
 

@@ -70,26 +70,31 @@ function getIntersection(a, b) {
 	return [...new Set(a)].filter(x => setB.has(x));
 }
 
-export default function TypeDisplay({data, type, actions}) {
+export default function TypeDisplay({categoryKey, data, type, actions, externalCategories, addCategory, removeCategory}) {
     const [typeCategories, setTypeCategories] = useState([]);
 	useEffect(() => {
-		const tagCounts = getTagCounts(data);
-		const pickedTags = pickNTags({n: 3, tagCounts});
-		setTypeCategories(pickedTags)
-	}, [data]);
+		if (!externalCategories) {
+			const tagCounts = getTagCounts(data);
+			const pickedTags = pickNTags({n: 3, tagCounts});
+			setTypeCategories(pickedTags)
+		}
+	}, [data, externalCategories]);
+
+	const categories = useMemo(() => externalCategories || typeCategories, [externalCategories, typeCategories]);
+// console.log("here is typedisplay data", data);
 
 	const dataByCategory = useMemo(() => {
-		const starterCategories = typeCategories.reduce((acc, category) => {
+		const starterCategories = categories.reduce((acc, category) => {
 			acc[category] = []
 			return acc;
 		}, {})
 		return data.reduce((categorizedData, row) => {
-			
-			const displayedTags = getIntersection(row.tags, typeCategories);
+			const categoryData = categoryKey ? row[ categoryKey ] : row.tags;
+			const displayedTags = getIntersection(categoryData, categories);
 			displayedTags.forEach(tag => categorizedData[tag].push(row));
 			return categorizedData;
 		}, starterCategories)
-	}, [typeCategories]);
+	}, [categories]);
 
 	const handleAddCategoryClick = (e) => {
 		const tagCounts = getTagCounts(data);
@@ -111,10 +116,10 @@ export default function TypeDisplay({data, type, actions}) {
 			justifyContent: 'center',
 			width: '100%'
 		}}>
-			{typeCategories.map((category, index) => (
+			{categories.map((category, index) => (
 				<Paper
 					elevation={3}
-					key={`${index}_category_display`}
+					key={`${type}_${category}_category_display`}
 					sx={{
 						my: '1em',
 						p: {
@@ -150,7 +155,14 @@ export default function TypeDisplay({data, type, actions}) {
 								transform: 'scale(1.2)',
 							}
 						}}
-						onClick={(e) => handleRemoveCategoryClick(category, e)}
+						onClick={(e) => {
+							if (typeof removeCategory === 'function') {
+								removeCategory(category, e);
+							}
+							else {
+								handleRemoveCategoryClick(category, e);
+							}
+						}}
                     ><HighlightOffIcon sx={{fontSize: '2rem'}}/>
 					</IconButton>	
 					</Tooltip>
@@ -200,7 +212,7 @@ export default function TypeDisplay({data, type, actions}) {
 						animation: `${addCategoryIconEffect} 2s infinite`
 					}
 				}}
-				onClick={handleAddCategoryClick}
+				onClick={addCategory || handleAddCategoryClick}
 			>
 				<Typography sx={{transition: 'color 1s ease-out'}} color="textSecondary" className={'addCategoryText'} variant={'h5'}>Please sir, I'd like another</Typography>
 				<Tooltip title="Add Category">
