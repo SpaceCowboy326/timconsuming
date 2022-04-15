@@ -106,11 +106,6 @@ export default function Listening({initialPlaylists}) {
     const playlistQueryResults = useQueries(playlistQueries);
 
     const playlistItems = useMemo(() => {
-        console.log("Starting with playlistQueryResults", playlistQueryResults);
-        if (playlistQueryResults.some(playlistResponse => playlistResponse.isLoading)) {
-            console.log('Loading - don\'t update');
-            return playlistItems;
-        }
         return playlistQueryResults
             .filter(playlistResponse => playlistResponse.isSuccess)
             .reduce((items, playlistResponse) => {
@@ -124,10 +119,6 @@ export default function Listening({initialPlaylists}) {
 
 
     const selectedPlaylistNames = useMemo(() => {
-        if (playlistQueryResults.some(playlistResponse => playlistResponse.isLoading)) {
-            console.log('Loading - don\'t update names');
-            return selectedPlaylistNames;
-        }
         return playlistQueryResults.map((playlistResponse) =>
             selectedPlaylists.includes(playlistResponse?.data?.id) ? playlistResponse.data.name : null
         );
@@ -299,7 +290,6 @@ export default function Listening({initialPlaylists}) {
     const loggedInContent = useMemo(() =>
         <div>
             {playlistMenu}
-            <p>{selectedPlaylists.join()}</p>
             <TypeDisplay externalCategories={selectedPlaylistNames} addCategory={addPlaylist} removeCategory={removePlaylist} type="Music" data={playlistItems} actions={actions}/>
             {/* <TypeDisplay addCategory={addPlaylist} removeCategory={removePlaylist} type="Music" data={playlistItems} actions={actions}/> */}
         </div>,
