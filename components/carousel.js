@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Backdrop, Box, Grid, SvgIcon } from '@mui/material';
+import { Backdrop, Box, Grid } from '@mui/material';
 import Item from './item/item';
-import { flexbox, keyframes } from '@mui/system';
+import { keyframes } from '@mui/system';
 import { alpha } from "@mui/material";
 import {ChevronLeft, ChevronRight} from './chevron'
-import Image from 'next/image';
 
 const innerArrowEffect = keyframes`
     0% {transform: translate(0, 0);}
@@ -21,23 +20,6 @@ const outerArrowEffect = keyframes`
 `;
 
 const MIN_SCROLL_INCREMENT = 288;
-const innerArrowSize = 5;
-const outerArrowSize = 7;
-const innerArrowWidth = 35;
-const outerArrowWidth = 45;
-
-
-// const fadedEdgeSx = {
-// 	background: (theme) => `linear-gradient(to right, ${theme.palette.primary.main} 0%, transparent 200%)`,
-//     height: '100%',
-//     left: 0,
-//     pointerEvents: 'none',
-//     position: 'absolute',
-//     top: 0,
-//     transition: 'opacity 1s',
-//     width: '75px',
-//     zIndex: 999,
-// };
 
 const backdropSx = {
 	opacity: 0.5,
@@ -45,13 +27,11 @@ const backdropSx = {
 };
 
 const outerArrowSx = {
-    // top: '50%',
     animation: `${outerArrowEffect} 3s infinite`,
 	display: 'flex',
 	height: '3.5em',
     '.outerChevronLeft': {
         ml: '-.7em',
-
     },
     '.outerChevronRight': {
         
@@ -64,8 +44,6 @@ const innerArrowSx = {
 	height: '3em',
     '.innerChevronLeft': {
         ml: '-2em',
-        // left: '-2.8em',
-
     },
     '.innerChevronRight': {
         mr: '-2.5em',
@@ -83,8 +61,6 @@ const scrollContainerSx = {
         xs: 1,
         md: 0,
     },
-    // width: '4em',
-    // position: 'relative',
     transition: 'opacity 1s',
     '& svg': {
         fill: (theme) => theme.palette.secondary.main,
@@ -94,7 +70,6 @@ const scrollContainerSx = {
     '&:hover svg': {
         fill: (theme) => theme.palette.secondary.dark,
     }
-    // 'img': {fill: 'red'},
 };
 
 export default function Carousel({items, actions, type, category}) {
@@ -107,7 +82,6 @@ export default function Carousel({items, actions, type, category}) {
 
     const containerRef = useRef(null)
 
-    //TODO - not sure if it's necessary to wrap or if you should pass state setters directly?
     const setBackdropDisplay = ({val, clickCallback}) => {
         setShowBackdrop(val);
     };
@@ -119,7 +93,7 @@ export default function Carousel({items, actions, type, category}) {
                     actions={actions}
                     backdropShown={showBackdrop}
                     data={item}
-                    displayBackdrop={setBackdropDisplay}
+                    displayBackdrop={setShowBackdrop}
                     type={type}
                 />
             </Grid>
@@ -198,7 +172,6 @@ export default function Carousel({items, actions, type, category}) {
             sx={{
                 borderTop: '2px solid',
                 borderBottom: '2px solid',
-                // borderColor: 'secondary.main',
                 borderColor: (theme) => alpha(theme.palette.secondary.main, 0),
                 display: 'flex',
                 minWidth: '18rem',
@@ -212,7 +185,6 @@ export default function Carousel({items, actions, type, category}) {
                         opacity: 1,
                     }
                 },
-                // overflow: 'hidden',
             }}
             onMouseDown={handleScrollingStart}
             onMouseMove={handleScrollDrag}

@@ -10,26 +10,9 @@ const itemHeight = 15,
 const sharedItemSx = {
     bgcolor: 'background.default',
 };
-// const expandedItemSx = {
-//         height: 'unset',
-//         left: '50%',
-//         // maxHeight: '90vh',
-//         overflow: 'visible',
-//         msOverflowStyle: 'none',  /* Internet Explorer 10+ */
-//         scrollbarWidth: 'none',  /* Firefox */
-//         '::-webkit-scrollbar': {display: 'none'},
-//         padding: '1.5em 2em 1em 2em',
-//         // transition: 'transform .5s ease-out !important',
-//         position: 'fixed',
-//         top: '10vh',
-//         // top: '50%',
-//         // transform: 'translateX(-50%)',
-//         width: 'min(80vw, 45em)',
-//         zIndex: 1001,
-// };
+
 const expandedItemSx = {
     height: 'unset',
-    // minWidth: '540px',
     overflow: 'visible',
     padding: '1.5em 2em 1em 2em',
     width: 'min(90vw, 45em)',
@@ -51,14 +34,9 @@ const expandedContainerSx = {
 }
 
 const listItemSx = {
-    // height: `${itemHeight}em`,
-    // maxHeight: `${itemHeight}em`,
     width: `${itemWidth}em`,
     padding: '0.5em',
     ':hover': {
-        // .title {
-            // color: $primary-text;
-        // }
         transform: 'scale(1.05)',
         transition: 'transform 0.1s linear',
     },
@@ -88,7 +66,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     // Keydown listener to close modal on 'esc'
     const closeModalOnEsc = useCallback((e) => {
         if (e.code === 'Escape') {
-            displayBackdrop({val: false});
+            displayBackdrop(false);
             setExpanded(false);
         }
     }, [displayBackdrop, setExpanded]);

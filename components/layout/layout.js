@@ -21,8 +21,6 @@ const Layout = ({
     refresh_token,
 }) => {
     const router = useRouter();
-    // Leaving as an example of how to pass query params in case it's necessary later
-    // const {previous} = router.query;
     const [transition, setTransition] = useState(true);
     const [spotifyPlayer, setSpotifyPlayer] = useState(null);
     const [spotifyPlaybackReady, setSpotifyPlaybackReady] = useState(false);
@@ -144,7 +142,6 @@ const Layout = ({
             </Box>
             {selectedPage && <Footer show={transition} playerPanelShown={accessToken && spotifyPlayer}/>}
             {selectedPage && <SpotifyPlayer token={accessToken} player={spotifyPlayer}></SpotifyPlayer>}
-            {/* </Box> */}
         </SpotifyAuthContext.Provider>
     );
 }

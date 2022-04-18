@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import {SpotifyAuthContext} from '../components/layout/layout';
 import { Box, Button, CircularProgress, Typography, Paper } from '@mui/material';
-import React, { useState, useContext, useCallback, useMemo, useEffect } from 'react';
+import React, { useState, useContext, useCallback, useMemo } from 'react';
 import spotifyData from '../lib/spotify/data';
 import WebPlayer from '../lib/spotify/web-player';
 import { Favorite, HeartBroken, PlayCircleFilled, PlaylistAdd, QueuePlayNext } from '@mui/icons-material';
@@ -20,7 +20,7 @@ const INITIAL_PLAYLIST_COUNT = 3;
 const login_redirect_url = '/api/spotify/login';
 
 const actionIconSx = {
-    fontSize: '4.5rem',
+    fontSize: '4rem',
 }
 
 const requiresLoginPaperSx = {
@@ -41,20 +41,9 @@ const playlistOptions = [
     '6EnRitQJrAGCyAJVEih1zW', // That's so 90's
 ]
 
-const fetchWithToken = (url, token) => {
-    const options = {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        }
-    };
-
-    return fetch(url, options);
-};
-
 const pickNPlaylists = ({n, picked = []}) => {
     const remainingPlaylists = playlistOptions.filter(playlist => !picked.indexOf(playlist) > -1)
 
-    console.log("remaining?", remainingPlaylists);
     while (picked.length < n && remainingPlaylists.length) {
         const nextIndex = Math.floor(Math.random() * (remainingPlaylists.length - 1));
         picked.push(remainingPlaylists[nextIndex]);
@@ -87,22 +76,19 @@ export default function Listening({initialPlaylists}) {
     const [selectedPlaylists, setSelectedPlaylists] = useState(initialPlaylists || []);
     const router = useRouter();
 
-    console.log("selected Playlists", selectedPlaylists);
     const playlistQueries = useMemo(() => {
-        console.log('playlistQueries rerunning', {selectedPlaylists, accessToken});
         if (!accessToken || !selectedPlaylists) {
             return [];
         }
         return selectedPlaylists.map(playlistId => {
             return {
                 queryKey: ['playlist', playlistId],
-                queryFn: ({queryKey}) => {console.log("reqing queryKey", queryKey);return WebPlayer.getPlaylist({playlistId: queryKey[1], token: accessToken})},
+                queryFn: ({queryKey}) => {return WebPlayer.getPlaylist({playlistId: queryKey[1], token: accessToken})},
                 staleTime: 800,
                 refetchOnWindowFocus: false,
             }
         });
     }, [selectedPlaylists, accessToken]);
-    console.log({playlistQueries});
     const playlistQueryResults = useQueries(playlistQueries);
 
     const playlistItems = useMemo(() => {
@@ -117,15 +103,11 @@ export default function Listening({initialPlaylists}) {
             }, []);
     }, [playlistQueryResults]);
 
-
     const selectedPlaylistNames = useMemo(() => {
         return playlistQueryResults.map((playlistResponse) =>
             selectedPlaylists.includes(playlistResponse?.data?.id) ? playlistResponse.data.name : null
         );
     });
-    console.log("selected names", selectedPlaylistNames);
-    console.log({playlistQueryResults});
-    console.log({playlistItems});
 
     const addPlaylist = useCallback(() => {
         const newSelectedPlaylists = pickNPlaylists({n: selectedPlaylists.length + 1, selectedPlaylists});
@@ -139,14 +121,6 @@ export default function Listening({initialPlaylists}) {
         newSelectedPlaylists.splice(playlistIndex, 1);
         setSelectedPlaylists(newSelectedPlaylists);
     }, [selectedPlaylists, setSelectedPlaylists])
-
-    // const { isLoading: topTracksLoading, error: topTracksError, data: topTracks } = useQuery(['topTracks', accessToken], ({queryKey}) => {
-    //     return fetchWithToken(`https://api.spotify.com/v1/me/top/tracks`, queryKey[1]).then(res => res.json());
-    // },
-    // {
-    //     enabled: !!accessToken,
-    //     staleTime: 300,
-    // });
 
     const { isLoading: userPlaylistsLoading, error: userPlaylistsError, data: userPlaylists } =
         useQuery(
@@ -181,7 +155,6 @@ export default function Listening({initialPlaylists}) {
         </Menu>,
         [userPlaylists, showPlaylistMenu]
     );
-    // const trackItems = useMemo(() => topTracks?.items?.map((track) => trackToItem({track, playlist: 'Top Tracks'})), [topTracks]);
 
     const actionsByName = useMemo(() => {
         return {
@@ -197,7 +170,6 @@ export default function Listening({initialPlaylists}) {
             },
             queue: {
                 click: ({data, e}) => {
-                    // console.log("queueing...", data);
                     WebPlayer.queueTrack({
                         token: accessToken,
                         track: data.uri,
@@ -291,7 +263,6 @@ export default function Listening({initialPlaylists}) {
         <div>
             {playlistMenu}
             <TypeDisplay externalCategories={selectedPlaylistNames} addCategory={addPlaylist} removeCategory={removePlaylist} type="Music" data={playlistItems} actions={actions}/>
-            {/* <TypeDisplay addCategory={addPlaylist} removeCategory={removePlaylist} type="Music" data={playlistItems} actions={actions}/> */}
         </div>,
         [playlistItems, actions]
     );
@@ -312,7 +283,6 @@ export default function Listening({initialPlaylists}) {
 
 export async function getServerSideProps(context) {
     const initialPlaylists = pickNPlaylists({n: INITIAL_PLAYLIST_COUNT, picked: []});
-    console.log("initial playlists", initialPlaylists);
     return {
         props: { initialPlaylists },
     }

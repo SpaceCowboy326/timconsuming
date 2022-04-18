@@ -21,21 +21,18 @@ function Footer({show, playerPanelShown}) {
     const footerFadeDuration = show ? 3000 : 50;
 
     return (
-        // <footer>
-
-            <Fade in={show} timeout={footerFadeDuration}>
-                <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
-                    <StyledPaper sx={{height: playerPanelShown ? '5rem' : '3rem'}} elevation={3}>
-                        <Typography sx={{mt: '1em'}} variant="body2">
-                            Nav Icons made by&nbsp;
-                            <StyledLink underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</StyledLink>&nbsp;
-                            from&nbsp;
-                            <StyledLink underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</StyledLink>&nbsp;
-                        </Typography>
-                    </StyledPaper>
-                </Box>
-            </Fade>
-        // </footer>
+        <Fade in={show} timeout={footerFadeDuration}>
+            <Box sx={{display: 'flex', justifyContent: 'center', width: '100%'}}>
+                <StyledPaper sx={{height: playerPanelShown ? '5rem' : '3rem'}} elevation={3}>
+                    <Typography sx={{mt: '1em'}} variant="body2">
+                        Nav Icons made by&nbsp;
+                        <StyledLink underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.freepik.com" title="Freepik">Freepik</StyledLink>&nbsp;
+                        from&nbsp;
+                        <StyledLink underline="hover" target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</StyledLink>&nbsp;
+                    </Typography>
+                </StyledPaper>
+            </Box>
+        </Fade>
     );
 };
 export default Footer;

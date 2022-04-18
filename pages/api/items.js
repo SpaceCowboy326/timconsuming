@@ -1,13 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// import { connectToDatabase } from '../../lib/mongodb'
-
 import {getItems, addItem} from '../../lib/item/items';
 
-
-
-
 export default async (req, res) => {
-
     switch (req.method) {
         case 'GET':
             const {itemType} = req.query;
@@ -24,7 +17,6 @@ export default async (req, res) => {
             break;
         default:
             console.error(`Invalid method "${req.method}" for items API endpoint.`);
-            //TODO - send error immediately?
             break;
     }
     res.status(200).json({ name: 'John Doe' })

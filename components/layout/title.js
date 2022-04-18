@@ -1,5 +1,5 @@
 import React, {  useMemo, useRef } from 'react';
-import { keyframes, styled } from '@mui/system';
+import { styled } from '@mui/system';
 import { Box, Fade, Typography } from '@mui/material';
 
 // Haven't been able to get this to work correctly for the page title transitions yet.
@@ -26,7 +26,6 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    // pt: '1em',
     paddingTop: '0.5em',
     width: '100%',
 }));
