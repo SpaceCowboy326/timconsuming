@@ -168,7 +168,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
                                 fullWidth={true}
                                 onClick={toggleExpanded}
                                 color="secondary"
-                                sx={{fontSize: expanded ? '1.5em' : null}}
+                                sx={{fontSize: expanded ? '1.5em' : null, textShadow: '2px 1px 5px black'}}
                                 variant="contained"
                             >
                                 { buttonText }

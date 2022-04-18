@@ -100,28 +100,18 @@ function MyApp(props) {
 }
 
 MyApp.getInitialProps = async (appContext) => {
-  // console.log("appContext", appContext);
-  // console.log("context", ctx);
-  // console.log("base_props", base_props);
-  // return base_props;
   const {ctx, Component} = appContext;
   const {req, res, query} = ctx;
   const additionalProps = {};
   const code = query.code;
   
-  // const token_response = await fetch('http://localhost:3000/api/token');
   if (code) {
     const token_response = await auth.getNewAccessToken(code);
-    // console.log("What's the token response?", token_response);
     additionalProps.access_token = token_response.access_token;
     additionalProps.refresh_token = token_response.refresh_token;
     additionalProps.expires_in = token_response.expires_in;
   }
   const baseProps = await App.getInitialProps(appContext);
-  // if (Component.getInitialProps) {
-  //   // base_props = await Component.getInitialProps(ctx);
-  //   base_props = await Component.getInitialProps(appContext);
-  // }
   const props = {
     ...baseProps,
     ...additionalProps,

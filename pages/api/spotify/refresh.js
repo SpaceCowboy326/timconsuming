@@ -21,7 +21,6 @@ const refreshAccessToken = async (req, res) => {
         })
     };
     const refreshResponse = await fetch(ENDPOINTS.TOKEN, refreshOpts);
-    // console.log("refresh response", refreshResponse);
     const refreshJson = await refreshResponse.json();
     return res.json(refreshJson);
 };

@@ -44,17 +44,7 @@ const generateRandomString = length => {
 };
 
 export default (req, res) => {
-    const {query} = req;
-    const {baseRedirectUrl} = query;
-    // const redirectUrl = `${baseRedirectUrl}${REDIRECT_SUFFIX}`;
-    // console.log("we will redirect to", redirectUrl);
-    // console.log("Process.env?", process.env);
-    // console.log("Process.env client id", process.env.SPOTIFY_CLIENT_ID);
     const state = generateRandomString(16);
-    // res.cookie(COOKIE_STATE_KEY, state);
-    // your application requests authorization
-
-    // sessionStorage.setItem('state', state)
     const spotifyRedirectUrl = 'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
             response_type: 'code',
