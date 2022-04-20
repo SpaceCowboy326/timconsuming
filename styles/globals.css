@@ -24,6 +24,10 @@ html {
   font-size: 20px;
 }
 
+.titleContainer {
+  visibility: hidden;
+}
+
 @media (max-width: 2000px), (max-height: 1000px) {
   html {
     font-size: 18px;

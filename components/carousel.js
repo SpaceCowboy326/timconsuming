@@ -81,11 +81,6 @@ export default function Carousel({items, actions, type, category}) {
     const [backdropClickCallback, setBackdropClickCallback] = useState(null);
 
     const containerRef = useRef(null)
-
-    const setBackdropDisplay = ({val, clickCallback}) => {
-        setShowBackdrop(val);
-    };
-
     const itemList = useMemo(() => 
         items.map(item => (
             <Grid key={`${category}_${type}_${item._id}`} item s={12}>

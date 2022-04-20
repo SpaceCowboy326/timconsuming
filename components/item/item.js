@@ -96,7 +96,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
 
     const toggleExpanded = useCallback(e => {
         const new_state = !expanded;
-        displayBackdrop({val: new_state, clickCallback: (e) => setExpanded(false)});
+        displayBackdrop(new_state);
         setExpanded(new_state);
     }, [displayBackdrop, expanded]);
 
@@ -146,7 +146,11 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
                                 fullWidth={true}
                                 onClick={toggleExpanded}
                                 color="secondary"
-                                sx={{fontSize: expanded ? '1.5em' : null, textShadow: '2px 1px 5px black'}}
+                                sx={{
+                                    fontSize: expanded ? '1.5em' : null,
+                                    textShadow: (theme) => `3px 2px 1px ${theme.palette.tertiary.main}`,
+
+                                }}
                                 variant="contained"
                             >
                                 { buttonText }

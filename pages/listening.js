@@ -39,15 +39,19 @@ const playlistOptions = [
     '5S6DGkWYNO1KtpBkcWl03I', // Indie
     '2bnwRsoVKlSFcR3Hsno6Pq', // Punk, Pop Punk, Emo, I dunno
     '6EnRitQJrAGCyAJVEih1zW', // That's so 90's
-]
+];
 
 const pickNPlaylists = ({n, picked = []}) => {
     const remainingPlaylists = playlistOptions.filter(playlist => !picked.indexOf(playlist) > -1)
 
     while (picked.length < n && remainingPlaylists.length) {
         const nextIndex = Math.floor(Math.random() * (remainingPlaylists.length - 1));
+        console.log({nextIndex})
+        console.log("pl ID", remainingPlaylists[nextIndex]);
         picked.push(remainingPlaylists[nextIndex]);
         remainingPlaylists.splice(nextIndex, 1);
+        console.log({picked});
+
     };
     return picked;
 }
@@ -103,22 +107,51 @@ export default function Listening({initialPlaylists}) {
             }, []);
     }, [playlistQueryResults]);
 
+    const playlistIdToName = useMemo(() => {
+        return playlistQueryResults.reduce((idToName, playlistResponse) => {
+            const name = playlistResponse?.data?.name;
+            const id = playlistResponse?.data?.id;
+            if (name) {
+                idToName[ id ] = name;
+            }
+            return idToName;
+        }, {});
+    }, [selectedPlaylists, playlistQueryResults]);
+
+    // const playlistNames = useMemo(() => Object.values(playlistIdToName), [playlistIdToName]);
     const selectedPlaylistNames = useMemo(() => {
-        return playlistQueryResults.map((playlistResponse) =>
-            selectedPlaylists.includes(playlistResponse?.data?.id) ? playlistResponse.data.name : null
-        );
-    });
+        console.log("making selected playist names from selectedplaylsits", selectedPlaylists);
+        return selectedPlaylists.reduce((names, playlistId) => {
+            const playlistName = playlistIdToName[playlistId];
+            if (playlistName) {
+                names.push(playlistName);
+            }
+            return names;
+        }, [])
+    }, [playlistIdToName, selectedPlaylists]);
+
+
+    // const selectedPlaylistNames = useMemo(() => {
+    //     return playlistQueryResults.map((playlistResponse) =>
+    //         selectedPlaylists.includes(playlistResponse?.data?.id) ? playlistResponse.data.name : null
+    //     );
+    // }, [selectedPlaylists, playlistQueryResults]);
+    console.log({selectedPlaylistNames});
 
     const addPlaylist = useCallback(() => {
-        const newSelectedPlaylists = pickNPlaylists({n: selectedPlaylists.length + 1, selectedPlaylists});
+        const newSelectedPlaylists = pickNPlaylists({n: selectedPlaylists.length + 1, picked: selectedPlaylists});
         setSelectedPlaylists(newSelectedPlaylists);
     }, [selectedPlaylists, setSelectedPlaylists]);
 
-    const removePlaylist = useCallback((playlistId) => {
+    const removePlaylist = useCallback((playlistName) => {
         console.log("remove ID", playlistId);
+        console.log("starting as ", [...selectedPlaylists]);
+        const playlistId = Object.keys(playlistIdToName).find((id) => playlistIdToName[id] === playlistName);
         const newSelectedPlaylists = [...selectedPlaylists];
         const playlistIndex = newSelectedPlaylists.indexOf(playlistId);
         newSelectedPlaylists.splice(playlistIndex, 1);
+        console.log("now should be", [...newSelectedPlaylists]);
+
         setSelectedPlaylists(newSelectedPlaylists);
     }, [selectedPlaylists, setSelectedPlaylists])
 
@@ -262,7 +295,14 @@ export default function Listening({initialPlaylists}) {
     const loggedInContent = useMemo(() =>
         <div>
             {playlistMenu}
-            <TypeDisplay externalCategories={selectedPlaylistNames} addCategory={addPlaylist} removeCategory={removePlaylist} type="Music" data={playlistItems} actions={actions}/>
+            <TypeDisplay
+                actions={actions}
+                addCategory={addPlaylist}
+                data={playlistItems}
+                externalCategories={selectedPlaylistNames}
+                removeCategory={removePlaylist}
+                type="Music"
+            />
         </div>,
         [playlistItems, actions]
     );

@@ -27,6 +27,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
     justifyContent: 'center',
     paddingTop: '0.5em',
+    visibility: 'visible !important',
     width: '100%',
 }));
 
@@ -38,7 +39,7 @@ function Title({selectedPage, transition}) {
         </span>
     </Box>, [selectedPage]);
 
-    return (<StyledContainer color="primary">
+    return (<StyledContainer className={'titleContainer'} color="primary">
             <Box sx={{
                 display: 'flex',
                 justifyContent: 'flex-end'
