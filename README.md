@@ -1,34 +1,69 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Timconsuming
 
-## Getting Started
+This is a personal project meant to share some of the things I've been consuming lately. The topics covered include Beverages, Media, Video Games, and Music.
 
-First, run the development server:
+## Description
 
-```bash
-npm run dev
-# or
-yarn dev
+While the goal is to share some of the things I've been enjoying (or not enjoying) lately, this was also started as a learning opportunity. I tried to build the site using a minimal number of external packages and a lot of custom styling.
+
+
+### Check it Out!
+
+You can see some version of this running at:
+https://yubnub.net/
+
+It currently requires manual updates, so it may not be 100% up to date with the code.
+
+
+### Dependencies
+
+Requires a MongoDB connection for any of the list pages to work. The Music page requires a valid Spotify Client Secret Key to load.
+
+The Music page also requires a Spotify login if you want to see the playlists/listen through the Web Player.
+
+
+### Starting the Application
+
+For production:
+
+```
+npm run build
+npm run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For development:
+```
+npm run dev
+```
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### The Building Blocks
+- The app is built starting from create-next-app.
+- There's a MongoDB database hosted on atlas containing all of the "item" info.
+- MUI for UI components.
+- react-query and some leftover swr for ajax requests.
+- formidable for some help with uploading images.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+And that's pretty much it.  There are a couple leftover dependencies from earlier iterations that can almost be removed (sass, swr, react-transition-group). It's a silly project with no real purpose, but it was fun to create and I enjoy sharing the things I've consumed with the world.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Things I Know are Broken
 
-## Learn More
+I felt like this was at the point I could show it off a bit, but there are a number of things that I'm still working on. Some problems I'd still like to solve:
 
-To learn more about Next.js, take a look at the following resources:
+- The Web Player functionality needs a number of improvements. The playback timer can get out of sync, and it sometimes hijacks your session if you leave the site open while you're listening elsewhere. Some additional minor issues make it feel a little wonky, and I'd like to improve it.
+- The color contrast is definitely not accessible. The white on yellow should be changed, but... I really liked the colors.
+- My "largest contentful paint" time is pretty high, and I'd like to work on decreasing it. Think it may be related to the the extremely un-optimized image situation.
+- The images are currently checked in to source control, but the should be hosted on an external service.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Authors
 
-## Deploy on Vercel
+This was worked on solely by Tim Hallowell, @SpaceCowboy326.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details
+
+## Acknowledgments
+
+Nav Icons made by [Freepik](https://www.freepik.com/) from [www.flaticon.com](www.flaticon.com).
