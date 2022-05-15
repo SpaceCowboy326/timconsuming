@@ -50,7 +50,7 @@ function SpotifyPlayer({player, token}) {
             WebPlayer.play({token, device_id: player.device_id});
             const currentlyPlayingTrack = await WebPlayer.getCurrentlyPlaying({token, device_id: player.device_id});
             const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack({item: currentlyPlayingTrack});
-            if (currentlyPlayingTrack.item.id !== currentlyPlaying.id) {
+            if (currentlyPlayingTrack?.item?.id !== currentlyPlaying.id) {
                 setCurrentlyPlaying({
                     duration: currentlyPlayingTrack.item.duration_ms,
                     id: currentlyPlayingTrack.item.id,
@@ -149,12 +149,12 @@ function SpotifyPlayer({player, token}) {
             if (state.paused) {
                 setPlaying(false);
             }
-            if (state.position && state.duration) {
+            if (typeof state.position !== 'undefined' && state.duration) {
                 updatePositionIfNecessary({newPosition: state.position, duration: state.duration, currentPosition: position});
             }
         });
         return () => player.removeListener('player_state_changed');
-    }, [player]);
+    }, [player, currentlyPlaying]);
 
 
     const handlePreviousClick = () => {

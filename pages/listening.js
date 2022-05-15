@@ -42,16 +42,11 @@ const playlistOptions = [
 ];
 
 const pickNPlaylists = ({n, picked = []}) => {
-    const remainingPlaylists = playlistOptions.filter(playlist => !picked.indexOf(playlist) > -1)
-
+    const remainingPlaylists = playlistOptions.filter(playlist => picked.indexOf(playlist) === -1);
     while (picked.length < n && remainingPlaylists.length) {
         const nextIndex = Math.floor(Math.random() * (remainingPlaylists.length - 1));
-        console.log({nextIndex})
-        console.log("pl ID", remainingPlaylists[nextIndex]);
         picked.push(remainingPlaylists[nextIndex]);
         remainingPlaylists.splice(nextIndex, 1);
-        console.log({picked});
-
     };
     return picked;
 }
@@ -101,13 +96,14 @@ export default function Listening({initialPlaylists}) {
             .reduce((items, playlistResponse) => {
                 const playlist = playlistResponse.data;
                 const playlistTracks = playlist ?
-                    playlist.tracks.items.map((playlistItem) => trackToItem({track: playlistItem.track, playlist: playlist.name, playlistId: playlist.id})) :
+                    playlist?.tracks?.items.map((playlistItem) => trackToItem({track: playlistItem.track, playlist: playlist.name, playlistId: playlist.id})) :
                     [];
                 return items.concat(playlistTracks);
             }, []);
     }, [playlistQueryResults]);
 
     const playlistIdToName = useMemo(() => {
+        // console.log("I noticed these selected playlists were recently updated", selectedPlaylists);
         return playlistQueryResults.reduce((idToName, playlistResponse) => {
             const name = playlistResponse?.data?.name;
             const id = playlistResponse?.data?.id;
@@ -120,7 +116,7 @@ export default function Listening({initialPlaylists}) {
 
     // const playlistNames = useMemo(() => Object.values(playlistIdToName), [playlistIdToName]);
     const selectedPlaylistNames = useMemo(() => {
-        console.log("making selected playist names from selectedplaylsits", selectedPlaylists);
+        // console.log("making selected playist names from selectedplaylsits", selectedPlaylists);
         return selectedPlaylists.reduce((names, playlistId) => {
             const playlistName = playlistIdToName[playlistId];
             if (playlistName) {
@@ -130,27 +126,16 @@ export default function Listening({initialPlaylists}) {
         }, [])
     }, [playlistIdToName, selectedPlaylists]);
 
-
-    // const selectedPlaylistNames = useMemo(() => {
-    //     return playlistQueryResults.map((playlistResponse) =>
-    //         selectedPlaylists.includes(playlistResponse?.data?.id) ? playlistResponse.data.name : null
-    //     );
-    // }, [selectedPlaylists, playlistQueryResults]);
-    console.log({selectedPlaylistNames});
-
     const addPlaylist = useCallback(() => {
-        const newSelectedPlaylists = pickNPlaylists({n: selectedPlaylists.length + 1, picked: selectedPlaylists});
+        const newSelectedPlaylists = pickNPlaylists({n: selectedPlaylists.length + 1, picked: [...selectedPlaylists]});
         setSelectedPlaylists(newSelectedPlaylists);
     }, [selectedPlaylists, setSelectedPlaylists]);
 
     const removePlaylist = useCallback((playlistName) => {
-        console.log("remove ID", playlistId);
-        console.log("starting as ", [...selectedPlaylists]);
         const playlistId = Object.keys(playlistIdToName).find((id) => playlistIdToName[id] === playlistName);
         const newSelectedPlaylists = [...selectedPlaylists];
         const playlistIndex = newSelectedPlaylists.indexOf(playlistId);
         newSelectedPlaylists.splice(playlistIndex, 1);
-        console.log("now should be", [...newSelectedPlaylists]);
 
         setSelectedPlaylists(newSelectedPlaylists);
     }, [selectedPlaylists, setSelectedPlaylists])
