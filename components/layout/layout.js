@@ -12,6 +12,7 @@ import WebPlayer from '../../lib/spotify/web-player'
 const fadeAnimationDuration = 350;
 const SpotifyAuthContext = React.createContext({accessToken: null, refresh_token: null, device_id: null});
 const SPOTIFY_REFRESH_TOKEN_KEY = 'spotify_refresh_token';
+const spotifySdkScriptId = 'spotify_sdk_script_identifier';
 export {SpotifyAuthContext};
 
 const Layout = ({
@@ -46,6 +47,14 @@ const Layout = ({
         // The spotify web player SDK will automatically call this function once the SDK has been initialized
         window.onSpotifyWebPlaybackSDKReady = () => {
             setSpotifyPlaybackReady(true);
+        }
+        // To prevent the SDK from loading before our callback is defined, the script is injected into the head
+        // after the page loads.
+        if (!document.getElementById(spotifySdkScriptId)) {
+            const scriptTag = document.createElement('script');
+            scriptTag.src = 'https://sdk.scdn.co/spotify-player.js';
+            scriptTag.id = spotifySdkScriptId;
+            document.head.appendChild(scriptTag);
         }
         return () => delete window.onSpotifyWebPlaybackSDKReady;
     }, [setSpotifyPlaybackReady]);

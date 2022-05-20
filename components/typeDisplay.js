@@ -81,9 +81,9 @@ export default function TypeDisplay({categoryKey, data, type, actions, externalC
 	}, [data, externalCategories]);
 
 	const categories = useMemo(() => externalCategories || typeCategories, [externalCategories, typeCategories]);
-// console.log("here is typedisplay data", data);
 
 	const dataByCategory = useMemo(() => {
+		if (!categories) {return null}
 		const starterCategories = categories.reduce((acc, category) => {
 			acc[category] = []
 			return acc;

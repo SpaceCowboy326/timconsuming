@@ -103,7 +103,6 @@ export default function Listening({initialPlaylists}) {
     }, [playlistQueryResults]);
 
     const playlistIdToName = useMemo(() => {
-        // console.log("I noticed these selected playlists were recently updated", selectedPlaylists);
         return playlistQueryResults.reduce((idToName, playlistResponse) => {
             const name = playlistResponse?.data?.name;
             const id = playlistResponse?.data?.id;
@@ -114,9 +113,7 @@ export default function Listening({initialPlaylists}) {
         }, {});
     }, [selectedPlaylists, playlistQueryResults]);
 
-    // const playlistNames = useMemo(() => Object.values(playlistIdToName), [playlistIdToName]);
     const selectedPlaylistNames = useMemo(() => {
-        // console.log("making selected playist names from selectedplaylsits", selectedPlaylists);
         return selectedPlaylists.reduce((names, playlistId) => {
             const playlistName = playlistIdToName[playlistId];
             if (playlistName) {

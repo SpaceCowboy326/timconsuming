@@ -1,9 +1,6 @@
 import '../styles/globals.css'
-// import '../styles/index.module.scss';
-
 import {useEffect, useState} from 'react';
 import App from "next/app"
-// import Layour from '../components/'
 import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../components/layout/layout'
 import auth from '../lib/spotify/auth'
 import { ThemeProvider, responsiveFontSizes, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
@@ -39,12 +36,10 @@ let theme = createTheme({
         },
         background: '#FFFFFF',
         secondary: {
-          // main: '#3C4CAA',
           main: '#F5AE0A',
           contrastText: '#FFFFFF',
         },
         background: {
-          // menulist: '#FFFFFF',
           paper: '#81d4fa',
         },
         tertiary: {
@@ -54,23 +49,6 @@ let theme = createTheme({
           main: '#20526b'
         }
     },
-    // palette: {
-    //   mode: "dark",
-    //   primary: {
-    //     main: '#121212',
-    //   },
-    //   secondary: {
-    //     main: '#FF3F80',
-    //   },
-    //   tertiary: {
-    //     main: '#3E50B4',
-    //   },
-
-    //   background: {
-    //     // default: '#525252',
-    //     paper: '#121212',
-    //   },
-    // },
 });
 theme = responsiveFontSizes(theme);
 
@@ -82,17 +60,13 @@ function MyApp(props) {
   const { Component, pageProps, router, access_token, refresh_token } = props;
   const selectedPage = getSelectedPage(router.route);
 
-  // console.log("Rendering _app");
-
   return (
     <StyledEngineProvider injectFirst>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
-            {/* <SpotifyAuthContext.Provider value={{accessToken, refreshToken}}> */}
                 <Layout access_token={access_token} refresh_token={refresh_token} selectedPage={selectedPage}>
                   <Component {...pageProps} />
                 </Layout>
-            {/* </SpotifyAuthContext.Provider> */}
           </ThemeProvider>
         </QueryClientProvider>
     </StyledEngineProvider>

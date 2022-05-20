@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import WebPlayer from '../lib/spotify/web-player';
 import { Box, IconButton, Paper, Slider, Typography } from '@mui/material';
 import {PlayCircleFilled, PauseCircleFilled, SkipNext, SkipPrevious, ArrowDropDown, VolumeDown, VolumeUp } from '@mui/icons-material';
@@ -20,7 +20,10 @@ const POSITION_THRESHOLD = .5;
 const POSITION_INTERVAL = 200;
 const DEFAULT_VOLUME = 50;
 const playbackIconSize = 3.5;
-const normalizePosition = ({max, value}) => ((value - MIN_POSITION) * 100) / (max - MIN_POSITION);
+const normalizePosition = ({max, value}) => Math.max(
+    (value / max) * 100,
+    0
+);
 
 const millisecondsToMinutes = (milliseconds) => {
     if (!milliseconds) {
@@ -41,20 +44,18 @@ function SpotifyPlayer({player, token}) {
     const [currentlyPlaying, setCurrentlyPlaying] = useState({text: 'None'});
     const [position, setPosition] = useState(0);
     const [volume, setVolume] = useState(DEFAULT_VOLUME);
-    // const {expanded, expand} = useContext(SpotifyPlayerContext);
     const [panelShown, setPanelShown] = useState(false);
 
     const togglePlaying = async () => {
         const nowPlaying = !playing;
         if (nowPlaying) {
-            WebPlayer.play({token, device_id: player.device_id});
+            const playResponse = await WebPlayer.play({token, device_id: player.device_id});
             const currentlyPlayingTrack = await WebPlayer.getCurrentlyPlaying({token, device_id: player.device_id});
             const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack({item: currentlyPlayingTrack});
             if (currentlyPlayingTrack?.item?.id !== currentlyPlaying.id) {
                 setCurrentlyPlaying({
                     duration: currentlyPlayingTrack.item.duration_ms,
                     id: currentlyPlayingTrack.item.id,
-                    // position: currentlyPlayingTrack.progress_ms || 0,
                     text: formattedTrackText,
                 });
             }
@@ -67,7 +68,7 @@ function SpotifyPlayer({player, token}) {
 
     // Updates the position of the playback bar if the provided value is a large enough increment to warrant
     // a re-render
-    const updatePositionIfNecessary = ({newPosition, duration, currentPosition}) => {
+    const updatePositionIfNecessary = useCallback(({newPosition, duration}) => {
         const normalizedPosition = normalizePosition({value: newPosition, max: duration});
         if (
             !position ||
@@ -75,7 +76,7 @@ function SpotifyPlayer({player, token}) {
         ) {
             setPosition(normalizedPosition);
         }
-    };
+    }, [position]);
 
     // While the track is playing, set an interval to update the track position slider.
     useEffect(() => {
@@ -104,7 +105,6 @@ function SpotifyPlayer({player, token}) {
 
     const handlePlaybackSliderChangeAccepted = (event, newValue) => {
         const millisecondPosition = estimateMillisecondPosition({duration: currentlyPlaying.duration, normalizedPosition: newValue});
-        // WebPlayer.seek({position: millisecondPosition, token});
         player.seek(millisecondPosition);
     }
 
@@ -134,7 +134,7 @@ function SpotifyPlayer({player, token}) {
                 return;
             }
             const stateTrack = state?.track_window?.current_track;
-            if(currentlyPlaying.id !== stateTrack.id) {
+            if(currentlyPlaying.id !== stateTrack?.id) {
                 const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack({item: stateTrack});
                 setCurrentlyPlaying({
                     duration: stateTrack.duration || stateTrack.duration_ms,
@@ -150,7 +150,7 @@ function SpotifyPlayer({player, token}) {
                 setPlaying(false);
             }
             if (typeof state.position !== 'undefined' && state.duration) {
-                updatePositionIfNecessary({newPosition: state.position, duration: state.duration, currentPosition: position});
+                updatePositionIfNecessary({newPosition: state.position, duration: state.duration});
             }
         });
         return () => player.removeListener('player_state_changed');
