@@ -45,14 +45,8 @@ npm run dev
 
 And that's pretty much it.  There are a couple leftover dependencies from earlier iterations that can almost be removed (sass, swr, react-transition-group). It's a silly project with no real purpose, but it was fun to create and I enjoy sharing the things I've consumed with the world.
 
-### Things I Know are Broken
-
-I felt like this was at the point I could show it off a bit, but there are a number of things that I'm still working on. Some problems I'd still like to solve:
-
-- The Web Player functionality needs a number of improvements. The playback timer can get out of sync, and it sometimes hijacks your session if you leave the site open while you're listening elsewhere. Some additional minor issues make it feel a little wonky, and I'd like to improve it.
-- The color contrast is definitely not accessible. The white on yellow should be changed, but... I really liked the colors.
-- My "largest contentful paint" time is pretty high, and I'd like to work on decreasing it. Think it may be related to the the extremely un-optimized image situation.
-- The images are currently checked in to source control, but the should be hosted on an external service.
+### Things I'd Like to Improve
+Improving the Web Player to handle unexpected situations better and finding a better solution for Image handling and optimization are probably the top two improvements I would like to make to the site.
 
 
 ## Authors
