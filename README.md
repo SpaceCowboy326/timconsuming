@@ -12,8 +12,7 @@ While the goal is to share some of the things I've been enjoying (or not enjoyin
 You can see some version of this running at:
 https://yubnub.net/
 
-It currently requires manual updates, so it may not be 100% up to date with the code.
-
+It's not always 100% up to date, but it should be pretty close!
 
 ### Dependencies
 
@@ -43,7 +42,8 @@ npm run dev
 - react-query and some leftover swr for ajax requests.
 - formidable for some help with uploading images.
 
-And that's pretty much it.  There are a couple leftover dependencies from earlier iterations that can almost be removed (sass, swr, react-transition-group). It's a silly project with no real purpose, but it was fun to create and I enjoy sharing the things I've consumed with the world.
+And that's pretty much it. The web player also uses the Spotify SDK to stream music.
+
 
 ### Things I'd Like to Improve
 Improving the Web Player to handle unexpected situations better and finding a better solution for Image handling and optimization are probably the top two improvements I would like to make to the site.
@@ -57,6 +57,7 @@ This was worked on solely by Tim Hallowell, @SpaceCowboy326.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
+
 
 ## Acknowledgments
 
