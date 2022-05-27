@@ -123,9 +123,13 @@ export default function TypeDisplay({categoryKey, data, type, actions, externalC
 					sx={{
 						my: '1em',
 						p: {
-							sx: '1em 0',
+							xs: '1em 0',
 							md: '1em'
 						},
+                        borderRadius: {
+                            xs: '0',
+                            md: '4px',
+                        },
 						position: 'relative',
 						'&:hover .sectionTitle': {
 							color: "text.primary",

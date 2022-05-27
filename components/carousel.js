@@ -29,38 +29,34 @@ const backdropSx = {
 const outerArrowSx = {
     animation: `${outerArrowEffect} 3s infinite`,
 	display: 'flex',
-	height: '3.5em',
-    '.outerChevronLeft': {
-        ml: '-.7em',
-    },
-    '.outerChevronRight': {
-        
-    }
+    width: '4em',
 };
 
 const innerArrowSx = {
     animation: `${innerArrowEffect} 3s infinite`,
 	display: 'flex',
-	height: '3em',
-    '.innerChevronLeft': {
-        ml: '-2em',
+    position: 'absolute',
+    width: '3em',
+    '&.innerChevronLeft': {
+        right: '0',
     },
-    '.innerChevronRight': {
-        mr: '-2.5em',
+    '&.innerChevronRight': {
+        left: '.5em',
     }
 };
 
 const scrollContainerSx = {
-	alignContent: 'center',
 	alignItems: 'center',
     cursor: 'pointer',
 	display: 'flex',
 	height: '100%',
+    width: '5em',
     overflow: 'hidden',
     opacity: {
         xs: 1,
         md: 0,
     },
+    position: 'relative',
     transition: 'opacity 1s',
     '& svg': {
         fill: (theme) => theme.palette.secondary.main,
@@ -69,6 +65,12 @@ const scrollContainerSx = {
     },
     '&:hover svg': {
         fill: (theme) => theme.palette.secondary.dark,
+    },
+    '&.scrollContainerLeft': {
+        justifyContent: 'flex-start',
+    },
+    '&.scrollContainerRight': {
+        justifyContent: 'flex-end',
     }
 };
 
@@ -193,13 +195,13 @@ export default function Carousel({items, actions, type, category}) {
 					sx={{
 						...scrollContainerSx
 					}}
-                    className={'scrollContainer'}
+                    className={'scrollContainer scrollContainerLeft'}
 				>
 					<Box sx={{...outerArrowSx}}>
                         <ChevronLeft fill={'yellow'} className={'outerChevronLeft'}></ChevronLeft>
 					</Box>
-					<Box sx={{...innerArrowSx}}>
-                        <ChevronLeft className={'innerChevronLeft'}></ChevronLeft>
+					<Box sx={{...innerArrowSx}} className={'innerChevronLeft'}>
+                        <ChevronLeft></ChevronLeft>
 					</Box>
 				</Box>
 			</Box>
@@ -207,7 +209,7 @@ export default function Carousel({items, actions, type, category}) {
 				sx={{
 					cursor: 'grab',
 					overflow: 'hidden',
-                    py: '1.25em',
+                    p: '1.25em 1em',
 					position: 'relative',
 				}}
 				ref={containerRef}
@@ -226,12 +228,12 @@ export default function Carousel({items, actions, type, category}) {
 				<Box
 					onClick={() => scroll(false)}
 					sx={{...scrollContainerSx}}
-                    className={'scrollContainer'}
+                    className={'scrollContainer scrollContainerRight'}
 				>
-					<Box sx={{...innerArrowSx}}>
-                        <ChevronRight className={'innerChevronRight'}></ChevronRight>
+					<Box sx={{...innerArrowSx}} className={'innerChevronRight'}>
+                        <ChevronRight></ChevronRight>
 					</Box>
-					<Box sx={outerArrowSx} className={'outerChevronRight'}>
+					<Box sx={{...outerArrowSx}} className={'outerChevronRight'}>
                         <ChevronRight></ChevronRight>
 					</Box>
 				</Box>

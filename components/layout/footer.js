@@ -11,13 +11,17 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     width: '99%',
 }));
 
-const StyledLink = styled(Link)(({ theme }) => ({
+const linkStyles = ({theme}) => ({
     color: theme.palette.tertiary.main,
     fontWeight: 'bold',
     ':visited': {
         color: theme.palette.background.default,
     }
-}));
+});
+
+const StyledFakeLink = styled(Typography)(linkStyles);
+
+const StyledLink = styled(Link)(linkStyles);
 
 function Footer({show, playerPanelShown}) {
     const footerFadeDuration = show ? 3000 : 50;
@@ -52,12 +56,12 @@ function Footer({show, playerPanelShown}) {
                                 src={'/images/github-mark.png'}
                             />
                         </Box>
-                        <StyledLink
+                        <StyledFakeLink
                             sx={{
                                 ml: '.25em',
                             }}>
                             @SpaceCowboy326
-                        </StyledLink>
+                        </StyledFakeLink>
                     </Link>
                 </StyledPaper>
             </Box>
