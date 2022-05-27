@@ -51,7 +51,7 @@ function SpotifyPlayer({player, token}) {
         if (nowPlaying) {
             const playResponse = await WebPlayer.play({token, device_id: player.device_id});
             const currentlyPlayingTrack = await WebPlayer.getCurrentlyPlaying({token, device_id: player.device_id});
-            const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack({item: currentlyPlayingTrack});
+            const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack(currentlyPlayingTrack);
             if (currentlyPlayingTrack?.item?.id !== currentlyPlaying.id) {
                 setCurrentlyPlaying({
                     duration: currentlyPlayingTrack.item.duration_ms,
