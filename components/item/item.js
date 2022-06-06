@@ -62,6 +62,7 @@ const getCloseButtonText = () => {
 export default function Item({data, actions, displayBackdrop, backdropShown, type}) {
     const [expanded, setExpanded] = useState(false);
     const [scrollTop, setScrollTop] = useState(0);
+    const itemRef = useRef(null)
 
     // Keydown listener to close modal on 'esc'
     const closeModalOnEsc = useCallback((e) => {
@@ -80,6 +81,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
         if (expanded) {
             document.addEventListener('keydown', closeModalOnEsc);
             document.documentElement.style.overflow = 'hidden';
+			itemRef.current.focus();
         }
         return () => {
             document.removeEventListener('keydown', closeModalOnEsc);
@@ -114,7 +116,7 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
     return (
         <Box>
             { expanded && <Box sx={{height: `${itemHeight}em`, width: `${itemWidth}em`, visiblity: 'hidden'}}></Box> }
-            <Box sx={expanded ? expandedContainerSx : null}>
+            <Box ref={itemRef} sx={expanded ? expandedContainerSx : null}>
                 <Card
                     sx={itemSx}
                     variant="outlined"
