@@ -1,10 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// const express = require("express");
-// const fs = require("fs");
-// const app = express();
-// const cookieParser = require('cookie-parser');
-// const request = require('request'); // "Request" library
-// var cors = require('cors');
 const querystring = require('querystring');
 
 const scope_collection = [
@@ -22,16 +15,7 @@ const scope_collection = [
     'user-library-modify',
 ];
   
-const SPOTIFY_SECRET = process.env.SPOTIFY_SECRET;
-const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-
-const PORT = '3000';
 const REDIRECT_SUFFIX = '/listening';
-
-const COOKIE_STATE_KEY = 'spotify_auth_state';
-const COOKIE_ACCESS_KEY = 'spotify_auth_access';
-const COOKIE_REFRESH_KEY = 'spotify_auth_refresh';
-
 
 const generateRandomString = length => {
     let text = '';

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
 import { Autocomplete, Box, Chip, IconButton, TextField } from '@mui/material';
-// import { Grid, Button, Typography, Backdrop } from '@mui/material';
 import {AddCircleOutlined} from '@mui/icons-material';
 import useSWR from 'swr';
 
@@ -9,7 +7,6 @@ import useSWR from 'swr';
 const tagsFetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Tags({setTags, tags, type, readOnly}) {
-    // const classes = useStyles();
     const classes = {};
     const [tagName, setTagName] = useState('');
     const uniqueTags = useSWR(`/api/items/uniqueTags?itemType=${type}`, tagsFetcher, {

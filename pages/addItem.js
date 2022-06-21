@@ -102,7 +102,6 @@ export default function AddItem({initialData = {}}) {
                 console.log("Failed response", fileUploadResponse);
             }
             const fileUploadJson = await fileUploadResponse.json();
-            console.log("File Upload JSON", fileUploadJson);
             const imageFilename = fileUploadJson?.newFilename;
             imageUrl = `/images/items/${imageFilename}`;
         }
@@ -127,12 +126,10 @@ export default function AddItem({initialData = {}}) {
         };
         options.method = editId ? 'PUT' : 'POST';
         const saveUrl = editId ? `/api/items/${editId}` : '/api/items';
-        console.log("saveUrl", saveUrl);
         const response = await fetch(saveUrl, options);
         if (!editId && response.status === 200) {
             resetForm();
         }
-        console.log("Response", response);
     };
 
     const imagePreviewContent = useMemo(() => {
@@ -185,8 +182,6 @@ export default function AddItem({initialData = {}}) {
     };
 
     const handleRatingChange = (e, value) => {
-        console.log("RATING CHANGE EVT", e);
-        console.log("RATING CHANGE ... value?", value);
         setRating(e.target.value);
     }
     const handleCountryChange = e => setCountry(e.target.value || '');

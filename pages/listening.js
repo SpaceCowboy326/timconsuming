@@ -4,7 +4,6 @@ import Image from 'next/image'
 import {SpotifyAuthContext} from '../components/layout/layout';
 import { Box, Button, CircularProgress, Typography, Paper } from '@mui/material';
 import React, { useState, useContext, useCallback, useMemo } from 'react';
-import spotifyData from '../lib/spotify/data';
 import WebPlayer from '../lib/spotify/web-player';
 import { Favorite, HeartBroken, PlayCircleFilled, PlaylistAdd, QueuePlayNext } from '@mui/icons-material';
 
@@ -140,7 +139,7 @@ export default function Listening({initialPlaylists}) {
     const { isLoading: userPlaylistsLoading, error: userPlaylistsError, data: userPlaylists } =
         useQuery(
             ['userPlaylists', accessToken],
-            ({queryKey}) => spotifyData.getUserPlaylists(queryKey[1]),
+            ({queryKey}) => WebPlayer.getUserPlaylists(queryKey[1]),
             {
                 enabled: !!accessToken,
                 staleTime: 300,

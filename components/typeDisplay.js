@@ -2,7 +2,7 @@ import Carousel from './carousel'
 
 import { Box, IconButton, Typography, Paper, Tooltip } from '@mui/material';
 import React, { useState, useEffect, useMemo } from 'react';
-import { styled, keyframes } from '@mui/system';
+import { keyframes } from '@mui/system';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
@@ -81,7 +81,6 @@ export default function TypeDisplay({categoryKey, data, type, actions, externalC
 	}, [data, externalCategories]);
 
 	const categories = useMemo(() => externalCategories || typeCategories, [externalCategories, typeCategories]);
-
 	const dataByCategory = useMemo(() => {
 		if (!categories) {return null}
 		const starterCategories = categories.reduce((acc, category) => {
