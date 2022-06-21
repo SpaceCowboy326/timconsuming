@@ -1,8 +1,4 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Image from 'next/image'
-// import Tags from '../components/tags';
 import Tags from '../components/tags';
 import { Autocomplete, Box, Button, Typography, Paper, InputLabel, Input, TextField, Select, Slider, MenuItem, FormControl } from '@mui/material';
 import unitedStatesLocations from '../data/unitedStatesLocations.json';
@@ -91,7 +87,6 @@ export default function AddItem({initialData = {}}) {
         setSourceUrl(FIELD_DEFAULTS.SOURCE_URL);
         setSubType(FIELD_DEFAULTS.SUBTYPE);
         setTags([]);
-        // setType(FIELD_DEFAULTS.TYPE);
 
         setImageFile(null);
         setImagePreviewSrc(null);
@@ -143,7 +138,6 @@ export default function AddItem({initialData = {}}) {
     const imagePreviewContent = useMemo(() => {
         return imagePreviewSrc ?
             <Image
-                // layout="fill"
                 height="800"
                 width="800"
                 objectFit="cover"
@@ -239,7 +233,6 @@ export default function AddItem({initialData = {}}) {
                         <FormControl>
                             <TextField
                                 id="item_subtype"
-                                // fullWidth={true}
                                 label="Sub-Type"
                                 onChange={handleSubTypeChange}
                                 placeholder="More specifically? e.g. Beer, Cocktail..."
@@ -252,7 +245,6 @@ export default function AddItem({initialData = {}}) {
                         <FormControl>
                             <TextField
                                 id="item_name"
-                                // fullWidth={true}
                                 label="Name"
                                 onChange={handleNameChange}
                                 placeholder="What should we call it?"
@@ -265,7 +257,6 @@ export default function AddItem({initialData = {}}) {
                         <FormControl>
                             <TextField
                                 id="name_url"
-                                // fullWidth={true}
                                 label="External Link (Optional)"
                                 onChange={handleNameUrlChange}
                                 placeholder="External Link?"
@@ -337,7 +328,6 @@ export default function AddItem({initialData = {}}) {
                                 <FormControl sx={{mr: 2}}>
                                     <InputLabel id="state-label">State</InputLabel>
                                     <Select
-                                        // labelId="type-label"
                                         color="tertiary"
                                         label="State"
                                         labelId="state-label"
@@ -385,7 +375,6 @@ export default function AddItem({initialData = {}}) {
                             <InputLabel sx={{fontSize: '1.5em'}} id="rating-label">Rating (Let's Get Subjective!)</InputLabel>
                             <Slider
                                 aria-label="Rating"
-                                // valueLabelDisplay="auto"
                                 defaultValue={rating}
                                 onChange={handleRatingChange}
                                 sx={{color: '#3f51b5', mt: 2}}
@@ -435,11 +424,9 @@ export async function getServerSideProps(ctx) {
     const pageProps = {};
     if (query.id) {
         const initialItem = await getItem({id: query.id});
-        console.log("initialItem?", initialItem);
         initialItem._id = query.id;
         pageProps.initialData = initialItem;
     }
-	// console.log("What did we find from DB?", initialItems);
     return {
         props: pageProps,
     }
