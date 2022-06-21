@@ -1,6 +1,6 @@
 import {getItems, addItem} from '../../lib/item/items';
 
-export default async (req, res) => {
+const handleItems = async (req, res) => {
     switch (req.method) {
         case 'GET':
             const {itemType} = req.query;
@@ -20,4 +20,6 @@ export default async (req, res) => {
             break;
     }
     res.status(200).json({ name: 'John Doe' })
-}
+};
+
+export default handleItems;

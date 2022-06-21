@@ -36,7 +36,7 @@ const Layout = ({
         if (router.query.code) {
             router.replace(`/${selectedPage}`);
         }
-    }, []);
+    }, [router, selectedPage]);
 
     useEffect(() => {
         setTransition(true);
@@ -102,34 +102,39 @@ const Layout = ({
     }, [setAccessTokenRequiresRefresh]);
 
     // Handles refreshing the access token if necessary.
-    useEffect(async () => {
+    useEffect(() => {
         // Basically... we only want to refresh the token if there is no access token or the 'accessTokenRequiresRefresh'
         // flag has been set, and a refresh token is available. So if not that, then exit.
         if ((accessToken && !accessTokenRequiresRefresh) || !refreshToken) {
             return;
         }
-
         if (accessTokenRequiresRefresh) {
             setAccessTokenRequiresRefresh(false);
         }
-        const refreshResponse = await auth.refreshAccessToken(refreshToken);
-        // Refresh failed - remove the bad refresh token.
-        if (!refreshResponse?.access_token) {
-            localStorage.removeItem(SPOTIFY_REFRESH_TOKEN_KEY);
-            setRefreshToken(null);
-        }
-        // Refresh request successful
-        else {
-            const {
-                access_token: newAccessToken,
-                expires_in: tokenExpireTime,
-            } = refreshResponse;
-            // Set a timeout that will fire once the access token is invalidated. This will set a state variable
-            // letting us know to refresh the access token once again.
-            const delayedInvalidate = setTimeout(invalidateAccessTokenOnFocus, tokenExpireTime * 1000)
-            setAccessToken(newAccessToken);
-            return () => clearTimeout(delayedInvalidate);
-        }
+
+        const requestRefreshToken = async () => {
+            const refreshResponse = await auth.refreshAccessToken(refreshToken);
+            // Refresh failed - remove the bad refresh token.
+            if (!refreshResponse?.access_token) {
+                localStorage.removeItem(SPOTIFY_REFRESH_TOKEN_KEY);
+                setRefreshToken(null);
+            }
+            // Refresh request successful
+            else {
+                const {
+                    access_token: newAccessToken,
+                    expires_in: tokenExpireTime,
+                } = refreshResponse;
+                // Set a timeout that will fire once the access token is invalidated. This will set a state variable
+                // letting us know to refresh the access token once again.
+                const delayedInvalidate = setTimeout(invalidateAccessTokenOnFocus, tokenExpireTime * 1000)
+                setAccessToken(newAccessToken);
+                return () => clearTimeout(delayedInvalidate);
+            }
+        };
+        requestRefreshToken();
+
+
     }, [refreshToken, accessToken, accessTokenRequiresRefresh, setAccessTokenRequiresRefresh, invalidateAccessTokenOnFocus])
 
 

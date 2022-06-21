@@ -42,7 +42,6 @@ const listItemSx = {
     },
 };
 
-// Returns an object containing the field text for an item based on its 'type'
 // const closeButtonTextOptions = [
 //     'Cool story bro.',
 //     'Neato.',
@@ -87,14 +86,14 @@ export default function Item({data, actions, displayBackdrop, backdropShown, typ
             document.removeEventListener('keydown', closeModalOnEsc);
             document.documentElement.style.overflow = null;
         };
-    }, [expanded, setScrollTop]);
+    }, [closeModalOnEsc, expanded, setScrollTop]);
 
     // If the Backdrop is no longer shown (likely from clicking on the Backdrop itself), close any expanded items
     useEffect(() => {
         if (!backdropShown && expanded) {
             setExpanded(false);
         }
-    }, [backdropShown]);
+    }, [backdropShown, expanded]);
 
     const toggleExpanded = useCallback(e => {
         const new_state = !expanded;

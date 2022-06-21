@@ -52,7 +52,7 @@ export default function AddItem({initialData = {}}) {
     const [editId, setEditId] = useState(initialData._id);
 
     // Assemble the city options/
-    const cityOptions = useMemo(() => unitedStatesLocations[state]?.sort() || [], [state, country]);
+    const cityOptions = useMemo(() => unitedStatesLocations[state]?.sort() || [], [state]);
 
     const handleUploadImage = (e, b) => {
         const files = e?.target?.files;
@@ -139,6 +139,7 @@ export default function AddItem({initialData = {}}) {
                 width="800"
                 objectFit="cover"
                 src={imagePreviewSrc}
+                alt={'Item Image Preview'}
             />
             : null;
     }, [imagePreviewSrc]);
@@ -367,7 +368,7 @@ export default function AddItem({initialData = {}}) {
                             <Tags tags={tags} type={type} setTags={setTags}></Tags>
                         </Box>
                         <Box sx={{mb: 2}}>
-                            <InputLabel sx={{fontSize: '1.5em'}} id="rating-label">Rating (Let's Get Subjective!)</InputLabel>
+                            <InputLabel sx={{fontSize: '1.5em'}} id="rating-label">Rating (Let&apos;s Get Subjective!)</InputLabel>
                             <Slider
                                 aria-label="Rating"
                                 defaultValue={rating}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { Backdrop, Box, Grid } from '@mui/material';
 import Item from './item/item';
 import { keyframes } from '@mui/system';
@@ -94,7 +94,7 @@ export default function Carousel({items, actions, type, category}) {
                     type={type}
                 />
             </Grid>
-        )), [items, showBackdrop]
+        )), [items, showBackdrop, actions, category, type]
     );
 
     useEffect(() => {
@@ -106,20 +106,20 @@ export default function Carousel({items, actions, type, category}) {
                 window.removeEventListener('touchend', handleScrollingEnd);
             }
         }
-    }, [scrolling]);
+    }, [scrolling, handleScrollingEnd]);
 
-    const handleScrollingStart = e => {
+    const handleScrollingStart = useCallback((e) => {
         setScrolling(true);
         setDragStartPageX(e.pageX || e.touches?.[0]?.screenX);
         setDragStartScrollX(scrollX);
         e.preventDefault();
-    };
+    }, [setScrolling, setDragStartPageX, setDragStartScrollX, scrollX]);
 
-    const handleScrollingEnd = e => {
+    const handleScrollingEnd = useCallback((e) => {
         window.removeEventListener('mouseup', handleScrollingStart);
         window.removeEventListener('touchend', handleScrollingStart);
         setScrolling(false);
-    };
+    }, [setScrolling, handleScrollingStart]);
 
     const handleBackdropClick = e => {
         setShowBackdrop(false);

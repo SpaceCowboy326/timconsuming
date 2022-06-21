@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { getItem, updateItem } from '../../../lib/item/items';
 
-export default async (req, res) => {
+const handleItemRequest = async (req, res) => {
     const {itemId} = req.query;
     let result;
     switch (req.method) {
@@ -20,4 +20,6 @@ export default async (req, res) => {
     }
 
     res.status(200).json({ name: 'John Doe' })
-}
+};
+
+export default handleItemRequest;

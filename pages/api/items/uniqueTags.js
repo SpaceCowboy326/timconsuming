@@ -2,8 +2,7 @@
 import { connectToDatabase } from '../../../lib/mongodb'
 
 
-export default async (req, res) => {
-    // console.log("Let's look for those tags!");
+const handleUniqueTagsRequest = async (req, res) => {
     if (req.method === 'GET') {
         const {client, db} = await connectToDatabase();
         const collection = db.collection('items')
@@ -18,4 +17,6 @@ export default async (req, res) => {
     } else {
       // Handle any other HTTP method
     }
-}
+};
+
+export default handleUniqueTagsRequest;

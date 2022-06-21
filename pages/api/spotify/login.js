@@ -27,7 +27,7 @@ const generateRandomString = length => {
     return text;
 };
 
-export default (req, res) => {
+ const handleLogin = (req, res) => {
     const state = generateRandomString(16);
     const spotifyRedirectUrl = 'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
@@ -39,3 +39,5 @@ export default (req, res) => {
         })
     res.status(200).json({ redirect_url: spotifyRedirectUrl })
 };
+
+export default handleLogin;

@@ -15,6 +15,8 @@ import TypeDisplay from '../components/typeDisplay';
 
 import { useQuery, useQueries } from 'react-query'
 
+const redirectLoading = <CircularProgress color="secondary" size="50px" thickness={5} />;
+
 const INITIAL_PLAYLIST_COUNT = 3;
 const login_redirect_url = '/api/spotify/login';
 
@@ -30,6 +32,25 @@ const requiresLoginPaperSx = {
     mb: '3em',
     width: '98vw',
 };
+
+const sectionContainerSx = {
+    alignItems: 'center',
+    display: 'flex',
+    flexFlow: 'column',
+    height: '16rem',
+    justifyContent: 'center',
+    mt: '2em',
+    width: '40em',
+};
+
+const spotifyLogo = <Image
+    alt="Spotify Logo"
+    objectFit="cover"
+    height={50}
+    loading="eager"
+    width={50}
+    src={'/images/spotify-logo.png'}
+/>;
 
 const playlistOptions = [
     '0viZpIBjNkJj9OMIEcAtqQ', // I Mean, I Wish I Didn't Like It
@@ -110,7 +131,7 @@ export default function Listening({initialPlaylists}) {
             }
             return idToName;
         }, {});
-    }, [selectedPlaylists, playlistQueryResults]);
+    }, [playlistQueryResults]);
 
     const selectedPlaylistNames = useMemo(() => {
         return selectedPlaylists.reduce((names, playlistId) => {
@@ -134,7 +155,7 @@ export default function Listening({initialPlaylists}) {
         newSelectedPlaylists.splice(playlistIndex, 1);
 
         setSelectedPlaylists(newSelectedPlaylists);
-    }, [selectedPlaylists, setSelectedPlaylists])
+    }, [setSelectedPlaylists, playlistIdToName, selectedPlaylists])
 
     const { isLoading: userPlaylistsLoading, error: userPlaylistsError, data: userPlaylists } =
         useQuery(
@@ -167,7 +188,7 @@ export default function Listening({initialPlaylists}) {
                 </MenuItem>
             )}
         </Menu>,
-        [userPlaylists, showPlaylistMenu]
+        [userPlaylists, showPlaylistMenu, playlistMenuAnchorEl, handlePlaylistClick]
     );
 
     const actionsByName = useMemo(() => {
@@ -221,25 +242,6 @@ export default function Listening({initialPlaylists}) {
         router.push(redirect_url_response.redirect_url);
     }, [router]);
 
-    const spotifyLogo = useMemo(() => <Image
-        objectFit="cover"
-        height={50}
-        loading="eager"
-        width={50}
-        src={'/images/spotify-logo.png'}
-    />, []);
-
-    const redirectLoading = <CircularProgress color="secondary" size="50px" thickness={5} />;
-    const sectionContainerSx = {
-        alignItems: 'center',
-        display: 'flex',
-        flexFlow: 'column',
-        height: '16rem',
-        justifyContent: 'center',
-        mt: '2em',
-        width: '40em',
-    };
-
     const requiresLoginContent = useMemo(() => {
         return !accessToken ?
             <Paper elevation={2} sx={requiresLoginPaperSx}>
@@ -271,7 +273,7 @@ export default function Listening({initialPlaylists}) {
                 </Paper>
             </Paper> :
             null
-    }, [accessToken, redirecting]);
+    }, [accessToken, redirecting, spotifyLoginRedirect]);
 
     const loggedInContent = useMemo(() =>
         <div>
@@ -285,7 +287,7 @@ export default function Listening({initialPlaylists}) {
                 type="Music"
             />
         </div>,
-        [playlistItems, actions]
+        [playlistItems, actions, addPlaylist, removePlaylist, selectedPlaylistNames, playlistMenu]
     );
 
     const loadingTracksDisplay = <Box sx={{width: '100%', display: 'flex', justifyContent: 'center'}}>

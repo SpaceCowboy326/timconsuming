@@ -76,7 +76,7 @@ function TopNav({selectedPage, setTransition}) {
             router.push(`/${nextPage}`);
         }, fadeAnimationDuration);
         return () => clearTimeout(navTimer);
-    }, [router]);
+    }, [router, setTransition]);
 
     return <StyledContainer>
         { PAGE_NAMES.map((pageName) => (

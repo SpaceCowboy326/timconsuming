@@ -93,7 +93,7 @@ export default function TypeDisplay({categoryKey, data, type, actions, externalC
 			displayedTags.forEach(tag => categorizedData[tag].push(row));
 			return categorizedData;
 		}, starterCategories)
-	}, [categories]);
+	}, [categories, categoryKey, data]);
 
 	const handleAddCategoryClick = (e) => {
 		const tagCounts = getTagCounts(data);
@@ -217,7 +217,9 @@ export default function TypeDisplay({categoryKey, data, type, actions, externalC
 				}}
 				onClick={addCategory || handleAddCategoryClick}
 			>
-				<Typography sx={{transition: 'color 1s ease-out'}} color="textSecondary" className={'addCategoryText'} variant={'h5'}>I'd like to see what else you have</Typography>
+				<Typography sx={{transition: 'color 1s ease-out'}} color="textSecondary" className={'addCategoryText'} variant={'h5'}>
+                    I&apos;d like to see what else you have
+                </Typography>
 				<Tooltip title="Add Category">
 					<IconButton		
 						aria-label="Add Category"

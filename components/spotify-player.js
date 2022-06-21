@@ -92,7 +92,7 @@ function SpotifyPlayer({player, token}) {
             }, POSITION_INTERVAL);
         }
         return () => clearInterval(positionInterval);
-    }, [playing, position])
+    }, [playing, position, updatePositionIfNecessary, currentlyPlaying])
 
     // Toggle the panel collapsed state.
     const togglePanelClick = () => {
@@ -154,7 +154,7 @@ function SpotifyPlayer({player, token}) {
             }
         });
         return () => player.removeListener('player_state_changed');
-    }, [player, currentlyPlaying]);
+    }, [player, currentlyPlaying, updatePositionIfNecessary, playing]);
 
 
     const handlePreviousClick = () => {

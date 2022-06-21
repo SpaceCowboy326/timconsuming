@@ -131,7 +131,7 @@ export default function ExpandedItemContent({data, actions, type}) {
                 );
             })}
         </Box>
-    </React.Fragment>, [actions]);
+    </React.Fragment>, [actions, data]);
 
     return (
         <Fade in={true} timeout={500}>

@@ -50,6 +50,7 @@ function Footer({show, playerPanelShown}) {
                     >
                         <Box sx={{height: '1.5em', width: '1.5em'}}>
                             <Image
+                                alt="GitHub Link"
                                 height={64}
                                 layout="responsive"
                                 width={64}
