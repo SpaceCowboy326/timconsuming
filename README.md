@@ -10,7 +10,7 @@ While the goal is to share some of the things I've been enjoying (or not enjoyin
 ### Check it Out!
 
 You can see some version of this running at:
-https://yubnub.net/
+https://timconsuming.com/
 
 It's not always 100% up to date, but it should be pretty close!
 
@@ -51,7 +51,7 @@ Improving the Web Player to handle unexpected situations better and finding a be
 
 ## Authors
 
-This was worked on solely by Tim Hallowell, @SpaceCowboy326.
+This was worked on solely by Tim Hallowell, [@SpaceCowboy326.](https://github.com/SpaceCowboy326)
 
 
 ## License
