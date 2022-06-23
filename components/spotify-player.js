@@ -15,7 +15,6 @@ const textScrollEffect = keyframes`
     }
 `;
 
-const MIN_POSITION = 1;
 const POSITION_THRESHOLD = .5;
 const POSITION_INTERVAL = 200;
 const DEFAULT_VOLUME = 50;
@@ -134,7 +133,7 @@ function SpotifyPlayer({player, token}) {
                 return;
             }
             const stateTrack = state?.track_window?.current_track;
-            if(currentlyPlaying.id !== stateTrack?.id) {
+            if(stateTrack && currentlyPlaying.id !== stateTrack?.id) {
                 const formattedTrackText = WebPlayer.currentlyPlayingToArtistAndTrack({item: stateTrack});
                 setCurrentlyPlaying({
                     duration: stateTrack.duration || stateTrack.duration_ms,
@@ -155,7 +154,6 @@ function SpotifyPlayer({player, token}) {
         });
         return () => player.removeListener('player_state_changed');
     }, [player, currentlyPlaying, updatePositionIfNecessary, playing]);
-
 
     const handlePreviousClick = () => {
         WebPlayer.previous(token);

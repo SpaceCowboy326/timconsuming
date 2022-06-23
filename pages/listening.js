@@ -89,7 +89,7 @@ const trackToItem = ({track, playlist, playlistId}) => ({
 export default function Listening({initialPlaylists}) {
     const [redirecting, setRedirecting] = useState(false);
     const [showPlaylistMenu, setShowPlaylistMenu] = useState(false);
-    const {accessToken, refreshToken} = useContext(SpotifyAuthContext);
+    const {accessToken, refreshToken, deviceId} = useContext(SpotifyAuthContext);
     const [playlistMenuAnchorEl, setPlaylistMenuAnchorEl] = useState(null);
 
     const [selectedPlaylists, setSelectedPlaylists] = useState(initialPlaylists || []);
@@ -198,6 +198,7 @@ export default function Listening({initialPlaylists}) {
                     WebPlayer.playTrack({
                         token: accessToken,
                         track: data.uri,
+                        device_id: deviceId,
                     });
                 },
                 icon: <PlayCircleFilled sx={actionIconSx}></PlayCircleFilled>,
@@ -232,7 +233,7 @@ export default function Listening({initialPlaylists}) {
                 title: 'Save Track',
             }
         }
-    }, [accessToken, setPlaylistMenuAnchorEl, setShowPlaylistMenu]);
+    }, [accessToken, deviceId, setPlaylistMenuAnchorEl, setShowPlaylistMenu]);
 
     const actions = useMemo(() => Object.values(actionsByName), [actionsByName]);
 
@@ -295,11 +296,11 @@ export default function Listening({initialPlaylists}) {
     </Box>;
 
     return (
-        <div>
+        <Box sx={{display: 'flex', justifyContent: 'center'}}>
             { (!accessToken && refreshToken) ? loadingTracksDisplay : null }
             { (!accessToken && !refreshToken) ? requiresLoginContent : null }
             { playlistItems?.length ? loggedInContent : null}
-        </div>
+        </Box>
     );
 }
 

@@ -1,10 +1,9 @@
 import '../styles/globals.css'
-import {useEffect, useState} from 'react';
 import App from "next/app"
-import Layout, {SpotifyAuthContext, SpotifyPlayerContext} from '../components/layout/layout'
 import auth from '../lib/spotify/auth'
-import { ThemeProvider, responsiveFontSizes, StyledEngineProvider, createTheme, adaptV4Theme } from '@mui/material/styles';
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { ThemeProvider, responsiveFontSizes, StyledEngineProvider, createTheme } from '@mui/material/styles';
+import { QueryClient, QueryClientProvider } from 'react-query'
+import Layout from '../components/layout/layout';
 
 const queryClient = new QueryClient({
   defaultOptions: {

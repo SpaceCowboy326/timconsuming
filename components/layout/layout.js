@@ -1,5 +1,4 @@
 import Head from 'next/head'
-// import Image from 'next/image'
 import { useRouter } from 'next/router'
 import auth from '../../lib/spotify/auth'
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
@@ -10,7 +9,7 @@ import Title from './title';
 import Footer from './footer';
 import WebPlayer from '../../lib/spotify/web-player'
 const fadeAnimationDuration = 350;
-const SpotifyAuthContext = React.createContext({accessToken: null, refresh_token: null, device_id: null});
+const SpotifyAuthContext = React.createContext({accessToken: null, refresh_token: null, deviceId: null});
 const SPOTIFY_REFRESH_TOKEN_KEY = 'spotify_refresh_token';
 const spotifySdkScriptId = 'spotify_sdk_script_identifier';
 export {SpotifyAuthContext};
@@ -28,7 +27,6 @@ const Layout = ({
     const [refreshToken, setRefreshToken] = useState(refresh_token);
     const [accessToken, setAccessToken] = useState(access_token);
     const [accessTokenRequiresRefresh, setAccessTokenRequiresRefresh] = useState(false);
-
 
     // Remove the "code" sent by Spotify redirect so we don't attempt to request a new access token
     // with the same code on refresh. Also, it's ugly.
@@ -62,8 +60,9 @@ const Layout = ({
     // Once the playback SDK library is initialized and a Spotify Access Token is available, we can initialize our own player.
     useEffect(() => {
         if (spotifyPlaybackReady && accessToken) {
-            const player = WebPlayer.initializeSpotifyPlayer({accessToken: accessToken});
-            setSpotifyPlayer(player);
+            const readyCallback = () => {setSpotifyPlayer(player)};
+            const player = WebPlayer.initializeSpotifyPlayer({accessToken: accessToken, readyCallback});
+            
         }
     }, [accessToken, spotifyPlaybackReady]);
 
@@ -133,13 +132,10 @@ const Layout = ({
             }
         };
         requestRefreshToken();
-
-
-    }, [refreshToken, accessToken, accessTokenRequiresRefresh, setAccessTokenRequiresRefresh, invalidateAccessTokenOnFocus])
-
+    }, [refreshToken, accessToken, accessTokenRequiresRefresh, setAccessTokenRequiresRefresh, invalidateAccessTokenOnFocus]);
 
     return (
-        <SpotifyAuthContext.Provider value={{accessToken, refreshToken}}>
+        <SpotifyAuthContext.Provider value={{accessToken, refreshToken, deviceId: spotifyPlayer?.device_id}}>
             <Head>
                 <title>TimConsuming</title>
             </Head>
